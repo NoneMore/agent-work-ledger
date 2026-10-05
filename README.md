@@ -23,21 +23,13 @@ The workflow is designed so a new agent can resume work without access to previo
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the lifecycle.
 
-## Operational prompts
+## Operational Skill
 
-The [`prompts/`](./prompts/) directory provides vendor-neutral, copyable entry points for common lifecycle transitions without creating a second protocol:
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the reusable execution behavior as an Agent Skill. It is intended for agents that are starting, continuing, recovering, blocking, handing off, preparing, or reviewing work under this ledger protocol.
 
-| Situation | Prompt |
-| --- | --- |
-| Start an Issue | [`start.md`](./prompts/start.md) |
-| Continue routine implementation | [`work.md`](./prompts/work.md) |
-| Handle a blocker | [`blocked.md`](./prompts/blocked.md) |
-| Prepare a handoff | [`handoff.md`](./prompts/handoff.md) |
-| Resume from durable state | [`resume.md`](./prompts/resume.md) |
-| Prepare for review | [`ready-for-review.md`](./prompts/ready-for-review.md) |
-| Review against the linked Issue | [`review.md`](./prompts/review.md) |
+`AGENTS.md` remains the authoritative workspace policy. The Skill does not duplicate live task state or create another orchestration layer; it reads the Issue, PR, repository, checks, and comments as needed, then selects the smallest lifecycle path from that durable evidence.
 
-`AGENTS.md` remains authoritative. The prompt pack tells an executor which durable artifacts to inspect and update for a specific transition; it does not introduce agent IDs, run tracking, leases, heartbeats, scheduled checkpoints, or a separate state database.
+The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) so compatible runtimes can discover or install it without vendor-specific prompt files. Runtimes without Skill support can still follow `AGENTS.md` and `docs/AGENT_WORKFLOW.md` directly.
 
 ## Recommended GitHub Project setup
 
@@ -53,7 +45,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 
 - `AGENTS.md` — minimal operating protocol for agents
 - `docs/AGENT_WORKFLOW.md` — lifecycle, exception notes, recovery, and review model
-- `prompts/` — reusable operational prompts for lifecycle transitions
+- `skills/agent-work-ledger/SKILL.md` — reusable operational Skill for ledger lifecycle work
 - `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
 - `.github/pull_request_template.md` — current-state and validation record
 - `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
@@ -66,6 +58,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 4. Routine progress should not require comments or duplicated status updates.
 5. Comments preserve useful communication or history but never become a second current-state store.
 6. Preserve useful decisions and evidence; do not dump hidden chain-of-thought or raw model reasoning.
+7. Keep workspace-wide invariants in `AGENTS.md`; package reusable lifecycle behavior in the Skill; recover live state from GitHub rather than caching it elsewhere.
 
 ## Bootstrap
 
