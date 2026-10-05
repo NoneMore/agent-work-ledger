@@ -8,8 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  validate-handoff:
-    name: Validate Issue linkage and handoff
+  validate-resumability:
+    name: Validate Issue linkage and resumability
     if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,7 @@ jobs:
             failed=1
           fi
 
-          for section in '## Goal' '## Validation' '## Handoff'; do
+          for section in '## Current State' '## Validation'; do
             if ! grep -Fq "$section" <<< "$body"; then
               echo "::error::PR body is missing required section: $section"
               failed=1

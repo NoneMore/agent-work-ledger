@@ -1,27 +1,29 @@
 # Agent Working Protocol
 
-GitHub is the durable system of record for agent work. Keep the workflow lightweight: record enough state for another agent or human to resume, but do not duplicate routine progress across Issues, comments, and PRs.
+GitHub is the durable system of record for agent work. Keep the workflow lightweight: preserve enough state for another agent or human to resume, without duplicating routine progress across Issues, comments, and Pull Requests.
 
 ## Core rules
 
 1. **Work starts from an Issue.** The Issue defines the objective, acceptance criteria, context, and constraints.
 2. **One Issue should be one independently reviewable deliverable.** Split larger work when that improves review or ownership.
-3. **Open a Draft PR early for repository changes.** Link it with `Closes #N`, `Fixes #N`, or `Resolves #N`. The PR body is the single execution snapshot for in-progress work.
-4. **Do not write routine checkpoints.** Add an Issue or PR comment only for a material decision, blocker, important discovery, or when work must pause across sessions and the PR body alone is not enough to resume safely.
-5. **Before stopping or handing off, make the PR resumable.** Its body must say what is done, what remains, validation status, known risks, and the exact next action when relevant.
+3. **For repository changes, create a branch and make the first meaningful commit before opening a Draft PR.** Link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
+4. **The PR body owns current execution state.** Keep `Current State` and `Validation` accurate when state materially changes. Optional notes may record risks, follow-ups, decisions, or review focus.
+5. **Do not write routine checkpoints.** Comments are only for useful communication or history: blockers that need attention, material decisions, important discoveries, or pause notes that do not fit cleanly in the PR body. Comments never become a second current-state record.
+
+Before stopping or handing off unfinished repository work, make sure the PR body says what is done, what remains, and the exact next action.
 
 Do not store hidden chain-of-thought. Persist conclusions, evidence, decisions, constraints, blockers, and next actions only when they are useful to future work.
 
 ## Task shape
 
-A normal task should contain:
+A normal Issue should contain:
 
 - **Objective** — the durable outcome.
 - **Acceptance Criteria** — observable completion conditions.
 - **Context** — only the information or references needed to execute safely.
 - **Constraints** — important boundaries or non-goals.
 
-Do not maintain a second execution-status copy in the Issue once a PR exists. The Issue describes the work; the PR describes execution.
+Once a PR exists, do not maintain a second copy of execution status in the Issue. The Issue defines the work; the PR describes execution.
 
 ## Branch and PR convention
 
@@ -35,9 +37,11 @@ Normal lifecycle:
 
 ```text
 Issue
-  -> branch + Draft PR
-  -> work (keep PR body current when state materially changes)
-  -> validation + handoff
+  -> branch
+  -> first meaningful commit
+  -> Draft PR
+  -> work (update PR body when state materially changes)
+  -> validation
   -> Ready for Review
   -> review / fixes
   -> merge
@@ -46,16 +50,29 @@ Issue
 
 For non-repository work where no PR exists, use the Issue as both task definition and execution record.
 
+## PR execution snapshot
+
+The minimum PR contract is:
+
+- **Issue link** — a closing keyword such as `Closes #123`.
+- **Current State** — what is done, what remains, and the exact next action if unfinished.
+- **Validation** — checks run and results; explicitly note anything not run.
+
+`Notes` are optional and may contain limitations, risks, follow-ups, material decisions, or review focus. Do not add boilerplate when there is nothing useful to say.
+
 ## When to comment
 
-Comments are an exception path, not a routine progress log. Write one when:
+Comments are an exception path, not a routine progress log.
 
-- a blocker requires outside input,
+If a blocker changes the current execution state, update the PR body. Add a comment only when the blocker also needs notification, rationale, discussion, or historical preservation.
+
+Other good reasons to comment:
+
 - a material decision changes implementation direction or public behavior,
 - an important discovery invalidates earlier assumptions,
 - work pauses and another executor could not safely resume from the PR body alone.
 
-Keep the comment concise:
+A concise note is enough:
 
 ```markdown
 ## Agent Note
@@ -70,27 +87,16 @@ Only if relevant.
 The exact resume action or required input.
 ```
 
-## PR execution snapshot
-
-Keep the PR body useful to both a reviewer and a replacement agent. It should contain:
-
-- **Goal** — what this PR delivers.
-- **Current State** — what is done, what remains, and the next action if unfinished.
-- **Validation** — checks run and results; explicitly note anything not run.
-- **Handoff** — limitations, follow-ups, risks, and review focus.
-
-Update it when execution state materially changes; do not rewrite it after every small step.
-
 ## Recovery
 
-When resuming work:
+When resuming repository work:
 
 1. Read the Issue for objective and acceptance criteria.
 2. Read the linked PR body and current diff.
-3. Check CI and unresolved review comments if relevant.
-4. Read historical Issue / PR comments only when the current state is insufficient or a decision needs its history.
+3. Check CI and unresolved review comments when relevant.
+4. Read historical Issue / PR comments only when current state is insufficient or a decision needs context.
 
-Repository facts override stale prose. If there is a meaningful mismatch, correct the PR body or leave a concise note.
+Repository facts override stale prose. If there is a meaningful mismatch, correct the PR body or leave a concise explanatory note.
 
 ## Definition of Done
 
@@ -99,5 +105,5 @@ An Issue is done when:
 - acceptance criteria are met,
 - the deliverable is merged or otherwise durably linked,
 - appropriate validation is recorded,
-- important limitations or follow-up work are explicit,
+- important limitations or follow-up work are explicit when they exist,
 - the PR or Issue leaves enough state for future readers to understand what happened.

@@ -58,11 +58,3 @@ body:
       placeholder: Blocked by #123 / awaiting ...
     validations:
       required: false
-
-  - type: checkboxes
-    id: readiness
-    attributes:
-      label: Scope
-      options:
-        - label: This Issue is one independently reviewable deliverable, or is explicitly a parent / coordination Issue.
-          required: true
