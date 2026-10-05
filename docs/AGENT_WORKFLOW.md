@@ -161,10 +161,17 @@ Suggested Status automations, when useful:
 
 Keep Project automation conservative. The workflow should make the normal path cheap and reserve extra bookkeeping for actual needs.
 
-## 10. Operational prompt pack
+## 10. Operational Skill
 
-Use the vendor-neutral prompts in [`../prompts/`](../prompts/) when an executor needs a concrete instruction for a lifecycle transition rather than the full workflow document.
+[`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the reusable execution layer for compatible Agent Skills runtimes.
 
-The pack covers start, routine work, blockers, handoff, resume, Ready for Review, and review. Each prompt assumes `AGENTS.md` is authoritative and points the executor back to durable GitHub artifacts instead of prior chat history.
+The separation is intentional:
 
-The prompt pack deliberately adds no scheduler or separate coordination state. It is only an operational interface to this ledger model.
+- `AGENTS.md` owns workspace-wide invariants and policy.
+- The Skill owns reusable lifecycle procedure and routing between start, continue/recover, blocked, handoff, Ready for Review, and review paths.
+- GitHub tools / APIs provide live Issue, PR, repository, and check state.
+- The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
+
+The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It reconstructs durable state first, chooses the smallest matching path, and exits at an observable completion or stop condition.
+
+The first version intentionally keeps the common paths in one `SKILL.md` and has no `references/`, `scripts/`, or `assets/`. Add indirection only when a branch becomes independently complex enough to justify its context and maintenance cost.
