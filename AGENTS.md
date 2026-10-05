@@ -50,6 +50,12 @@ Issue
 
 For non-repository work where no PR exists, use the Issue as both task definition and execution record.
 
+## Operational prompt pack
+
+The files in [`prompts/`](./prompts/) are reusable entry points for common lifecycle transitions: start, routine work, blocked work, handoff, resume, Ready for Review, and review.
+
+They are helpers, not a second policy layer. This file remains authoritative. Use the prompt that matches the current transition and replace its bracketed Issue or PR identifier before execution.
+
 ## PR execution snapshot
 
 The minimum PR contract is:
