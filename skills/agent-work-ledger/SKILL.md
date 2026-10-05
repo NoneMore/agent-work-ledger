@@ -42,7 +42,7 @@ Use live repository and GitHub state rather than cached copies when it is cheapl
 
 Do not invent missing requirements, permissions, credentials, approvals, or validation results.
 
-A request to implement or continue work permits changes needed for that work item, subject to repository policy and runtime permissions. A review request is read-only unless the user separately asks for fixes. Do not merge, close, or perform another finalizing action unless the user explicitly requests it or governing repository instructions clearly delegate that authority.
+A request to implement or continue work permits changes needed for that work item, subject to repository policy and runtime permissions. A review request is read-only unless the user separately asks for fixes. During read-only review, inspect stale or contradictory PR state but report it as a finding rather than mutating GitHub state. Do not merge, close, or perform another finalizing action unless the user explicitly requests it or governing repository instructions clearly delegate that authority.
 
 ## Recover state before acting
 
@@ -54,7 +54,7 @@ For an existing PR, reconstruct state in this order:
 4. CI/checks and unresolved review feedback when relevant,
 5. historical Issue/PR comments only when current state or a material decision needs context.
 
-If durable prose disagrees with repository facts, trust the repository and correct the stale execution snapshot before relying on it.
+If durable prose disagrees with repository facts, trust the repository. For an authorized write-capable operation, correct the stale execution snapshot before relying on it. For a read-only review, do not mutate the PR; record the mismatch as a review finding instead.
 
 For a new Issue with no implementation PR, read the Issue and relevant repository evidence before changing code.
 
@@ -73,9 +73,9 @@ Use when an executable Issue exists and repository-changing implementation has n
 5. Make the first meaningful repository change before opening a Draft PR.
 6. Open a Draft PR linked with `Closes #N`, `Fixes #N`, or `Resolves #N`.
 7. Initialize the PR body so `Current State` states what is done, what remains, and the exact next action; initialize `Validation` accurately.
-8. Continue toward the Issue acceptance criteria.
+8. If the user requested full implementation, transition immediately into **Continue or resume implementation** and keep working until the requested scope is complete or another lifecycle path / stop condition applies. If the user requested only initialization or starting the work, stop after the Draft PR and its snapshot are valid.
 
-**Complete this operation when:** a meaningful implementation exists, the Draft PR exists, and its execution snapshot matches the repository.
+**Complete this operation when:** either (a) the user requested only initialization and a meaningful implementation plus accurate Draft PR snapshot exist, or (b) a full implementation request has transitioned into the continuation path rather than stopping at PR creation.
 
 For non-repository work where the protocol says no PR is needed, keep execution state on the Issue instead of creating an artificial PR.
 
@@ -97,27 +97,28 @@ Use when an implementation PR already exists, whether the same executor is conti
 - any blocker,
 - the exact next action while unfinished.
 
-**Complete this operation when:** the requested increment is finished and the PR snapshot again matches the repository, or another lifecycle path becomes necessary.
+**Complete this operation when:** the requested implementation scope or increment is finished and the PR snapshot again matches the repository, or another lifecycle path becomes necessary.
 
 ### Handle a blocker
 
 Use when required progress cannot continue because of missing input, permission, dependency, unresolved constraint, or another concrete external condition.
 
 1. Verify the blocker against available repository state, checks, configuration, and Issue constraints.
-2. Update `Current State` with:
+2. If a PR exists, update `Current State` with:
    - what cannot proceed,
    - the concrete reason,
    - concise evidence,
    - the condition or action that would unblock work,
    - useful work that can still continue independently,
    - the exact next action.
-3. Update `Validation` when the blocker prevents a check from running; state what was not run and why.
-4. Add a comment only when another person must act, notification/discussion is needed, or important historical rationale would otherwise be lost.
-5. Continue independent useful work when appropriate; otherwise stop at the blocker boundary.
+3. If a PR exists, update `Validation` when the blocker prevents a check from running; state what was not run and why.
+4. If no PR exists yet, do not create an artificial PR and do not turn the Issue body into a second execution snapshot. Add a concise Issue comment only when another person must act, notification/discussion is needed, or important blocker history would otherwise be lost; otherwise report the blocker to the user and stop safely.
+5. If a PR exists, add a comment only when another person must act, notification/discussion is needed, or important historical rationale would otherwise be lost.
+6. Continue independent useful work when appropriate; otherwise stop at the blocker boundary.
 
-**Complete this operation when:** the blocker is durably and accurately represented and either independent work is proceeding or the task is safely paused awaiting a stated condition.
+**Complete this operation when:** the blocker is accurately represented at the appropriate durable surface and either independent work is proceeding or the task is safely paused awaiting a stated condition.
 
-Do not mark the PR Ready for Review while required acceptance criteria remain blocked.
+If a blocked PR is being considered for Ready for Review, apply the repository's applicable Ready-for-Review policy and make any incomplete criteria or blockers explicit. Do not invent a stricter readiness gate in this Skill.
 
 ### Prepare a handoff
 
@@ -143,9 +144,9 @@ Use when implementation appears complete and the PR is still Draft.
 5. Update `Current State` so it contains no stale remaining work. If anything is intentionally incomplete, make that explicit and record the exact next action.
 6. Use `Notes` only for material risks, limitations, follow-ups, decisions, or review focus.
 7. Confirm the PR has a valid closing Issue link.
-8. Move the PR out of Draft only if required acceptance criteria are satisfied and no required blocker remains.
+8. Apply the repository's applicable Ready-for-Review policy from its authoritative instructions and workflow documentation. Do not tighten or redefine that policy in this Skill. When incomplete criteria, blockers, or limitations are allowed by repository policy, make them explicit before changing PR status.
 
-**Complete this operation when:** the PR is reviewable, its durable state is accurate, required validation evidence is recorded, and the PR has been marked Ready for Review when permitted.
+**Complete this operation when:** the PR satisfies the repository's applicable Ready-for-Review policy, its durable state is accurate, required validation evidence is recorded, and the PR has been marked Ready for Review when permitted.
 
 Do not claim validation that was not performed.
 
@@ -176,7 +177,7 @@ If the implementation is acceptable, say so based on evidence and identify any r
 
 **Complete this operation when:** findings or approval are grounded in the Issue, repository, and validation evidence, with each actionable finding tied to a concrete correction.
 
-Do not modify implementation during review unless the user separately authorizes fixes.
+Do not modify implementation or GitHub execution state during review unless the user separately authorizes fixes.
 
 ## Stop conditions
 
@@ -185,11 +186,11 @@ Stop or change paths instead of improvising when:
 - no executable Issue exists for repository-changing work,
 - requirements are materially ambiguous and repository evidence cannot resolve them,
 - required permission, credential, dependency, or approval is unavailable,
-- required acceptance criteria remain unsatisfied before Ready for Review,
+- the repository's applicable readiness policy does not permit transition to Ready for Review,
 - the user's requested operation is read-only,
 - a finalizing action such as merge or close lacks explicit authority.
 
-When stopping for a recoverable blocker, leave the durable ledger in a state that states what is blocked and what happens next.
+When stopping for a recoverable blocker, leave the durable ledger in a state that states what is blocked and what happens next, using the appropriate surface for whether a PR exists.
 
 ## Verification before exit
 
