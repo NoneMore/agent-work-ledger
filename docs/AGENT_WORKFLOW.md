@@ -132,6 +132,8 @@ Before moving a PR out of Draft:
 
 The governance workflow checks only the minimum structural contract: Issue linkage plus `Current State` and `Validation`. It intentionally does not require routine progress logging or boilerplate handoff sections.
 
+The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
+
 ## 8. Completion
 
 For repository work, prefer closing the Issue by merging a linked PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
