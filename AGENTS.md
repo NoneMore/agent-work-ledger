@@ -38,10 +38,6 @@ Do not fetch a full PR diff, complete CI logs, or full comment history by defaul
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) is intentionally user-invoked. Do not activate it from repository context or topic similarity alone. When the user explicitly invokes `agent-work-ledger`, use it to route to the smallest lifecycle procedure needed for the request.
-
-This file remains the authoritative workspace policy; the Skill is not a second policy or state store.
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) routes compatible Agent Skills runtimes to the smallest lifecycle procedure needed for the request. This file remains the authoritative workspace policy; the Skill is not a second policy or state store.
 
 Do not read [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) on the normal execution path. Consult it when changing this workflow, resolving policy ambiguity, or when a repository-specific detail is not covered here.
-
-If native Skill loading is unavailable but the user explicitly invokes the Skill, read `skills/agent-work-ledger/SKILL.md` directly and follow its references.
