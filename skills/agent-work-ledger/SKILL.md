@@ -40,6 +40,8 @@ Prompt text is not an authorization boundary; runtime and tool permissions remai
 
 ## Route first, then recover
 
+This is a model-routed Skill. Use the discovery description to select it, then infer the lifecycle path from the request and GitHub state; do not ask the user to choose an internal mode.
+
 Choose the smallest matching path before broad investigation.
 
 | Path | Minimum state to recover |
