@@ -50,11 +50,13 @@ Issue
 
 For non-repository work where no PR exists, use the Issue as both task definition and execution record.
 
-## Operational prompt pack
+## Operational Skill
 
-The files in [`prompts/`](./prompts/) are reusable entry points for common lifecycle transitions: start, routine work, blocked work, handoff, resume, Ready for Review, and review.
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable lifecycle behavior for compatible Agent Skills runtimes. It covers starting, continuing/recovering, blockers, handoff, Ready for Review, and review.
 
-They are helpers, not a second policy layer. This file remains authoritative. Use the prompt that matches the current transition and replace its bracketed Issue or PR identifier before execution.
+This file remains the authoritative workspace policy. The Skill is an operational scaffold, not a second policy or state store. It should recover live task state from GitHub and choose the relevant lifecycle path from the user's request and current artifacts.
+
+If the active runtime does not support Skills, follow this file and [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) directly.
 
 ## PR execution snapshot
 
