@@ -25,13 +25,13 @@ See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed human/
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable execution behavior as an Agent Skill.
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable execution behavior as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared separately in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
 
-`AGENTS.md` remains the authoritative workspace policy. The Skill stays small: it infers the lifecycle operation, applies authority/retrieval rules, and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/) rather than carrying every lifecycle procedure in context.
+`AGENTS.md` remains the authoritative workspace policy. The Skill stays small: once invoked, it infers the lifecycle operation, applies authority/retrieval rules, and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/) rather than carrying every lifecycle procedure in context.
 
 Live GitHub state is recovered progressively: PR metadata/body first, then changed filenames and selected patches/source; check summaries and unresolved review feedback precede detailed logs/history. Full diffs, complete CI logs, and full comment history are not normal recovery inputs.
 
-The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) so compatible runtimes can discover or install it without vendor-specific prompt files. Runtimes without Skill support can follow `AGENTS.md` and consult the detailed workflow document only when needed.
+The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) while runtime-specific invocation controls remain metadata rather than workflow instructions.
 
 ## Recommended GitHub Project setup
 
@@ -49,6 +49,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 - `docs/AGENT_WORKFLOW.md` — detailed lifecycle/reference documentation
 - `skills/agent-work-ledger/SKILL.md` — small operational router and progressive retrieval contract
 - `skills/agent-work-ledger/references/` — lifecycle procedures loaded only for the selected path
+- `skills/agent-work-ledger/agents/openai.yaml` — OpenAI/Codex invocation policy
 - `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
 - `.github/pull_request_template.md` — current-state and validation record
 - `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
