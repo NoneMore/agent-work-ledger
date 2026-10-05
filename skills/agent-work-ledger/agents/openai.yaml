@@ -1,0 +1,7 @@
+interface:
+  display_name: Agent Work Ledger
+  short_description: GitHub work ledger workflow
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false
