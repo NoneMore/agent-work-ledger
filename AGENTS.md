@@ -54,7 +54,7 @@ For non-repository work where no PR exists, use the Issue as both task definitio
 
 [`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable lifecycle behavior for compatible Agent Skills runtimes. It covers starting, continuing/recovering, blockers, handoff, Ready for Review, and review.
 
-This file remains the authoritative workspace policy. The Skill is an operational scaffold, not a second policy or state store. It should recover live task state from GitHub and choose the relevant lifecycle path from the user's request and current artifacts.
+This file remains the authoritative workspace policy. The Skill is an operational scaffold, not a second policy or state store. It should choose the relevant lifecycle path from the user's request and current artifacts, then recover only the live GitHub state needed for that path.
 
 If the active runtime does not support Skills, follow this file and [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) directly.
 
