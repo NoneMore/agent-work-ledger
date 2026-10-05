@@ -2,7 +2,7 @@
 
 This repository uses GitHub Issues and Pull Requests as a durable work ledger without turning routine execution into paperwork.
 
-This document is the detailed human/reference description of the workflow. Agents should not load it on the normal execution path: `AGENTS.md` carries workspace-wide invariants, while `skills/agent-work-ledger/SKILL.md` routes to one small lifecycle reference. Consult this document when changing the workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by those smaller surfaces.
+This document is the detailed human/reference description of the workflow. Agents should not load it on the normal execution path: `AGENTS.md` carries workspace-wide invariants, while an explicitly invoked `skills/agent-work-ledger/SKILL.md` routes to one small lifecycle reference. Consult this document when changing the workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by those smaller surfaces.
 
 ## 1. System of record
 
@@ -143,8 +143,9 @@ Keep Project automation conservative. The workflow should make the normal path c
 The separation is intentional:
 
 - `AGENTS.md` owns workspace-wide invariants and the minimal recovery order.
-- `SKILL.md` owns routing, authority boundaries, progressive retrieval, and stop/exit rules.
-- `skills/agent-work-ledger/references/` contains mutually exclusive lifecycle procedures; load only the selected path unless the operation changes.
+- `SKILL.md` owns routing, authority boundaries, progressive retrieval, and stop/exit rules once the Skill is explicitly invoked.
+- `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
+- `skills/agent-work-ledger/references/` contains path-specific lifecycle procedures; load only the selected path unless the operation changes.
 - GitHub tools / APIs provide live Issue, PR, repository, check, and review state.
 - The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
 - This workflow document is detailed reference material, not a routine agent prompt dependency.
@@ -159,4 +160,4 @@ Policy
   -> history only on discrepancy
 ```
 
-The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It routes from user intent/current artifacts first and expands context only when the selected operation requires it.
+The Skill should not cache task state or create a second policy layer. Once invoked, it routes from user intent/current artifacts first and expands context only when the selected operation requires it.
