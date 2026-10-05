@@ -49,6 +49,13 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 - `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
 - `.github/pull_request_template.md` — current-state and validation record
 - `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
+- `.github/rulesets/main.json` — importable main-branch enforcement configuration
+
+## Repository enforcement
+
+[`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge.
+
+The file is a reproducible configuration source, not self-applying infrastructure. An administrator must import or apply it in GitHub repository settings (for example, **Settings → Rules → Rulesets → New ruleset → Import a ruleset**) or through the GitHub API/CLI. Keep the live repository ruleset aligned with the versioned JSON when the enforcement policy changes.
 
 ## Design principles
 
