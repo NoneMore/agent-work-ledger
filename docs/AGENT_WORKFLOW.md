@@ -160,3 +160,11 @@ Suggested Status automations, when useful:
 - Linked Issue closed / PR merged -> `Done`
 
 Keep Project automation conservative. The workflow should make the normal path cheap and reserve extra bookkeeping for actual needs.
+
+## 10. Operational prompt pack
+
+Use the vendor-neutral prompts in [`../prompts/`](../prompts/) when an executor needs a concrete instruction for a lifecycle transition rather than the full workflow document.
+
+The pack covers start, routine work, blockers, handoff, resume, Ready for Review, and review. Each prompt assumes `AGENTS.md` is authoritative and points the executor back to durable GitHub artifacts instead of prior chat history.
+
+The prompt pack deliberately adds no scheduler or separate coordination state. It is only an operational interface to this ledger model.
