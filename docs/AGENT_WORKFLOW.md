@@ -172,6 +172,6 @@ The separation is intentional:
 - GitHub tools / APIs provide live Issue, PR, repository, and check state.
 - The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
 
-The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It reconstructs durable state first, chooses the smallest matching path, and exits at an observable completion or stop condition.
+The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It chooses the smallest matching path from user intent and current artifacts first, then recovers only the durable state needed for that path, and exits at an observable completion or stop condition.
 
 The first version intentionally keeps the common paths in one `SKILL.md` and has no `references/`, `scripts/`, or `assets/`. Add indirection only when a branch becomes independently complex enough to justify its context and maintenance cost.
