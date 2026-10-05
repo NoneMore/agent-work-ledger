@@ -3,7 +3,7 @@
 Use this path when a Draft PR should be normalized and validated for review.
 
 1. Re-check the Issue acceptance criteria.
-2. Inspect changed filenames/stats, then the final patches/source relevant to those criteria; avoid a full diff unless the PR is demonstrably small.
+2. Inspect all changed filenames/stats. Expand patches/source for changes relevant to the acceptance criteria and for any changed file not clearly explained by the intended scope; avoid a full diff unless the PR is demonstrably small.
 3. Read check summaries and expand failures only as needed. Run appropriate validation when authorized and feasible.
 4. Resolve or account for unresolved actionable review feedback when relevant.
 5. Normalize the PR body: remove stale remaining-work text, make `Current State` accurate, record validation actually performed, and note material limitations/incomplete items only when they exist.
