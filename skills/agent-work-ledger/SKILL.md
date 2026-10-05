@@ -1,9 +1,13 @@
 ---
 name: agent-work-ledger
-description: Operate GitHub work under the Agent Work Ledger protocol: start/resume Issue or PR work, handle blockers/handoffs, prepare for review, or review PRs using durable GitHub state.
+description: User-invoked GitHub work ledger workflow for starting/resuming Issue or PR work, handling blockers/handoffs, preparing for review, or reviewing PRs using durable GitHub state. Use only when the user explicitly invokes `agent-work-ledger`; do not auto-select it from repository context or topic similarity.
+metadata:
+  invocation: user
 ---
 
 # Agent Work Ledger
+
+This Skill is user-invoked. Do not activate it implicitly from repository context or topic similarity. Once invoked, infer the lifecycle path from the user's request and current GitHub state; do not ask the user to choose an internal mode.
 
 Use durable GitHub state instead of prior chat. Read the applicable `AGENTS.md` first; it is authoritative and this Skill only routes/operationalizes it.
 
