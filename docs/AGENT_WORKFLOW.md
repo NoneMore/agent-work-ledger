@@ -2,6 +2,8 @@
 
 This repository uses GitHub Issues and Pull Requests as a durable work ledger without turning routine execution into paperwork.
 
+This document is the detailed human/reference description of the workflow. Agents should not load it on the normal execution path: `AGENTS.md` carries workspace-wide invariants, while an explicitly invoked `skills/agent-work-ledger/SKILL.md` routes to one small lifecycle reference. Consult this document when changing the workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by those smaller surfaces.
+
 ## 1. System of record
 
 Each GitHub surface has one primary responsibility:
@@ -44,7 +46,7 @@ A normal executable Issue should answer four questions:
 3. **Context** — what information or references are needed to execute safely?
 4. **Constraints** — what boundaries or non-goals matter?
 
-Only Objective and Acceptance Criteria are required by the Issue Form. Context, constraints, and dependencies are optional because not every task needs them.
+Only Objective and Acceptance Criteria are required by the Issue Form. Context, constraints, and dependencies are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
 
 Once repository execution moves into a PR, do not maintain `Current State` or `Next Action` on the Issue. The Issue remains the task definition.
 
@@ -70,14 +72,14 @@ What is done, what remains, and the exact next action if unfinished.
 
 ## Validation
 
-Tests / checks run and their results. Note anything not run and why.
+Tests / checks run and their results. Note anything important not run and why.
 
 ## Notes
 
 Optional: limitations, risks, follow-ups, material decisions, or review focus.
 ```
 
-`Notes` are optional. Delete the section when it adds no value.
+`Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or the Issue acceptance criteria unless needed to explain current state.
 
 ## 5. Comments are for exceptions
 
@@ -85,40 +87,24 @@ Do **not** post routine claim or progress checkpoints.
 
 The PR body always owns current execution status. If work becomes blocked, update `Current State` there. Add a comment only when the blocker also needs notification, explanation, discussion, or durable historical context.
 
-Other reasons to leave a comment:
-
-- a material decision changes implementation direction or public behavior,
-- an important discovery invalidates earlier assumptions,
-- work must pause and the PR body alone is insufficient for safe resumption.
-
-A concise note is enough:
-
-```markdown
-## Agent Note
-
-### State
-What changed or what is blocked.
-
-### Decision / Evidence
-Only if relevant.
-
-### Next
-Exact resume action or required input.
-```
+Other reasons to leave a comment include a material decision changing implementation direction, an important discovery invalidating earlier assumptions, or a pause where the canonical execution surface alone is insufficient for safe resumption.
 
 Comments preserve useful history; they do not become a second current-state store.
 
 ## 6. Recovery after interruption
 
-A replacement agent should recover in this order:
+Recovery is progressive. The goal is to obtain the smallest current context that can safely determine the next action.
 
-1. Issue: objective and acceptance criteria.
-2. Linked PR body: current execution state and validation.
-3. Current diff / changed files.
-4. CI and unresolved review comments when relevant.
-5. Historical Issue / PR comments only if current state is insufficient or a decision needs context.
+1. Read the Issue objective and acceptance criteria.
+2. Read linked PR metadata/body without the full diff.
+3. Read changed filenames and compact stats.
+4. Select relevant files, then fetch only their patches and surrounding source as needed.
+5. Read check summaries and unresolved actionable review feedback when relevant; expand failed jobs/steps or referenced code only as needed.
+6. Read historical Issue/PR comments only if current state cannot explain a material decision or discrepancy.
 
-Repository facts win over stale prose. Correct the PR body or leave a concise note when there is a meaningful mismatch.
+Do not use a full PR diff, complete CI logs, or full comment history as the default recovery shortcut. Small complete diffs are acceptable when the change is demonstrably small and wholly relevant.
+
+Repository facts win over stale prose. Correct stale canonical state during authorized write work, or report the mismatch during read-only review.
 
 ## 7. Ready for Review
 
@@ -146,34 +132,32 @@ The only default field is:
 
 - `Status`: Inbox / Ready / In Progress / Blocked / Review / Done
 
-Add other fields only when the project genuinely benefits from maintaining them, for example:
-
-- `Priority`: P0 / P1 / P2 / P3
-- `Iteration`: sprint / cycle
-
-Prefer stable labels such as `type:*` or `area:*` over duplicating the same classification in Project fields.
-
-Suggested Status automations, when useful:
-
-- New Issue -> `Inbox`
-- Ready task -> `Ready`
-- Active work -> `In Progress`
-- PR ready for review -> `Review`
-- Linked Issue closed / PR merged -> `Done`
+Add other fields only when the project genuinely benefits from maintaining them, for example `Priority` or `Iteration`. Prefer stable labels such as `type:*` or `area:*` over duplicating the same classification in Project fields.
 
 Keep Project automation conservative. The workflow should make the normal path cheap and reserve extra bookkeeping for actual needs.
 
-## 10. Operational Skill
+## 10. Operational Skill and context loading
 
 [`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the reusable execution layer for compatible Agent Skills runtimes.
 
 The separation is intentional:
 
-- `AGENTS.md` owns workspace-wide invariants and policy.
-- The Skill owns reusable lifecycle procedure and routing between start, continue/recover, blocked, handoff, Ready for Review, and review paths.
-- GitHub tools / APIs provide live Issue, PR, repository, and check state.
+- `AGENTS.md` owns workspace-wide invariants and the minimal recovery order.
+- `SKILL.md` owns routing, authority boundaries, progressive retrieval, and stop/exit rules once the Skill is explicitly invoked.
+- `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
+- `skills/agent-work-ledger/references/` contains path-specific lifecycle procedures; load only the selected path unless the operation changes.
+- GitHub tools / APIs provide live Issue, PR, repository, check, and review state.
 - The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
+- This workflow document is detailed reference material, not a routine agent prompt dependency.
 
-The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It chooses the smallest matching path from user intent and current artifacts first, then recovers only the durable state needed for that path, and exits at an observable completion or stop condition.
+The retrieval model is deliberately staged:
 
-The first version intentionally keeps the common paths in one `SKILL.md` and has no `references/`, `scripts/`, or `assets/`. Add indirection only when a branch becomes independently complex enough to justify its context and maintenance cost.
+```text
+Policy
+  -> live state / metadata
+  -> indexes and summaries
+  -> selected evidence
+  -> history only on discrepancy
+```
+
+The Skill should not cache task state or create a second policy layer. Once invoked, it routes from user intent/current artifacts first and expands context only when the selected operation requires it.

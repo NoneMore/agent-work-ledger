@@ -1,117 +1,43 @@
 # Agent Working Protocol
 
-GitHub is the durable system of record for agent work. Keep the workflow lightweight: preserve enough state for another agent or human to resume, without duplicating routine progress across Issues, comments, and Pull Requests.
+GitHub is the durable system of record for agent work. Preserve enough state for another agent or human to resume without duplicating routine progress across Issues, comments, and Pull Requests.
 
-## Core rules
+## Invariants
 
-1. **Work starts from an Issue.** The Issue defines the objective, acceptance criteria, context, and constraints.
+1. **Work starts from an Issue.** The Issue defines objective, acceptance criteria, relevant context, and constraints.
 2. **One Issue should be one independently reviewable deliverable.** Split larger work when that improves review or ownership.
-3. **For repository changes, create a branch and make the first meaningful commit before opening a Draft PR.** Link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
-4. **The PR body owns current execution state.** Keep `Current State` and `Validation` accurate when state materially changes. Optional notes may record risks, follow-ups, decisions, or review focus.
-5. **Do not write routine checkpoints.** Comments are only for useful communication or history: blockers that need attention, material decisions, important discoveries, or pause notes that do not fit cleanly in the PR body. Comments never become a second current-state record.
+3. **Repository changes use `Issue -> branch -> first meaningful commit -> Draft PR`.** Link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
+4. **The PR body owns repository execution state.** Keep `Current State` and `Validation` accurate when state materially changes. `Notes` are optional.
+5. **Comments are exceptions, not checkpoints.** Use them only for useful notification/history such as blockers needing attention, material decisions, important discoveries, or pause context that does not fit the PR body.
+6. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
+7. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions that are useful to future work.
 
-Before stopping or handing off unfinished repository work, make sure the PR body says what is done, what remains, and the exact next action.
+For intentionally non-repository work with no PR, the Issue is both task definition and execution record.
 
-Do not store hidden chain-of-thought. Persist conclusions, evidence, decisions, constraints, blockers, and next actions only when they are useful to future work.
+## Minimum PR contract
 
-## Task shape
+A repository-changing PR must contain:
 
-A normal Issue should contain:
+- an Issue closing link,
+- `Current State`: what is done, what remains, and the exact next action if unfinished,
+- `Validation`: checks actually run and results, including important checks not run.
 
-- **Objective** — the durable outcome.
-- **Acceptance Criteria** — observable completion conditions.
-- **Context** — only the information or references needed to execute safely.
-- **Constraints** — important boundaries or non-goals.
+Before stopping or handing off unfinished work, make sure the canonical execution surface is sufficient to resume without prior chat.
 
-Once a PR exists, do not maintain a second copy of execution status in the Issue. The Issue defines the work; the PR describes execution.
+## Recovery order
 
-## Branch and PR convention
+Recover only what the current operation needs:
 
-Preferred branch format:
+1. Issue objective and acceptance criteria.
+2. Linked PR metadata/body when a PR exists.
+3. Relevant repository evidence: changed filenames first, then selected patches/source as needed.
+4. Relevant check summaries and unresolved review feedback.
+5. Historical Issue/PR comments only when current state cannot explain a material decision or discrepancy.
 
-```text
-agent/<issue-number>-<short-slug>
-```
-
-Normal lifecycle:
-
-```text
-Issue
-  -> branch
-  -> first meaningful commit
-  -> Draft PR
-  -> work (update PR body when state materially changes)
-  -> validation
-  -> Ready for Review
-  -> review / fixes
-  -> merge
-  -> Issue closed
-```
-
-For non-repository work where no PR exists, use the Issue as both task definition and execution record.
+Do not fetch a full PR diff, complete CI logs, or full comment history by default. Expand context only after the smaller summary/index shows it is needed.
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable lifecycle behavior for compatible Agent Skills runtimes. It covers starting, continuing/recovering, blockers, handoff, Ready for Review, and review.
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) routes compatible Agent Skills runtimes to the smallest lifecycle procedure needed for the request. This file remains the authoritative workspace policy; the Skill is not a second policy or state store.
 
-This file remains the authoritative workspace policy. The Skill is an operational scaffold, not a second policy or state store. It should choose the relevant lifecycle path from the user's request and current artifacts, then recover only the live GitHub state needed for that path.
-
-If the active runtime does not support Skills, follow this file and [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) directly.
-
-## PR execution snapshot
-
-The minimum PR contract is:
-
-- **Issue link** — a closing keyword such as `Closes #123`.
-- **Current State** — what is done, what remains, and the exact next action if unfinished.
-- **Validation** — checks run and results; explicitly note anything not run.
-
-`Notes` are optional and may contain limitations, risks, follow-ups, material decisions, or review focus. Do not add boilerplate when there is nothing useful to say.
-
-## When to comment
-
-Comments are an exception path, not a routine progress log.
-
-If a blocker changes the current execution state, update the PR body. Add a comment only when the blocker also needs notification, rationale, discussion, or historical preservation.
-
-Other good reasons to comment:
-
-- a material decision changes implementation direction or public behavior,
-- an important discovery invalidates earlier assumptions,
-- work pauses and another executor could not safely resume from the PR body alone.
-
-A concise note is enough:
-
-```markdown
-## Agent Note
-
-### State
-What changed or what is blocked.
-
-### Decision / Evidence
-Only if relevant.
-
-### Next
-The exact resume action or required input.
-```
-
-## Recovery
-
-When resuming repository work:
-
-1. Read the Issue for objective and acceptance criteria.
-2. Read the linked PR body and current diff.
-3. Check CI and unresolved review comments when relevant.
-4. Read historical Issue / PR comments only when current state is insufficient or a decision needs context.
-
-Repository facts override stale prose. If there is a meaningful mismatch, correct the PR body or leave a concise explanatory note.
-
-## Definition of Done
-
-An Issue is done when:
-
-- acceptance criteria are met,
-- the deliverable is merged or otherwise durably linked,
-- appropriate validation is recorded,
-- important limitations or follow-up work are explicit when they exist,
-- the PR or Issue leaves enough state for future readers to understand what happened.
+Do not read [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) on the normal execution path. Consult it when changing this workflow, resolving policy ambiguity, or when a repository-specific detail is not covered here.
