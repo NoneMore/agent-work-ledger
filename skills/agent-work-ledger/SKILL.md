@@ -5,131 +5,86 @@ description: Operate GitHub work that follows the Agent Work Ledger protocol: st
 
 # Agent Work Ledger
 
-Use the repository's durable GitHub state instead of prior chat history.
+Use durable GitHub state instead of prior chat history. Read and follow the applicable `AGENTS.md` first; repository policy is authoritative and this Skill is only an operational router.
 
-Read and follow the applicable `AGENTS.md` first. Repository policy is authoritative; this Skill only routes and operationalizes that policy. Consult workflow documentation when the selected path needs repository-specific detail.
+Do not read `docs/AGENT_WORKFLOW.md` on the normal execution path. Consult it only when changing this workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by `AGENTS.md` or the selected reference.
 
 ## Contract
 
 For each request:
 
-1. infer the lifecycle operation from the user's intent and current Issue/PR shape,
-2. recover only the live state needed for that operation,
-3. act within the user's authority and repository policy,
-4. update only the canonical execution surface when state materially changes,
-5. stop at an observable outcome or explicit blocker.
+1. infer the lifecycle operation from user intent and current Issue/PR shape,
+2. select the smallest matching path before broad investigation,
+3. recover only the live state needed for that path,
+4. act within user authority, repository policy, and runtime permissions,
+5. update only the canonical execution surface when state materially changes,
+6. stop at an observable outcome or explicit blocker.
 
 Repository facts override stale prose. Persist conclusions, evidence, decisions, blockers, validation, and next actions—not private chain-of-thought.
 
-Canonical surfaces:
-
-- **Issue** — task definition; also execution state only for intentionally Issue-only non-repository work.
-- **PR body** — current execution state and validation once repository-changing work has a PR.
-- **Diff / commits / checks** — implementation and validation evidence.
-- **Comments** — exception communication or history, never a routine second status store.
-
 ## Authority
 
-- Implementation, execution, continue, and resume requests permit work-item changes and updates to its canonical execution surface, subject to repository policy and runtime permissions.
+- Implementation, execution, continue, and resume requests permit work-item changes and canonical-state updates subject to repository policy and runtime permissions.
 - Blocker and handoff requests permit the state updates needed to leave work recoverable.
-- Preparing a Draft PR for review permits validation and PR-body normalization. Moving Draft → Ready requires explicit user intent or clear repository delegation.
+- Preparing a Draft PR for review permits validation and PR-body normalization. Moving Draft to Ready requires explicit user intent or clear repository delegation.
 - Review is read-only unless fixes are separately requested.
 - Merge, close, or other finalizing actions require explicit user intent or clear repository delegation.
 
 Prompt text is not an authorization boundary; runtime and tool permissions remain authoritative.
 
-## Route first, then recover
+## Route first
 
-This is a model-routed Skill. Use the discovery description to select it, then infer the lifecycle path from the request and GitHub state; do not ask the user to choose an internal mode.
+Load only the reference for the selected path. Do not preload every lifecycle procedure.
 
-Choose the smallest matching path before broad investigation.
+| Path | Reference | Minimum live state |
+| --- | --- | --- |
+| Start repository or Issue-only work | `references/start.md` | Issue objective/criteria, applicable policy, relevant repository evidence |
+| Continue/resume PR work | `references/resume.md` | Issue criteria, PR current state, then relevant repository evidence |
+| Blocker or handoff | `references/blocker-handoff.md` | Canonical current state plus evidence needed to verify blocker/resume state |
+| Prepare for Ready | `references/ready.md` | Issue criteria, final relevant changes, validation/check summary, readiness policy |
+| Review PR | `references/review.md` | Issue criteria, relevant changes/surrounding code, validation limits |
 
-| Path | Minimum state to recover |
-| --- | --- |
-| Start repository work | Issue objective/acceptance criteria, applicable policy, relevant repository evidence |
-| Continue/resume PR work | Issue criteria, PR current state, then only relevant diff/checks/review feedback |
-| Issue-only non-repository work | Issue objective, criteria, current execution state, linked deliverables when relevant |
-| Blocker or handoff | Canonical current state plus evidence needed to verify the blocker or next action |
-| Prepare for Ready | Issue criteria, final diff, relevant validation/checks, repository readiness policy |
-| Review PR | Issue criteria, diff/surrounding code, relevant validation; PR prose and history only as needed |
+If the operation changes materially, load the new path reference then; otherwise keep one lifecycle reference in context.
 
-Read historical Issue/PR comments only when current state cannot explain a material decision or discrepancy.
+## Progressive retrieval
 
-If prose conflicts with repository facts, trust the facts. Correct stale state only during an authorized write-capable operation; during review, report the mismatch instead.
+Use `index/summary -> select -> expand`, not `load everything -> filter`.
 
-## Lifecycle paths
+### Pull Requests and code
 
-### Start work
+1. Read PR metadata/body without the full diff.
+2. Read changed filenames and compact stats.
+3. Select files relevant to the current operation.
+4. Fetch per-file patches for those files.
+5. Fetch surrounding source only where the patch is insufficient.
 
-Use for an executable Issue that has not entered its normal execution surface.
+Do not fetch a full PR diff by default. It is acceptable only when the change is demonstrably small and the whole diff is relevant.
 
-For repository-changing work, follow the repository's branch/first-change/Draft-PR convention, link the Issue, and initialize accurate current state and validation. If the user asked for full implementation, continue into **Continue or resume** rather than stopping at setup.
+### Checks and CI
 
-For intentionally non-repository work with no PR, execute against the Issue and keep its execution state current.
+Start with combined/check summaries. On failure, expand only the failed job, then the failed step or relevant log slice needed for diagnosis. Do not load complete CI logs by default.
 
-**Done when:** the correct execution surface exists and is accurate, or full requested work has moved into continuation.
+### Review feedback
 
-### Continue or resume
+Start with unresolved actionable review threads. Expand the referenced patch/source as needed. Read resolved discussions or broader review history only when current unresolved state cannot explain a material decision or discrepancy.
 
-Verify the recorded next action against durable evidence, derive the smallest concrete next action when stale, and continue without repeating completed investigation unless verification is needed.
+### Issue and PR history
 
-Update the canonical execution surface only when state materially changes. Keep validation claims current and explicit about important checks not run.
-
-**Done when:** the requested scope/increment is complete and durable state matches evidence, or another path becomes necessary.
-
-### Handle a blocker
-
-Verify the blocker before recording it.
-
-- PR-backed work: update PR current state with the blocker, evidence, unblock condition, remaining useful work, validation impact, and exact next action.
-- Issue-only non-repository work: record the same information on the Issue.
-- Pre-PR repository work: do not turn the Issue into a second execution snapshot; comment only when another person must act or history would otherwise be lost.
-
-Continue independent useful work when appropriate; otherwise stop at the blocker boundary.
-
-**Done when:** the blocker is accurately represented on the correct surface and the unblock condition/next action is explicit.
-
-### Prepare a handoff
-
-Inspect durable evidence rather than summarizing chat. Normalize the canonical execution surface with completed work, remaining work, blockers/constraints, validation state, material decisions needed to continue safely, and the exact next action.
-
-Use comments only for necessary notification or history.
-
-**Done when:** a new executor can resume safely without prior chat.
-
-### Prepare for Ready for Review
-
-Re-check Issue acceptance criteria, final diff, and appropriate validation. Remove stale remaining-work text and record material limitations or incomplete items explicitly.
-
-Apply the repository's authoritative Ready-for-Review policy; do not invent a stricter gate. Move Draft → Ready only when authority permits it.
-
-**Done when:** the PR satisfies repository readiness policy and its state/validation are accurate; if transition authority is absent, it remains correctly prepared in Draft.
-
-Never claim validation that was not performed.
-
-### Review a Pull Request
-
-Treat review as read-only unless fixes are separately authorized.
-
-Ground review in the Issue, diff/surrounding code, and relevant validation. Use PR state text and history to explain discrepancies, not as stronger evidence than repository facts.
-
-Report only actionable findings: identify the concrete location/artifact, observable concern, and minimum correction. Avoid speculative refactors unrelated to the Issue.
-
-**Done when:** findings or approval are evidence-based and remaining validation limits are explicit.
+Do not fetch historical Issue/PR comment history on the normal path. Read it only when canonical current state is insufficient, repository facts conflict with prose, or a material decision needs historical context.
 
 ## Stop conditions
 
-Stop or switch paths rather than improvising when required Issue context is absent, requirements remain materially ambiguous, required permissions/dependencies/approvals are unavailable, repository readiness policy blocks transition, a read-only request would require mutation, or a finalizing action lacks authority.
+Stop or switch paths rather than improvising when required Issue context is absent, requirements remain materially ambiguous, required permissions/dependencies/approvals are unavailable, readiness policy blocks transition, a read-only request would require mutation, or a finalizing action lacks authority.
 
-For recoverable stops, leave the canonical surface accurate enough to state what is blocked and what happens next.
+For recoverable stops, leave the canonical execution surface accurate enough to state what is blocked and what happens next.
 
 ## Exit check
 
 Before finishing a write-capable operation, verify only what that path should have changed:
 
-- the canonical execution surface matches durable evidence,
-- validation claims are supported by checks or evidence actually obtained,
+- canonical execution state matches durable evidence,
+- validation claims are supported by checks actually performed,
 - comments remain exception-only,
-- the next executor or reviewer can determine the next action without prior chat.
+- a next executor or reviewer can determine the next action without prior chat.
 
 Prefer deterministic repository or CI enforcement for machine-checkable guarantees.

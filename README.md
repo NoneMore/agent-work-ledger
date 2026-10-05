@@ -9,7 +9,7 @@ The core model is simple:
 - **Comments are exceptions** — communication or history for blockers, material decisions, important discoveries, or pause notes.
 - **GitHub Projects show portfolio progress** — without becoming a second source of execution truth.
 
-The workflow is designed so a new agent can resume work without access to previous chat history, while keeping routine process overhead low.
+The workflow is designed so a new agent can resume work without access to previous chat history, while keeping routine process and context overhead low.
 
 ## Start here
 
@@ -21,15 +21,17 @@ The workflow is designed so a new agent can resume work without access to previo
 6. Do not post routine progress checkpoints; comment only when useful communication or history is needed.
 7. Before Ready for Review, ensure the PR is resumable and validation is recorded.
 
-See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the lifecycle.
+See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed human/reference lifecycle. Agents do not need to load that document during normal execution.
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the reusable execution behavior as an Agent Skill. It is intended for agents that are starting, continuing, recovering, blocking, handing off, preparing, or reviewing work under this ledger protocol.
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable execution behavior as an Agent Skill.
 
-`AGENTS.md` remains the authoritative workspace policy. The Skill does not duplicate live task state or create another orchestration layer; it selects the smallest lifecycle path from the request and current artifacts, then reads only the Issue, PR, repository, checks, or comments needed for that path.
+`AGENTS.md` remains the authoritative workspace policy. The Skill stays small: it infers the lifecycle operation, applies authority/retrieval rules, and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/) rather than carrying every lifecycle procedure in context.
 
-The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) so compatible runtimes can discover or install it without vendor-specific prompt files. Runtimes without Skill support can still follow `AGENTS.md` and `docs/AGENT_WORKFLOW.md` directly.
+Live GitHub state is recovered progressively: PR metadata/body first, then changed filenames and selected patches/source; check summaries and unresolved review feedback precede detailed logs/history. Full diffs, complete CI logs, and full comment history are not normal recovery inputs.
+
+The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) so compatible runtimes can discover or install it without vendor-specific prompt files. Runtimes without Skill support can follow `AGENTS.md` and consult the detailed workflow document only when needed.
 
 ## Recommended GitHub Project setup
 
@@ -43,9 +45,10 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 
 ## Repository contents
 
-- `AGENTS.md` — minimal operating protocol for agents
-- `docs/AGENT_WORKFLOW.md` — lifecycle, exception notes, recovery, and review model
-- `skills/agent-work-ledger/SKILL.md` — reusable operational Skill for ledger lifecycle work
+- `AGENTS.md` — always-relevant workspace invariants and minimal recovery order
+- `docs/AGENT_WORKFLOW.md` — detailed lifecycle/reference documentation
+- `skills/agent-work-ledger/SKILL.md` — small operational router and progressive retrieval contract
+- `skills/agent-work-ledger/references/` — lifecycle procedures loaded only for the selected path
 - `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
 - `.github/pull_request_template.md` — current-state and validation record
 - `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
@@ -55,7 +58,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 
 [`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge.
 
-The file is a reproducible configuration source, not self-applying infrastructure. An administrator must import or apply it in GitHub repository settings (for example, **Settings → Rules → Rulesets → New ruleset → Import a ruleset**) or through the GitHub API/CLI. Keep the live repository ruleset aligned with the versioned JSON when the enforcement policy changes.
+The file is a reproducible configuration source, not self-applying infrastructure. An administrator must import or apply it in GitHub repository settings or through the GitHub API/CLI. Keep the live repository ruleset aligned with the versioned JSON when enforcement policy changes.
 
 ## Design principles
 
@@ -65,8 +68,8 @@ The file is a reproducible configuration source, not self-applying infrastructur
 4. Routine progress should not require comments or duplicated status updates.
 5. Comments preserve useful communication or history but never become a second current-state store.
 6. Preserve useful decisions and evidence; do not dump hidden chain-of-thought or raw model reasoning.
-7. Keep workspace-wide invariants in `AGENTS.md`; package reusable lifecycle behavior in the Skill; recover live state from GitHub rather than caching it elsewhere.
+7. Keep workspace-wide invariants in `AGENTS.md`; package reusable routing in the Skill; load one lifecycle path at a time; recover live state from GitHub progressively rather than caching or preloading it.
 
 ## Bootstrap
 
-This repository's first workflow implementation is tracked in Issue #1 and PR #2.
+The first workflow implementation is tracked in Issue #1 and PR #2.
