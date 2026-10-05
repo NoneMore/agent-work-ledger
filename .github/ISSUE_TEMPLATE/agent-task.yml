@@ -1,0 +1,60 @@
+name: Agent Task
+description: Create one independently reviewable work item.
+title: "[Task] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Keep intake lightweight. Define the outcome and completion criteria; add context or constraints only when they matter.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What concrete outcome should exist when this task is complete?
+      placeholder: Implement / investigate / migrate / document ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: Observable conditions that define completion. Use a checklist when useful.
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Only the files, links, prior decisions, or system behavior needed to execute safely.
+      placeholder: |
+        Relevant files / links:
+        - `src/...`
+        - #123
+    validations:
+      required: false
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints / Non-goals
+      description: Important compatibility requirements, boundaries, or things that must not change.
+      placeholder: |
+        - Preserve existing API behavior.
+        - Non-goal: ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies / Blockers
+      description: External input or work this task depends on, if any.
+      placeholder: Blocked by #123 / awaiting ...
+    validations:
+      required: false

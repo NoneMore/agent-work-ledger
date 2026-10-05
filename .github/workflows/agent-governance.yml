@@ -1,0 +1,41 @@
+name: Agent Governance
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-resumability:
+    name: Validate Issue linkage and resumability
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR body
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -u
+          body="${PR_BODY:-}"
+          failed=0
+
+          if ! grep -Eiq '(closes|fixes|resolves)[[:space:]]+#[0-9]+' <<< "$body"; then
+            echo "::error::Ready-for-review PRs must link an Issue with 'Closes #N', 'Fixes #N', or 'Resolves #N'."
+            failed=1
+          fi
+
+          for section in '## Current State' '## Validation'; do
+            if ! grep -Fq "$section" <<< "$body"; then
+              echo "::error::PR body is missing required section: $section"
+              failed=1
+            fi
+          done
+
+          if [[ "$failed" -ne 0 ]]; then
+            exit 1
+          fi
+
+          echo "Agent governance checks passed."
