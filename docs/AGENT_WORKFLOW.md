@@ -160,3 +160,18 @@ Suggested Status automations, when useful:
 - Linked Issue closed / PR merged -> `Done`
 
 Keep Project automation conservative. The workflow should make the normal path cheap and reserve extra bookkeeping for actual needs.
+
+## 10. Operational Skill
+
+[`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the reusable execution layer for compatible Agent Skills runtimes.
+
+The separation is intentional:
+
+- `AGENTS.md` owns workspace-wide invariants and policy.
+- The Skill owns reusable lifecycle procedure and routing between start, continue/recover, blocked, handoff, Ready for Review, and review paths.
+- GitHub tools / APIs provide live Issue, PR, repository, and check state.
+- The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
+
+The Skill should not cache task state, create a second policy layer, or require the user to select an internal lifecycle prompt. It chooses the smallest matching path from user intent and current artifacts first, then recovers only the durable state needed for that path, and exits at an observable completion or stop condition.
+
+The first version intentionally keeps the common paths in one `SKILL.md` and has no `references/`, `scripts/`, or `assets/`. Add indirection only when a branch becomes independently complex enough to justify its context and maintenance cost.

@@ -23,6 +23,14 @@ The workflow is designed so a new agent can resume work without access to previo
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the lifecycle.
 
+## Operational Skill
+
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the reusable execution behavior as an Agent Skill. It is intended for agents that are starting, continuing, recovering, blocking, handing off, preparing, or reviewing work under this ledger protocol.
+
+`AGENTS.md` remains the authoritative workspace policy. The Skill does not duplicate live task state or create another orchestration layer; it selects the smallest lifecycle path from the request and current artifacts, then reads only the Issue, PR, repository, checks, or comments needed for that path.
+
+The Skill uses the open Agent Skills packaging shape (`<skill-name>/SKILL.md`) so compatible runtimes can discover or install it without vendor-specific prompt files. Runtimes without Skill support can still follow `AGENTS.md` and `docs/AGENT_WORKFLOW.md` directly.
+
 ## Recommended GitHub Project setup
 
 Start with one field only:
@@ -37,6 +45,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 
 - `AGENTS.md` — minimal operating protocol for agents
 - `docs/AGENT_WORKFLOW.md` — lifecycle, exception notes, recovery, and review model
+- `skills/agent-work-ledger/SKILL.md` — reusable operational Skill for ledger lifecycle work
 - `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
 - `.github/pull_request_template.md` — current-state and validation record
 - `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
@@ -49,6 +58,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 4. Routine progress should not require comments or duplicated status updates.
 5. Comments preserve useful communication or history but never become a second current-state store.
 6. Preserve useful decisions and evidence; do not dump hidden chain-of-thought or raw model reasoning.
+7. Keep workspace-wide invariants in `AGENTS.md`; package reusable lifecycle behavior in the Skill; recover live state from GitHub rather than caching it elsewhere.
 
 ## Bootstrap
 
