@@ -35,9 +35,3 @@ Recover only what the current operation needs:
 5. Historical Issue/PR comments only when current state cannot explain a material decision or discrepancy.
 
 Do not fetch a full PR diff, complete CI logs, or full comment history by default. Expand context only after the smaller summary/index shows it is needed.
-
-## Operational Skill
-
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) routes compatible Agent Skills runtimes to the smallest lifecycle procedure needed for the request. This file remains the authoritative workspace policy; the Skill is not a second policy or state store.
-
-Do not read [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) on the normal execution path. Consult it when changing this workflow, resolving policy ambiguity, or when a repository-specific detail is not covered here.
