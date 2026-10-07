@@ -1,6 +1,6 @@
 # Continue or resume
 
-Use for active work with a canonical execution surface. Apply shared recovery, canonicalization, tracking-promotion, and Draft-exit rules from `AGENTS.md`; if PR feedback is active work, use `feedback`.
+Use for active work with a canonical execution surface. Apply shared rules from `AGENTS.md`; if PR feedback is active work, use `feedback`.
 
 1. Verify the recorded next action against the task definition and smallest relevant evidence.
 2. Execute the smallest next action; replace superseded `Current State` and record only validation actually performed.
