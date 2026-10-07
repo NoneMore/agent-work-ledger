@@ -1,12 +1,10 @@
 # Continue or resume executable work
 
-Use for active executable work with a canonical execution surface. Apply shared rules from `AGENTS.md`; if PR feedback is active work, use `feedback`.
-
-If the requested work is investigation, direction-setting, or decomposition rather than delivery against an accepted contract, switch to `shape` before continuing.
+Use for active executable work with a canonical execution surface. Apply shared rules from `AGENTS.md`; if the requested operation changes, reroute through `SKILL.md` before continuing.
 
 1. Verify the recorded next action against the executable task definition and smallest relevant evidence.
 2. Execute the smallest concrete next action; replace superseded `Current State` and record only validation actually performed.
-3. Switch to `shape` when new evidence explicitly reopens the underlying direction, to `blocker-handoff` when blocked or handed off, to `feedback` when PR feedback becomes active work, or to `review` only when required or requested.
+3. If the operation changes, reroute through `SKILL.md` rather than redefining lifecycle boundaries here.
 4. If a required transition lacks authority, leave it as the exact next action.
 
 ## Done when
