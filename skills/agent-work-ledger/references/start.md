@@ -1,12 +1,14 @@
-# Start work
+# Start executable work
 
-Use this path before work has entered its normal execution surface. Apply the tracking test from `AGENTS.md`; do not load detailed workflow documentation just to classify routine work.
+Use this path before executable work has entered its normal execution surface. Apply the tracking test from `AGENTS.md`; do not load detailed workflow documentation just to classify routine work.
+
+If the Issue still owns an exploratory initiative whose accepted direction or executable decomposition is materially unsettled, switch to `shape.md` rather than inventing acceptance criteria or treating a candidate solution as committed.
 
 ## Repository-changing work
 
-For Issue-backed work:
+For Issue-backed executable work:
 
-1. Confirm the Issue has a usable objective and acceptance criteria.
+1. Confirm the Issue has a usable objective and acceptance criteria for the concrete delivery slice.
 2. Normally create `agent/<issue-number>-<short-slug>` from the appropriate base.
 3. Make the first meaningful commit, then open a Draft PR with an Issue closing link in `## Tracking`.
 
@@ -18,10 +20,12 @@ For standalone maintenance:
 
 For both paths, initialize `Current State` and `Validation`. If implementation was requested, switch to `resume.md` once the execution surface exists.
 
-## Issue-only work
+If an exploratory parent initiative needs a repository-changing research or design slice before the parent should close, first create or identify a concrete executable Issue for that slice; do not use a closing link to the parent when merging the PR would not complete the parent lifecycle.
 
-When independently tracked work produces no repository change, keep execution state on the Issue; do not create an artificial PR.
+## Issue-only executable work
+
+When independently tracked executable work produces no repository change, keep execution state on the Issue; do not create an artificial PR.
 
 ## Done when
 
-The correct execution surface exists and accurately represents the work, or execution has moved to the resume path.
+The correct executable surface exists and accurately represents the work, execution has moved to the resume path, or the work has been rerouted to shaping because an executable contract is not yet stable.
