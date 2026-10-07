@@ -1,8 +1,8 @@
 # Continue or resume
 
-Use this path for active work with a canonical execution surface. Apply the recovery budget from `AGENTS.md`. If PR feedback is the active work, use `feedback` instead.
+Use this path for active work with a canonical execution surface. Apply the recovery budget from `AGENTS.md`. If PR feedback is the active work, use `feedback` instead. If user intent is only to prepare or evaluate leaving Draft, limit changes to readiness/completion work implied by that request; do not infer authority to finish unrelated remaining implementation.
 
-1. Verify the recorded next action still advances the current task definition and matches the smallest relevant repository evidence. For Issue-backed work, account for relevant current Issue comments that materially change scope, constraints, decisions, or blockers; when authorized, reflect the resulting durable task/execution state on the Issue rather than leaving canonical meaning split across comments.
+1. Verify the recorded next action still advances the current task definition and matches the smallest relevant repository evidence. For Issue-backed work, inspect Issue comments only under the triggers in `AGENTS.md`; when authorized input materially changes scope, constraints, decisions, or blockers, reflect the resulting durable task/execution state on the Issue rather than leaving canonical meaning split across comments.
 2. Treat authorship as irrelevant to routing. If work arrives as an existing PR, adopt that PR as the execution surface; when authorized, normalize `## Tracking`, `Current State`, and `Validation` instead of creating a replacement PR.
 3. If standalone work now needs an independent lifecycle, promote it when authorized; otherwise record that promotion as the blocker or next action.
 4. Continue from the smallest concrete next action.

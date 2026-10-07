@@ -8,7 +8,7 @@ An externally opened Issue is still ordinary Issue-backed work; do not recreate 
 
 For Issue-backed work:
 
-1. Confirm the Issue has a usable objective and acceptance criteria. If relevant current Issue comments materially change scope, constraints, a decision, or a blocker, reconcile the resulting task definition/state into the Issue when authorized rather than treating comments as a second canonical definition.
+1. Confirm the Issue has a usable objective and acceptance criteria. If the current operation is triggered by or explicitly references Issue comments, account for any authorized material change to scope, constraints, a decision, or a blocker and reconcile the resulting task definition/state into the Issue when authorized rather than treating comments as a second canonical definition.
 2. Normally create `agent/<issue-number>-<short-slug>` from the appropriate base.
 3. Make the first meaningful commit, then open a Draft PR with an Issue closing link in `## Tracking`.
 

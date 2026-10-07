@@ -1,6 +1,6 @@
 # Handle PR feedback
 
-Use this path when PR feedback becomes active work and a write-capable feedback operation is authorized. Feedback may come from GitHub review threads, submitted reviews, PR conversation comments, or actionable findings from a completed review once the user asks to act on them.
+Use this path when PR feedback becomes active work and a write-capable feedback operation is authorized. Feedback may come from GitHub review threads, submitted reviews, PR conversation comments, or actionable findings from a completed review once the user asks to act on them. Authorization to handle or address feedback permits responses and the minimum work-item corrections required by in-scope feedback; it does not by itself authorize thread resolution, review-state changes, Draft -> Ready, merge/close, or other finalizing transitions.
 
 1. Recover the canonical PR state and task definition when required. Inspect only the current feedback needed for the operation, plus check summaries when repository changes may be required.
 2. Classify each in-scope item before acting: question/discussion, actionable change, evidence-based no-change disposition, or blocker/decision. Existing GitHub feedback is already durable; do not copy it into `Current State` solely for bookkeeping.
