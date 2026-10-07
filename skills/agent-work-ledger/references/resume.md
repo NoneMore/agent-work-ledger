@@ -5,10 +5,9 @@ Use for active executable work with a canonical execution surface. Apply shared 
 If the requested work is investigation, direction-setting, or decomposition rather than delivery against an accepted contract, switch to `shape` before continuing.
 
 1. Verify the recorded next action against the executable task definition and smallest relevant evidence.
-2. If standalone work now needs an independent lifecycle, promote it when authorized; otherwise record that promotion as the blocker or next action.
-3. Execute the smallest concrete next action; replace superseded `Current State` and record only validation actually performed.
-4. Switch to `shape` when new evidence explicitly reopens the underlying direction, to `blocker-handoff` when blocked or handed off, to `feedback` when PR feedback becomes active work, or to `review` only when required or requested.
-5. If a required transition lacks authority, leave it as the exact next action.
+2. Execute the smallest concrete next action; replace superseded `Current State` and record only validation actually performed.
+3. Switch to `shape` when new evidence explicitly reopens the underlying direction, to `blocker-handoff` when blocked or handed off, to `feedback` when PR feedback becomes active work, or to `review` only when required or requested.
+4. If a required transition lacks authority, leave it as the exact next action.
 
 ## Done when
 
