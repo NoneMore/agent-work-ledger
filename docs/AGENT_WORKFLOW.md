@@ -11,12 +11,17 @@ Each GitHub surface has one primary responsibility:
 | Surface | Role |
 | --- | --- |
 | Issue | Defines problems, requests, and other work worth tracking independently |
+| Issue comments | Durable discussion and input around Issue-defined work |
 | Draft / open PR | Current repository execution snapshot and implementation artifact |
-| Issue / PR comments | Exception-only communication, feedback, and history |
+| PR conversation comments / reviews | Durable feedback on PR-backed work |
 | Commits / checks | Implementation and validation evidence |
 | GitHub Project | Cross-task progress view |
 
 Avoid maintaining the same status in multiple places. Once a PR exists, execution state belongs in the PR body rather than being duplicated into an Issue or comments.
+
+The ledger has four inbound GitHub shapes that matter to lifecycle handling: a new Issue, an Issue comment, an existing/new PR, and PR feedback through conversation comments or review surfaces. They do not form a separate generic `external input` lifecycle. The surface gives the input its default role; its effect determines whether task definition, execution state, feedback disposition, blocker state, or authority actually changes.
+
+Authorship does not change those roles. An externally opened Issue or PR is adopted through the same lifecycle rather than recreated. Checks are evidence, Project fields are portfolio/coordination metadata, and direct user instructions provide intent, authority, or context; none is a fifth GitHub ledger input surface.
 
 An Issue and a PR are not required to exist 1:1. Issues represent public work items; PRs represent repository changes.
 
@@ -85,11 +90,13 @@ A normal executable Issue should answer four questions:
 
 Only Objective and Acceptance Criteria are required by the Issue Form. Context, constraints, and dependencies are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
 
+Issue comments may clarify, constrain, or make decisions about the work, but they do not become a second task-definition store. When a current comment materially changes the objective, acceptance criteria, constraints, blocker, or Issue-only execution state, reflect the resulting durable state in the Issue during authorized write work. Keep the comment as provenance/history; do not copy it verbatim just for bookkeeping.
+
 Once repository execution moves into a PR, do not maintain `Current State` or `Next Action` on the Issue. The Issue remains the task definition.
 
 ## 4. Execution
 
-For all repository changes:
+For all repository changes that do not already have a PR execution surface:
 
 1. Choose the initial tracking path before creating the branch.
 2. For Issue-backed work, normally create `agent/<issue-number>-<slug>` and later link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N` in `## Tracking`.
@@ -98,6 +105,8 @@ For all repository changes:
 5. Open a Draft PR and use its body as the single execution snapshot.
 6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
 7. Record validation before marking the PR ready for review.
+
+If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR contract during authorized write work. If write authority is unavailable, report the missing contract rather than creating a parallel ledger.
 
 Branch naming is a creation convention and is not used to infer current tracking mode. The `## Tracking` section is the canonical machine-readable tracking declaration.
 
@@ -128,23 +137,25 @@ Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain
 
 Do **not** post routine claim or progress checkpoints.
 
-The PR body always owns current execution status. If work becomes blocked, update `Current State` there. Add a comment only when the blocker also needs notification, explanation, discussion, or durable historical context.
+For Issue-backed work, Issue comments are durable discussion/input around the Issue. Material changes to task definition or Issue-only execution state should be reflected in the Issue when authorized so later recovery does not depend on replaying comment history.
+
+The PR body always owns PR-backed execution status. If work becomes blocked, update `Current State` there. Add a comment only when the blocker also needs notification, explanation, discussion, or durable historical context.
 
 Other reasons to leave a comment include a material decision changing implementation direction, an important discovery invalidating earlier assumptions, a direct response to PR feedback, or a pause where the canonical execution surface alone is insufficient for safe resumption.
 
-Review threads, submitted reviews, and PR conversation comments are durable feedback sources, not a replacement execution-state store. Do not copy feedback already present on GitHub into `Current State` merely to create another ledger. During authorized feedback handling, persist active off-GitHub feedback or a material execution consequence in canonical state only when it would otherwise be lost at a stop. Respond on the existing GitHub feedback surface when communication or disposition belongs there.
+Review threads, submitted reviews, and PR conversation comments are durable feedback sources, not a replacement execution-state store. Do not copy feedback already present on GitHub into `Current State` merely to create another ledger. Update canonical PR state only when handling the feedback materially changes execution state. Respond on the existing GitHub feedback surface when communication or disposition belongs there.
 
-Comments preserve useful communication and history; they do not become a second current-state store.
+Comments preserve useful communication, input, and history; they do not become a second current-state store.
 
 ## 6. Recovery after interruption
 
 Recovery is canonical-first and trigger-based. The goal is to load only enough context to determine the next safe action.
 
 1. If a PR exists, read its metadata/body first. For Issue-only work, read the Issue execution state.
-2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion; do not preload Issue comments/history. For standalone work, use the PR title/body as the task definition.
+2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion. Inspect relevant current Issue comments only when they may materially change task definition, a decision, blocker, or Issue-only execution state; do not preload full Issue history. For standalone work, use the PR title/body as the task definition.
 3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
 4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read current PR feedback — unresolved review threads, relevant submitted reviews or PR conversation comments, and feedback-related blockers in canonical current state — only when relevant to the selected operation.
-5. Read older or resolved Issue/PR discussion only if current canonical state and current feedback cannot explain a material decision or discrepancy.
+5. Read older or resolved Issue/PR discussion only if current canonical state and current input/evidence cannot explain a material decision or discrepancy.
 
 Do not use a full PR diff, complete CI logs, linked-Issue history, or full review/comment history as default recovery shortcuts. Small complete diffs are acceptable when demonstrably small and wholly relevant.
 
@@ -173,21 +184,21 @@ The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/ru
 
 Review and feedback handling are separate operations with different authority boundaries. Review is an available operation, not a mandatory lifecycle stage; require it only when repository policy or explicit user intent does.
 
-A review is read-only by default. Establish intended scope, inspect the smallest sufficient repository/check/feedback evidence, and report only actionable findings. If a new finding is not already represented in GitHub, make that durability status explicit. Without a separately authorized write-capable operation, do not modify the branch, PR body, comments, review state, or threads merely to make the finding durable.
+A review is read-only by default. Establish intended scope, inspect the smallest sufficient repository/check/feedback evidence, and report only actionable findings. A finding produced by that read-only review is review output until the user explicitly asks to act on it; do not mutate GitHub merely to make the finding durable.
 
-PR feedback can come from the agent's own review once the user asks to act on it, an external inline review thread, a submitted review, a top-level PR conversation comment, or user-supplied input. Existing GitHub feedback is already durable and remains its own source; do not mirror it into the PR body solely for bookkeeping.
+GitHub-native PR feedback comes from inline review threads, submitted reviews, and top-level PR conversation comments. Existing GitHub feedback is already durable and remains its own source; do not mirror it into the PR body solely for bookkeeping. A review finding may enter the same feedback-handling path once action is authorized, but that transition does not create another inbound GitHub surface.
 
 When feedback handling is authorized, route it through the feedback lifecycle rather than generic resume:
 
 1. Recover canonical PR state, the task definition when required, current check summaries when relevant, and only the current feedback needed for the operation.
 2. Classify each in-scope item before acting: question/discussion, actionable change, evidence-based no-change disposition, or blocker/decision.
 3. Respond on the existing GitHub surface when a response is useful or expected. For an actionable change, make the minimum correction and run validation appropriate to it. For a no-change disposition, provide concrete evidence. For a blocker or required decision, make the unblock condition and exact next action durable.
-4. Update `Current State` / `Validation` only when execution state materially changes. If active off-GitHub feedback or a material execution consequence is not otherwise recoverable from GitHub when stopping, persist enough canonical state for safe resumption.
+4. Update `Current State` / `Validation` only when execution state materially changes. Do not create a synthetic feedback ledger for review findings or direct user instructions; persist only resulting material execution state when needed for resumability.
 5. Re-check current checks and unresolved in-scope feedback after changes or replies. Resolve a review thread only after its concern is corrected or explicitly dispositioned and only with authority. Return to review only when repository policy or explicit user intent requires it; continue discussion when a decision is still pending; otherwise leave the PR ready for a separately authorized merge.
 
 Approving, requesting changes, resolving threads, moving Draft to Ready, or merging all change GitHub state. Perform those actions only when user intent or repository delegation authorizes them.
 
-This loop deliberately avoids a separate feedback-state database or routine feedback-cycle checkpoints. The PR body remains the current execution snapshot; GitHub review/comment surfaces provide durable feedback evidence; commits and checks provide implementation and validation evidence.
+This model deliberately avoids a generic input-state database or routine feedback-cycle checkpoints. Issues own task definition, PR bodies own PR execution state, comments/reviews provide durable input or feedback on those objects, and commits/checks provide implementation and validation evidence.
 
 ## 9. Completion
 
@@ -226,8 +237,7 @@ The retrieval model is deliberately trigger-based:
 ```text
 canonical execution surface
   -> closing-linked Issue task definitions for Issue-backed scope/completion work
-  -> repository/check/feedback index only when needed
-  -> selected evidence
+  -> selected current input/repository/check/feedback evidence only when needed
   -> history only on discrepancy
 ```
 

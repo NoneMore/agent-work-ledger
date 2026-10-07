@@ -24,6 +24,8 @@ Load exactly one lifecycle reference. Switch only if the operation changes.
 | Review PR | `references/review.md` |
 | Handle PR feedback | `references/feedback.md` |
 
+Inbound GitHub surfaces do not add lifecycle routes. An existing Issue enters `start` or `resume` according to whether execution has begun; an existing PR is already an execution surface and routes by the requested operation rather than by authorship. Issue comments remain input to the active Issue-backed path unless their effect requires a blocker/handoff or another existing route. PR conversation comments, submitted reviews, and review threads route to `feedback` when they become active work.
+
 ## Execution boundary
 
 After routing, follow the recovery budget in `AGENTS.md` and gather only evidence required by the selected reference. Infer tracking mode from canonical state, take the smallest safe next action, and update canonical state only when it materially changes.
