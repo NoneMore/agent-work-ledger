@@ -1,18 +1,16 @@
 # Continue or resume
 
-Use this path for active work that already has its canonical execution surface.
+Use this path for active work with a canonical execution surface.
 
-1. Read the Issue objective/acceptance criteria and the current PR metadata/body (or Issue execution state for intentionally Issue-only work).
-2. Verify the recorded next action against durable repository evidence instead of assuming prose is current.
-3. Inspect changed filenames/stats first; expand only the patches and surrounding source relevant to the next action.
-4. Check validation summaries and unresolved review feedback only when relevant to the work being resumed.
-5. Continue from the smallest concrete next action without repeating completed investigation unless verification is necessary.
-6. Update the canonical execution surface only when state materially changes. Keep validation claims explicit about checks run and important checks not run.
+1. Read the canonical surface first: PR metadata/body when a PR exists, otherwise the Issue execution state.
+2. Use `## Tracking` to identify the mode. For Issue-backed work, read the linked Issue objective/acceptance criteria before choosing or verifying the next action; do not preload Issue comments/history.
+3. Verify the recorded next action against the smallest relevant repository evidence. Expand changed filenames -> selected patches -> source only as needed.
+4. If standalone work now needs an independent lifecycle, promote it when authorized; otherwise record/report that promotion as the blocker or next action.
+5. Read validation summaries or unresolved review feedback only when they affect the current increment.
+6. Continue from the smallest concrete next action. Update canonical state only when it materially changes, and record only validation actually performed.
 
-If repository facts conflict with recorded state, trust the facts and correct stale canonical state during authorized write work. Read historical comments only if the discrepancy cannot otherwise be explained.
-
-Do not fetch the complete PR diff, all CI logs, or full conversation history as a recovery shortcut.
+Repository facts override stale prose. Read history only when current state cannot explain a material discrepancy.
 
 ## Done when
 
-The requested scope or increment is complete and durable state matches evidence, or another lifecycle path becomes necessary.
+The requested increment is complete and durable state matches evidence, or another lifecycle path is required.
