@@ -32,7 +32,9 @@ Issue
   -> work
   -> validation
   -> Ready for Review
-  -> review / fixes
+  -> review
+  -> authorized fixes
+  -> re-review
   -> merge
   -> Issue closed
 ```
@@ -46,9 +48,13 @@ branch
   -> work
   -> validation
   -> Ready for Review
-  -> review / fixes
+  -> review
+  -> authorized fixes
+  -> re-review
   -> merge
 ```
+
+The review -> authorized fixes -> re-review segment repeats as needed. A review with no findings can proceed directly toward merge when repository policy and authority allow it.
 
 The first meaningful commit gives GitHub something to compare against the base branch before the Draft PR is opened.
 
@@ -128,6 +134,8 @@ The PR body always owns current execution status. If work becomes blocked, updat
 
 Other reasons to leave a comment include a material decision changing implementation direction, an important discovery invalidating earlier assumptions, or a pause where the canonical execution surface alone is insufficient for safe resumption.
 
+Review comments and submitted reviews are durable review evidence, not a replacement execution-state store. During authorized review-fix work, unresolved findings that are not otherwise recoverable from GitHub review state must be represented in `Current State` before stopping. Use a PR conversation comment only when the finding also needs notification, discussion, or durable history beyond the current snapshot.
+
 Comments preserve useful history; they do not become a second current-state store.
 
 ## 6. Recovery after interruption
@@ -137,8 +145,8 @@ Recovery is canonical-first and trigger-based. The goal is to load only enough c
 1. If a PR exists, read its metadata/body first. For Issue-only work, read the Issue execution state.
 2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion; do not preload Issue comments/history. For standalone work, use the PR title/body as the task definition.
 3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
-4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read unresolved actionable review feedback only when relevant.
-5. Read historical Issue/PR discussion only if current canonical state cannot explain a material decision or discrepancy.
+4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read unresolved actionable review feedback and review blockers recorded in canonical current state only when relevant.
+5. Read historical Issue/PR discussion or resolved review history only if current canonical state and unresolved feedback cannot explain a material decision or discrepancy.
 
 Do not use a full PR diff, complete CI logs, linked-Issue history, or full review/comment history as default recovery shortcuts. Small complete diffs are acceptable when demonstrably small and wholly relevant.
 
@@ -151,16 +159,37 @@ Before moving a PR out of Draft:
 - exactly one tracking mode is explicit in `## Tracking`: Issue-backed or standalone maintenance,
 - the selected tracking mode still fits the work; promote standalone work first if it has developed independent tracking value,
 - every closing-linked Issue's acceptance criteria are satisfied or incomplete items are explicit for Issue-backed work,
-- `Current State` accurately represents the work,
+- `Current State` accurately represents the work, including any outstanding review blocker,
 - appropriate validation is recorded,
+- unresolved actionable review feedback is either addressed or explicitly remains incomplete work,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
+
+The readiness path is for Draft PRs. An already non-Draft PR returning from authorized review fixes goes directly back to review after its state and validation are refreshed; it does not cycle through Draft readiness again.
 
 The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not require routine progress logging or boilerplate handoff sections.
 
 The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
-## 8. Completion
+## 8. Review, fix, and re-review
+
+Review and review-driven fixes are separate operations with different authority boundaries.
+
+A review is read-only by default. Establish intended scope, inspect the smallest sufficient repository/check/review evidence, and report only actionable findings. If a finding is not already represented in GitHub review state, make that durability status explicit. Without separate write authority, do not modify the branch, PR body, review state, or threads merely to make the finding durable.
+
+When fixes are separately authorized, route them through the review-fix lifecycle rather than generic resume:
+
+1. Recover the canonical PR state, the task definition when required, current head/check summaries, unresolved actionable review feedback, and any in-scope user-supplied findings.
+2. Reconcile every in-scope finding by making the minimum correction or explicitly dispositioning it as requiring no change with concrete evidence.
+3. Run validation appropriate to the corrections and replace stale `Current State` / `Validation` with repository facts.
+4. If an actionable finding remains unresolved at a stop, make it recoverable from GitHub canonical state with the exact next action. Add a comment only when notification, discussion, or durable history is also useful.
+5. Re-check current check summaries and unresolved actionable feedback on the resulting head, then return the PR to review. Repeat the fix/re-review loop as needed.
+
+Resolving a review thread, approving, requesting changes, or merging changes GitHub state. Perform those actions only when user intent or repository delegation authorizes them, and resolve a finding only after it has been corrected or explicitly dispositioned.
+
+This loop deliberately avoids a separate review-state database or routine review-cycle comments. The PR body remains the current execution snapshot; GitHub review surfaces provide durable review evidence; commits and checks provide implementation and validation evidence.
+
+## 9. Completion
 
 For Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links.
 
@@ -168,7 +197,7 @@ For standalone maintenance, the merged PR is the complete durable record; do not
 
 Every merged PR should be enough for a future reader to understand what was done and how it was validated. Limitations or follow-up work should be recorded only when they actually exist.
 
-## 9. Recommended Project configuration
+## 10. Recommended Project configuration
 
 The only default field is:
 
@@ -178,7 +207,7 @@ Add other fields only when the project genuinely benefits from maintaining them,
 
 Keep Project automation conservative. The workflow should make the normal path cheap and reserve extra bookkeeping for actual needs.
 
-## 10. Operational Skill and context loading
+## 11. Operational Skill and context loading
 
 [`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the reusable execution layer for compatible Agent Skills runtimes.
 
