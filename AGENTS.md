@@ -8,9 +8,10 @@ GitHub is the durable system of record for agent work. Preserve enough state for
 2. **One Issue should be one independently reviewable deliverable.** Split larger work when that improves review or ownership.
 3. **All repository changes use `branch -> first meaningful commit -> Draft PR`.** Issue-backed work normally starts on `agent/<issue-number>-<slug>`; standalone maintenance normally starts on `agent/maintenance-<slug>`. Branch naming is a creation convention, not tracking truth.
 4. **The PR body owns repository execution state.** `## Tracking` is the canonical tracking declaration; keep `Current State` and `Validation` accurate when state materially changes.
-5. **Comments are exceptions, not checkpoints.** Use them only for useful notification/history such as blockers, material decisions, important discoveries, or pause context that does not fit the PR body.
-6. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
-7. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
+5. **Validation depth follows change risk, not PR existence.** Use repository-defined affected validation for narrow changes; prefer stronger or full validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Any reduction in expensive validation must be justified by repository facts or authoritative rules, not solely by an agent-authored declaration.
+6. **Comments are exceptions, not checkpoints.** Use them only for useful notification/history such as blockers, material decisions, important discoveries, or pause context that does not fit the PR body.
+7. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
+8. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
 
 Standalone maintenance is a tracking choice, not a low-risk classification. Use it when the PR itself is the complete public work item. If the work later needs an independent lifecycle, promote it: create an Issue, replace the standalone declaration in `## Tracking` with an Issue closing link, and continue on the existing branch/PR.
 
