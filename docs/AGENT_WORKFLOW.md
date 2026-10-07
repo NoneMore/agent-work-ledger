@@ -54,7 +54,7 @@ Initiative Issue
   -> Initiative closed
 ```
 
-An accepted direction can be reopened by contradictory evidence. The workflow does not define a mechanical readiness score or require every unknown to disappear before downstream work begins; the important boundary is whether a direction has been explicitly accepted and is safe for downstream work to rely on.
+Contradictory evidence can require reconsidering an accepted direction. Record that evidence promptly, but reopen or replace the accepted direction only with the authority required to change that decision; otherwise leave reconsideration as the next action and stop downstream reliance when continuing would be unsafe. The workflow does not define a mechanical readiness score or require every unknown to disappear before downstream work begins; the important boundary is whether a direction has been explicitly accepted and is safe for downstream work to rely on.
 
 Standalone repository maintenance:
 
@@ -79,7 +79,7 @@ For work that does not produce repository changes but is worth tracking, keep ex
 
 ## 3. Issue intake
 
-Create an Issue when the work should exist independently of any particular PR. Typical cases include:
+Use an Issue when the work should exist independently of any particular PR; for exploratory shaping, the narrower bootstrap rule below applies. Typical cases include:
 
 - externally reported problems or user-visible bugs,
 - feature requests or product/documentation requests,
@@ -112,7 +112,7 @@ Once repository execution for that deliverable moves into a PR, do not maintain 
 
 ### Exploratory initiatives
 
-Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Do not force this work into a premature Objective/Acceptance Criteria contract just to make it look executable.
+Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Create or adopt this Initiative surface only when durable tracking is explicitly requested or required by repository policy; otherwise do not manufacture tracking solely because shaping is occurring. Do not force this work into a premature Objective/Acceptance Criteria contract just to make it look executable.
 
 The initiative should preserve only durable state useful to the next executor or decision-maker, for example:
 
@@ -126,7 +126,7 @@ The initiative should preserve only durable state useful to the next executor or
 
 These are semantic responsibilities, not a required heading schema. An initiative may explicitly state that no direction is accepted yet. Detail alone does not imply commitment: a polished proposal, prototype, or extensive research result remains a candidate until an authorized decision accepts it.
 
-Commitment is a decision, not a readiness test. It is reasonable to accept a direction while execution-local unknowns remain, provided those unknowns do not invalidate the decision being relied upon. When contradictory evidence does invalidate an accepted direction, reopen that decision explicitly and record any known child work that may need follow-up instead of silently changing the contract.
+Commitment is a decision, not a readiness test. It is reasonable to accept a direction while execution-local unknowns remain, provided those unknowns do not invalidate the decision being relied upon. When contradictory evidence does invalidate an accepted direction, record the evidence and known child work that may need follow-up; reopen or replace the accepted direction only with the authority required to change that decision. Without that authority, leave reconsideration as the next action and do not continue downstream reliance when doing so would be unsafe.
 
 Decomposition also does not complete the parent initiative. Child Issues should be independently executable and reviewable, while the parent may remain open as the durable product/problem acceptance surface across multiple deliveries.
 
@@ -194,7 +194,7 @@ Comments preserve useful communication, input, and history; they do not become a
 Recovery is canonical-first and trigger-based. The goal is to load only enough context to determine the next safe action.
 
 1. If an executable PR exists, read its metadata/body first. For Issue-only executable or exploratory work, read the Issue canonical state.
-2. Use `## Tracking` to identify the tracking source. For Issue-backed executable work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion. Inspect Issue comments only when the current operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; do not scan comment history merely to discover possible task changes. For exploratory initiative work, recover the durable problem/current understanding, explicit accepted decisions if any, material open questions, and the next uncertainty-reducing step. For standalone work, use the PR title/body as the task definition.
+2. Use `## Tracking` to identify the tracking source. For Issue-backed executable work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion. Inspect Issue comments only when the current operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; do not scan comment history merely to discover possible task changes. For exploratory initiative work, recover the durable problem/current understanding, explicit accepted decisions if any, material open questions, remaining parent-level acceptance when relevant, and the next useful initiative-level step. For standalone work, use the PR title/body as the task definition.
 3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
 4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read current PR feedback — unresolved review threads, relevant submitted reviews or PR conversation comments, and feedback-related blockers in canonical current state — only when relevant to the selected operation.
 5. Read older or resolved Issue/PR discussion only if current canonical state and current input/evidence cannot explain a material decision or discrepancy.
@@ -283,7 +283,7 @@ The retrieval model is deliberately trigger-based:
 
 ```text
 canonical work surface
-  -> exploratory initiative state when shaping
+  -> exploratory initiative state when shaping or evaluating parent acceptance
   -> closing-linked executable Issue task definitions for implementation/scope/completion work
   -> selected current input/repository/check/feedback evidence only when needed
   -> history only on discrepancy
