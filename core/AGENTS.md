@@ -11,7 +11,7 @@ GitHub is the durable system of record for agent work. Preserve enough durable s
 5. **Validation follows change risk.** Use affected validation for narrow changes and stronger validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Reducing expensive validation requires repository facts or authoritative rules; an agent-authored declaration is insufficient.
 6. **Comments are exceptions, not checkpoints.** Use them only for notification or durable history outside current state, such as blockers, material decisions, discoveries, or pause context.
 7. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
-8. **Review findings survive handoff.** Review is read-only unless fixes are separately authorized. During authorized review-fix work, any actionable finding still unresolved at a stop must remain recoverable from GitHub canonical state; without write authority, report the durability limit rather than mutating GitHub.
+8. **PR feedback survives handoff without duplication.** GitHub review threads, submitted reviews, and PR conversation comments are durable feedback sources. Do not copy them into the PR body merely for bookkeeping. During authorized feedback handling, make active off-GitHub feedback or a material execution consequence durable before stopping when it is not otherwise recoverable from GitHub; without write authority, report the durability limit rather than mutating GitHub.
 9. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
 
 Standalone maintenance is a tracking choice, not a risk classification. If it later needs an independent lifecycle, create an Issue, replace the standalone `## Tracking` declaration with one or more Issue closing links, and keep the branch. For Issue-only work, the Issue is both task definition and execution record.
@@ -33,7 +33,7 @@ Load only what the current operation needs:
 1. **Canonical state:** PR metadata/body when a PR exists; otherwise Issue execution state.
 2. **Task definition:** for Issue-backed implementation or completion judgments, read every closing-linked Issue's objective/acceptance criteria; for standalone work, use PR title/body.
 3. **Repository evidence:** `changed filenames/stats -> selected patches -> surrounding source`, only as needed.
-4. **Validation/review evidence:** `check summary -> failed job/step/log slice`, unresolved actionable review feedback, and review blockers recorded in canonical current state, only when relevant.
-5. **History:** read Issue/PR discussion only when current canonical state cannot explain a material decision or discrepancy.
+4. **Validation/feedback evidence:** `check summary -> failed job/step/log slice`; unresolved review threads, relevant submitted reviews or PR conversation comments, and feedback-related blockers in canonical current state only when relevant to the operation.
+5. **History:** read older/resolved Issue or PR discussion only when current canonical state and current feedback cannot explain a material decision or discrepancy.
 
 Do not preload full diffs, complete CI logs, linked-Issue history, or full comment/review history.
