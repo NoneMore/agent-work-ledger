@@ -30,7 +30,7 @@ Before stopping or handing off unfinished work, make the canonical execution sur
 Load only what the current operation needs:
 
 1. **Canonical state:** PR metadata/body when a PR exists; otherwise Issue execution state.
-2. **Task definition:** for Issue-backed implementation or completion judgments, read linked Issue objective/acceptance criteria; for standalone work, use PR title/body.
+2. **Task definition:** for Issue-backed implementation or completion judgments, read every closing-linked Issue's objective/acceptance criteria; for standalone work, use PR title/body.
 3. **Repository evidence:** `changed filenames/stats -> selected patches -> surrounding source`, only as needed.
 4. **Validation/review evidence:** `check summary -> failed job/step/log slice` and unresolved actionable review feedback, only when relevant.
 5. **History:** read Issue/PR discussion only when current canonical state cannot explain a material decision or discrepancy.
