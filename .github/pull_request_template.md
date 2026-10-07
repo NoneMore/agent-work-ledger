@@ -1,6 +1,6 @@
 ## Tracking
 
-<!-- Choose exactly one. Governance reads tracking declarations only from this section. Use an Issue when the work is worth tracking independently; for PR-only maintenance, replace the closing line with `Standalone maintenance: <brief reason or scope>`. -->
+<!-- Choose exactly one tracking mode. Governance reads tracking declarations only from this section. For Issue-backed work, include one or more closing links; for PR-only maintenance, replace the closing line with `Standalone maintenance: <brief reason or scope>`. -->
 Closes #<!-- issue number -->
 
 ## Current State
