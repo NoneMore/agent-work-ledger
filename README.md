@@ -33,6 +33,17 @@ Profiles:
 
 The installer refuses to overwrite an existing target `AGENTS.md`; merge workspace instructions manually when the target already has one.
 
+For a full GitHub installation, the installer can also create or update the repository ruleset through authenticated GitHub CLI instead of requiring a separate settings step:
+
+```bash
+./install/install.sh \
+  --profile github \
+  --target /path/to/repository \
+  --apply-ruleset
+```
+
+Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub repository. Ruleset writes require repository Administration write permission.
+
 ## Core workflow
 
 - **Issues define independently tracked work** — problems, requests, objectives, acceptance criteria, context, and constraints when the work deserves its own public work item.
@@ -64,9 +75,9 @@ Deployable GitHub configuration lives under [`integrations/github/`](./integrati
 - `ISSUE_TEMPLATE/agent-task.yml` — lightweight intake for independently tracked work.
 - `pull_request_template.md` — tracking, current-state, and validation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks.
-- `rulesets/main.json` — importable main-branch enforcement configuration.
+- `rulesets/main.json` — REST-compatible main-branch enforcement configuration.
 
-The versioned ruleset requires PR-based changes and the `Validate Issue linkage and resumability` status check when applied. The JSON is a reproducible configuration source, not self-applying infrastructure; an administrator must import/apply it in repository settings or through GitHub API/CLI.
+The versioned ruleset requires PR-based changes and the `Validate Issue linkage and resumability` status check when applied. `install/install.sh --profile github --apply-ruleset` applies it through `gh api`, creating the `Main branch` ruleset when absent and updating it when present. Without that flag, the JSON remains a reproducible, auditable configuration source that can be applied later.
 
 The root `.github/` directory configures this repository's own development. It can intentionally dogfood the integration, but installers must source deployable files from `integrations/github/`.
 
@@ -78,7 +89,7 @@ Start with one field only:
 | --- | --- |
 | Status | Inbox, Ready, In Progress, Blocked, Review, Done |
 
-Add `Priority`, `Iteration`, or other fields only when the project genuinely benefits from maintaining them. Prefer stable labels such as `type:*` and `area:*` over duplicate classifications.
+Add `Priority`, `Iteration`, or other fields only when the project genuinely benefits from maintaining them. Prefer stable labels such as `type:*` or `area:*` over duplicate classifications.
 
 ## Design principles
 
