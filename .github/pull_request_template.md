@@ -1,3 +1,6 @@
+## Tracking
+
+<!-- Choose exactly one. Use an Issue when the work is worth tracking independently. For PR-only maintenance, replace the closing line with `Standalone maintenance: <brief reason or scope>`. -->
 Closes #<!-- issue number -->
 
 ## Current State

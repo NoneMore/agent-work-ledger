@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   validate-resumability:
+    # Keep this name stable because the versioned/live ruleset requires this context.
     name: Validate Issue linkage and resumability
     if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
@@ -21,9 +22,22 @@ jobs:
           set -u
           body="${PR_BODY:-}"
           failed=0
+          issue_backed=0
+          standalone=0
 
-          if ! grep -Eiq '(closes|fixes|resolves)[[:space:]]+#[0-9]+' <<< "$body"; then
-            echo "::error::Ready-for-review PRs must link an Issue with 'Closes #N', 'Fixes #N', or 'Resolves #N'."
+          if grep -Eiq '(closes|fixes|resolves)[[:space:]]+#[0-9]+' <<< "$body"; then
+            issue_backed=1
+          fi
+
+          if grep -Eiq '^[[:space:]]*Standalone maintenance:[[:space:]]*[^[:space:]].*' <<< "$body"; then
+            standalone=1
+          fi
+
+          if [[ "$issue_backed" -eq 0 && "$standalone" -eq 0 ]]; then
+            echo "::error::Ready-for-review PRs must either link an Issue with 'Closes #N'/'Fixes #N'/'Resolves #N' or declare 'Standalone maintenance: <brief reason or scope>'."
+            failed=1
+          elif [[ "$issue_backed" -eq 1 && "$standalone" -eq 1 ]]; then
+            echo "::error::Choose exactly one tracking mode: linked Issue or standalone maintenance."
             failed=1
           fi
 

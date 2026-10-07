@@ -1,6 +1,6 @@
 ---
 name: agent-work-ledger
-description: GitHub work ledger workflow for starting/resuming Issue or PR work, handling blockers/handoffs, preparing for review, or reviewing PRs using durable GitHub state.
+description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, preparing for review, or reviewing PRs using durable GitHub state.
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -15,7 +15,7 @@ Do not read `docs/AGENT_WORKFLOW.md` on the normal path. Use it only when changi
 
 For each request:
 
-1. infer the lifecycle operation from user intent and current Issue/PR shape,
+1. infer the lifecycle operation and tracking mode from user intent and current Issue/PR shape,
 2. choose the smallest matching path before broad investigation,
 3. recover only live state needed for that path,
 4. act within user authority, repository policy, and runtime permissions,
@@ -30,11 +30,11 @@ Load only the reference for the selected path. Load another only if the operatio
 
 | Path | Reference | Minimum live state |
 | --- | --- | --- |
-| Start repository or Issue-only work | `references/start.md` | Issue objective/criteria, policy, relevant repository evidence |
-| Continue/resume PR work | `references/resume.md` | Issue criteria, PR current state, relevant repository evidence |
+| Start repository or Issue-only work | `references/start.md` | User intent; Issue objective/criteria when Issue-backed; policy and relevant repository evidence |
+| Continue/resume PR work | `references/resume.md` | Tracking source, PR current state, relevant repository evidence |
 | Blocker or handoff | `references/blocker-handoff.md` | Canonical state plus evidence verifying blocker/resume state |
-| Prepare for Ready | `references/ready.md` | Issue criteria, relevant final changes, validation summary, readiness policy |
-| Review PR | `references/review.md` | Issue criteria, relevant changes/source, validation limits |
+| Prepare for Ready | `references/ready.md` | Tracking source, relevant final changes, validation summary, readiness policy |
+| Review PR | `references/review.md` | Tracking source, relevant changes/source, validation limits |
 
 ## Authority
 
@@ -49,9 +49,10 @@ Use **summary/index -> select -> expand**, never **load everything -> filter**.
 ### PR/code
 
 1. PR metadata/body without full diff.
-2. Changed filenames and compact stats.
-3. Relevant per-file patches.
-4. Surrounding source only when a patch is insufficient.
+2. Tracking source: linked Issue only when one exists; otherwise the standalone-maintenance declaration and PR scope.
+3. Changed filenames and compact stats.
+4. Relevant per-file patches.
+5. Surrounding source only when a patch is insufficient.
 
 Do not fetch a full PR diff by default; use it only when the change is demonstrably small and wholly relevant.
 
@@ -65,7 +66,7 @@ Read unresolved actionable review threads first, then referenced patch/source as
 
 ## Stop and exit
 
-Stop or switch paths when required Issue context is absent, requirements remain materially ambiguous, permissions/dependencies/approvals are unavailable, readiness policy blocks transition, a read-only request would require mutation, or a finalizing action lacks authority.
+Stop or switch paths when required tracking context is absent, requirements remain materially ambiguous, permissions/dependencies/approvals are unavailable, readiness policy blocks transition, a read-only request would require mutation, or a finalizing action lacks authority. A missing Issue is not itself a blocker when policy permits standalone maintenance and the PR declares that mode explicitly.
 
 For recoverable stops, leave canonical state accurate enough to show the blocker and next action.
 

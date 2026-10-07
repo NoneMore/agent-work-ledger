@@ -10,15 +10,19 @@ Each GitHub surface has one primary responsibility:
 
 | Surface | Role |
 | --- | --- |
-| Issue | Defines the work: objective, acceptance criteria, context, constraints |
-| Draft / open PR | Current execution snapshot and implementation artifact |
+| Issue | Defines problems, requests, and other work worth tracking independently |
+| Draft / open PR | Current repository execution snapshot and implementation artifact |
 | Issue / PR comments | Exception-only communication and history |
 | Commits / checks | Implementation and validation evidence |
 | GitHub Project | Cross-task progress view |
 
-Avoid maintaining the same status in multiple places. Once a PR exists, execution state belongs in the PR body rather than being duplicated into the Issue or comments.
+Avoid maintaining the same status in multiple places. Once a PR exists, execution state belongs in the PR body rather than being duplicated into an Issue or comments.
 
-## 2. Normal lifecycle
+An Issue and a PR are not required to exist 1:1. Issues represent public work items; PRs represent repository changes.
+
+## 2. Normal lifecycles
+
+Issue-backed work:
 
 ```text
 Issue
@@ -33,11 +37,36 @@ Issue
   -> Issue closed
 ```
 
+Standalone repository maintenance:
+
+```text
+branch
+  -> first meaningful commit
+  -> Draft PR
+  -> work
+  -> validation
+  -> Ready for Review
+  -> review / fixes
+  -> merge
+```
+
 The first meaningful commit gives GitHub something to compare against the base branch before the Draft PR is opened.
 
-For work that does not produce repository changes, keep execution state on the Issue instead of creating an artificial PR.
+For work that does not produce repository changes but is worth tracking, keep execution state on the Issue instead of creating an artificial PR.
 
 ## 3. Issue intake
+
+Create an Issue when the work should exist independently of any particular PR. Typical cases include:
+
+- externally reported problems or user-visible bugs,
+- feature requests or product/documentation requests,
+- work requiring discussion, prioritization, coordination, or explicit acceptance criteria before implementation,
+- efforts likely to span multiple PRs,
+- migrations, risks, or follow-ups worth tracking even if no PR exists yet.
+
+Do not create a synthetic Issue merely because repository files will change. Dependency maintenance, CI/build/release work, internal refactors, tests, documentation upkeep, developer tooling, formatting, and repository metadata may start directly from a PR when the PR itself is a sufficient public record.
+
+This distinction is about **tracking value**, not change risk or size. A high-risk maintenance PR may still be PR-only and require strong review/validation; a small user request may still deserve an Issue because it belongs in the public work queue.
 
 A normal executable Issue should answer four questions:
 
@@ -52,19 +81,23 @@ Once repository execution moves into a PR, do not maintain `Current State` or `N
 
 ## 4. Execution
 
-For repository changes:
+For all repository changes:
 
-1. Create `agent/<issue-number>-<slug>`.
-2. Make the first meaningful commit.
-3. Open a Draft PR and link it with `Closes #N`, `Fixes #N`, or `Resolves #N`.
-4. Use the PR body as the single execution snapshot.
-5. Update the PR body when execution state materially changes, not after every small step.
-6. Record validation before marking the PR ready for review.
+1. Choose the tracking path before creating the branch.
+2. For Issue-backed work, create `agent/<issue-number>-<slug>` and later link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
+3. For standalone maintenance, create `agent/maintenance-<slug>` and later declare `Standalone maintenance: <brief reason or scope>` in the PR body.
+4. Make the first meaningful commit.
+5. Open a Draft PR and use its body as the single execution snapshot.
+6. Update the PR body when execution state materially changes, not after every small step.
+7. Record validation before marking the PR ready for review.
 
 The minimum PR snapshot is:
 
 ```markdown
+## Tracking
+
 Closes #123
+<!-- OR: Standalone maintenance: explain briefly why no separate Issue is useful. -->
 
 ## Current State
 
@@ -79,7 +112,7 @@ Tests / checks run and their results. Note anything important not run and why.
 Optional: limitations, risks, follow-ups, material decisions, or review focus.
 ```
 
-`Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or the Issue acceptance criteria unless needed to explain current state.
+Choose exactly one tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or linked Issue acceptance criteria unless needed to explain current state.
 
 ## 5. Comments are for exceptions
 
@@ -95,8 +128,8 @@ Comments preserve useful history; they do not become a second current-state stor
 
 Recovery is progressive. The goal is to obtain the smallest current context that can safely determine the next action.
 
-1. Read the Issue objective and acceptance criteria.
-2. Read linked PR metadata/body without the full diff.
+1. Determine the tracking source. If the PR links an Issue, read its objective and acceptance criteria. Otherwise use the standalone-maintenance declaration together with the PR title/body to establish intended scope.
+2. Read PR metadata/body without the full diff.
 3. Read changed filenames and compact stats.
 4. Select relevant files, then fetch only their patches and surrounding source as needed.
 5. Read check summaries and unresolved actionable review feedback when relevant; expand failed jobs/steps or referenced code only as needed.
@@ -110,21 +143,24 @@ Repository facts win over stale prose. Correct stale canonical state during auth
 
 Before moving a PR out of Draft:
 
-- acceptance criteria are satisfied or incomplete items are explicit,
+- exactly one tracking mode is explicit: linked Issue or standalone maintenance,
+- linked Issue acceptance criteria are satisfied or incomplete items are explicit when an Issue exists,
 - `Current State` accurately represents the work,
 - appropriate validation is recorded,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
-The governance workflow checks only the minimum structural contract: Issue linkage plus `Current State` and `Validation`. It intentionally does not require routine progress logging or boilerplate handoff sections.
+The governance workflow checks only the minimum structural contract: either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. It intentionally does not require routine progress logging or boilerplate handoff sections.
 
-The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
+The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
 ## 8. Completion
 
-For repository work, prefer closing the Issue by merging a linked PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
+For Issue-backed repository work, prefer closing the Issue by merging a linked PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
 
-The merged PR should be enough for a future reader to understand what was done and how it was validated. Limitations or follow-up work should be recorded only when they actually exist.
+For standalone maintenance, the merged PR is the complete durable record; do not create or close an Issue solely for bookkeeping.
+
+Every merged PR should be enough for a future reader to understand what was done and how it was validated. Limitations or follow-up work should be recorded only when they actually exist.
 
 ## 9. Recommended Project configuration
 

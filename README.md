@@ -4,8 +4,8 @@ A lightweight GitHub-native work ledger for human + agent collaboration.
 
 The core model is simple:
 
-- **Issues define the work** — objective, acceptance criteria, context, constraints.
-- **Pull Requests track execution** — current state and validation, with notes only when useful.
+- **Issues define independently tracked work** — problems, requests, objectives, acceptance criteria, context, and constraints when the work deserves its own public work item.
+- **Pull Requests track repository execution** — current state and validation for every repository change, including standalone maintenance that needs no separate Issue.
 - **Comments are exceptions** — communication or history for blockers, material decisions, important discoveries, or pause notes.
 - **GitHub Projects show portfolio progress** — without becoming a second source of execution truth.
 
@@ -14,9 +14,9 @@ The workflow is designed so a new agent can resume work without access to previo
 ## Start here
 
 1. Read [`AGENTS.md`](./AGENTS.md).
-2. Create one independently reviewable Issue through the **Agent Task** form.
-3. For repository changes, create `agent/<issue-number>-<slug>` and make the first meaningful commit.
-4. Open a **Draft PR** linked with `Closes #<issue>` and treat its body as the single in-progress execution snapshot.
+2. Decide whether the work needs an Issue. Use one for problems, requests, user-visible outcomes, discussion/coordination, multi-PR efforts, or anything worth tracking independently. Do not create one only to parent routine repository maintenance.
+3. For repository changes, create either `agent/<issue-number>-<slug>` for Issue-backed work or `agent/maintenance-<slug>` for standalone maintenance, then make the first meaningful commit.
+4. Open a **Draft PR**. Link Issue-backed work with `Closes #<issue>`; for PR-only work declare `Standalone maintenance: <brief reason or scope>`. Treat the PR body as the single in-progress execution snapshot.
 5. Keep `Current State` and `Validation` accurate when state materially changes.
 6. Do not post routine progress checkpoints; comment only when useful communication or history is needed.
 7. Before Ready for Review, ensure the PR is resumable and validation is recorded.
@@ -50,26 +50,27 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 - `skills/agent-work-ledger/SKILL.md` — small operational router and progressive retrieval contract
 - `skills/agent-work-ledger/references/` — lifecycle procedures loaded only for the selected path
 - `skills/agent-work-ledger/agents/openai.yaml` — OpenAI/Codex invocation policy
-- `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight task intake
-- `.github/pull_request_template.md` — current-state and validation record
-- `.github/workflows/agent-governance.yml` — minimal Issue-linkage / resumability checks
+- `.github/ISSUE_TEMPLATE/agent-task.yml` — lightweight intake for independently tracked work
+- `.github/pull_request_template.md` — tracking, current-state, and validation record
+- `.github/workflows/agent-governance.yml` — minimal tracking / resumability checks
 - `.github/rulesets/main.json` — importable main-branch enforcement configuration
 
 ## Repository enforcement
 
-[`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge.
+[`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge. Despite the historical check name, the governance workflow accepts either an Issue closing link or an explicit standalone-maintenance declaration, while continuing to require `Current State` and `Validation`.
 
 The file is a reproducible configuration source, not self-applying infrastructure. An administrator must import or apply it in GitHub repository settings or through the GitHub API/CLI. Keep the live repository ruleset aligned with the versioned JSON when enforcement policy changes.
 
 ## Design principles
 
-1. No meaningful work without an Issue.
-2. One Issue should represent one independently reviewable deliverable.
-3. The Issue defines the task; the PR owns execution state.
-4. Routine progress should not require comments or duplicated status updates.
-5. Comments preserve useful communication or history but never become a second current-state store.
-6. Preserve useful decisions and evidence; do not dump hidden chain-of-thought or raw model reasoning.
-7. Keep workspace-wide invariants in `AGENTS.md`; package reusable routing in the Skill; load one lifecycle path at a time; recover live state from GitHub progressively rather than caching or preloading it.
+1. Use Issues for problems, requests, and work worth tracking independently; do not manufacture them for routine maintenance.
+2. One Issue should represent one independently reviewable deliverable when an Issue is used.
+3. Every repository change goes through a PR; Issue linkage is conditional, not universal.
+4. The PR owns repository execution state.
+5. Routine progress should not require comments or duplicated status updates.
+6. Comments preserve useful communication or history but never become a second current-state store.
+7. Preserve useful decisions and evidence; do not dump hidden chain-of-thought or raw model reasoning.
+8. Keep workspace-wide invariants in `AGENTS.md`; package reusable routing in the Skill; load one lifecycle path at a time; recover live state from GitHub progressively rather than caching or preloading it.
 
 ## Bootstrap
 

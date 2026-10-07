@@ -2,12 +2,13 @@
 
 Use this path for active work that already has its canonical execution surface.
 
-1. Read the Issue objective/acceptance criteria and the current PR metadata/body (or Issue execution state for intentionally Issue-only work).
-2. Verify the recorded next action against durable repository evidence instead of assuming prose is current.
-3. Inspect changed filenames/stats first; expand only the patches and surrounding source relevant to the next action.
-4. Check validation summaries and unresolved review feedback only when relevant to the work being resumed.
-5. Continue from the smallest concrete next action without repeating completed investigation unless verification is necessary.
-6. Update the canonical execution surface only when state materially changes. Keep validation claims explicit about checks run and important checks not run.
+1. Determine the tracking source. For Issue-backed work, read the Issue objective/acceptance criteria. For standalone maintenance, read the declaration plus PR title/body to establish intended scope. For intentionally Issue-only work, read the Issue execution state.
+2. Read the current PR metadata/body when a PR exists.
+3. Verify the recorded next action against durable repository evidence instead of assuming prose is current.
+4. Inspect changed filenames/stats first; expand only the patches and surrounding source relevant to the next action.
+5. Check validation summaries and unresolved review feedback only when relevant to the work being resumed.
+6. Continue from the smallest concrete next action without repeating completed investigation unless verification is necessary.
+7. Update the canonical execution surface only when state materially changes. Keep validation claims explicit about checks run and important checks not run.
 
 If repository facts conflict with recorded state, trust the facts and correct stale canonical state during authorized write work. Read historical comments only if the discrepancy cannot otherwise be explained.
 
