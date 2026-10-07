@@ -126,7 +126,7 @@ The initiative should preserve only durable state useful to the next executor or
 
 These are semantic responsibilities, not a required heading schema. An initiative may explicitly state that no direction is accepted yet. Detail alone does not imply commitment: a polished proposal, prototype, or extensive research result remains a candidate until an authorized decision accepts it.
 
-Commitment is a decision, not a readiness test. It is reasonable to accept a direction while execution-local unknowns remain, provided those unknowns do not invalidate the decision being relied upon. When contradictory evidence does invalidate an accepted direction, reopen that decision explicitly and reassess affected downstream work instead of silently changing the contract.
+Commitment is a decision, not a readiness test. It is reasonable to accept a direction while execution-local unknowns remain, provided those unknowns do not invalidate the decision being relied upon. When contradictory evidence does invalidate an accepted direction, reopen that decision explicitly and record any known child work that may need follow-up instead of silently changing the contract.
 
 Decomposition also does not complete the parent initiative. Child Issues should be independently executable and reviewable, while the parent may remain open as the durable product/problem acceptance surface across multiple deliveries.
 
