@@ -52,6 +52,12 @@ esac
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target="$(mkdir -p "$target" && cd "$target" && pwd)"
 
+if [[ "$profile" != "skill-only" && -e "$target/AGENTS.md" ]]; then
+  echo "Refusing to overwrite existing $target/AGENTS.md." >&2
+  echo "Merge $repo_root/core/AGENTS.md into the target repository manually." >&2
+  exit 3
+fi
+
 install_skill() {
   mkdir -p "$target/.agents/skills"
   rm -rf "$target/.agents/skills/agent-work-ledger"
@@ -59,11 +65,6 @@ install_skill() {
 }
 
 install_agents() {
-  if [[ -e "$target/AGENTS.md" ]]; then
-    echo "Refusing to overwrite existing $target/AGENTS.md." >&2
-    echo "Merge $repo_root/core/AGENTS.md into the target repository manually." >&2
-    exit 3
-  fi
   cp "$repo_root/core/AGENTS.md" "$target/AGENTS.md"
 }
 
