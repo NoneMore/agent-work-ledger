@@ -64,9 +64,13 @@ Create an Issue when the work should exist independently of any particular PR. T
 - efforts likely to span multiple PRs,
 - migrations, risks, or follow-ups worth tracking even if no PR exists yet.
 
+The decisive test is whether the work needs a lifecycle independent of the current PR: separate prioritization, discussion, acceptance, continuation across multiple PRs, or durable follow-up after the current change. Category examples are heuristics, not exemptions.
+
 Do not create a synthetic Issue merely because repository files will change. Dependency maintenance, CI/build/release work, internal refactors, tests, documentation upkeep, developer tooling, formatting, and repository metadata may start directly from a PR when the PR itself is a sufficient public record.
 
 This distinction is about **tracking value**, not change risk or size. A high-risk maintenance PR may still be PR-only and require strong review/validation; a small user request may still deserve an Issue because it belongs in the public work queue.
+
+If standalone maintenance develops independent tracking value after work starts, promote it to Issue-backed work: create an Issue, replace the standalone declaration in `## Tracking` with `Closes #N`, `Fixes #N`, or `Resolves #N`, and continue from the existing PR. Do not rename the existing branch solely to reflect this transition. Branch naming records how work started; `## Tracking` and the linked Issue are canonical for how it is tracked now.
 
 A normal executable Issue should answer four questions:
 
@@ -83,13 +87,15 @@ Once repository execution moves into a PR, do not maintain `Current State` or `N
 
 For all repository changes:
 
-1. Choose the tracking path before creating the branch.
-2. For Issue-backed work, create `agent/<issue-number>-<slug>` and later link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
-3. For standalone maintenance, create `agent/maintenance-<slug>` and later declare `Standalone maintenance: <brief reason or scope>` in the PR body.
+1. Choose the initial tracking path before creating the branch.
+2. For Issue-backed work, normally create `agent/<issue-number>-<slug>` and later link the PR with `Closes #N`, `Fixes #N`, or `Resolves #N` in `## Tracking`.
+3. For standalone maintenance, normally create `agent/maintenance-<slug>` and later declare `Standalone maintenance: <brief reason or scope>` in `## Tracking`.
 4. Make the first meaningful commit.
 5. Open a Draft PR and use its body as the single execution snapshot.
-6. Update the PR body when execution state materially changes, not after every small step.
+6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
 7. Record validation before marking the PR ready for review.
+
+Branch naming is a creation convention and is not used to infer current tracking mode. The `## Tracking` section is the canonical machine-readable tracking declaration.
 
 The minimum PR snapshot is:
 
@@ -112,7 +118,7 @@ Tests / checks run and their results. Note anything important not run and why.
 Optional: limitations, risks, follow-ups, material decisions, or review focus.
 ```
 
-Choose exactly one tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or linked Issue acceptance criteria unless needed to explain current state.
+Choose exactly one tracking mode in `## Tracking`. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or linked Issue acceptance criteria unless needed to explain current state.
 
 ## 5. Comments are for exceptions
 
@@ -128,7 +134,7 @@ Comments preserve useful history; they do not become a second current-state stor
 
 Recovery is progressive. The goal is to obtain the smallest current context that can safely determine the next action.
 
-1. Determine the tracking source. If the PR links an Issue, read its objective and acceptance criteria. Otherwise use the standalone-maintenance declaration together with the PR title/body to establish intended scope.
+1. Determine the tracking source from `## Tracking`. If the PR links an Issue, read its objective and acceptance criteria. Otherwise use the standalone-maintenance declaration together with the PR title/body to establish intended scope.
 2. Read PR metadata/body without the full diff.
 3. Read changed filenames and compact stats.
 4. Select relevant files, then fetch only their patches and surrounding source as needed.
@@ -143,14 +149,15 @@ Repository facts win over stale prose. Correct stale canonical state during auth
 
 Before moving a PR out of Draft:
 
-- exactly one tracking mode is explicit: linked Issue or standalone maintenance,
+- exactly one tracking mode is explicit in `## Tracking`: linked Issue or standalone maintenance,
+- the selected tracking mode still fits the work; promote standalone work first if it has developed independent tracking value,
 - linked Issue acceptance criteria are satisfied or incomplete items are explicit when an Issue exists,
 - `Current State` accurately represents the work,
 - appropriate validation is recorded,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
-The governance workflow checks only the minimum structural contract: either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. It intentionally does not require routine progress logging or boilerplate handoff sections.
+The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not require routine progress logging or boilerplate handoff sections.
 
 The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
