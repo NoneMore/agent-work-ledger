@@ -1,10 +1,10 @@
 # Blocker or handoff
 
-Use this path when work cannot continue normally or must be left for another executor. Verify any blocker with the recovery budget from `AGENTS.md`.
+Use when work cannot continue normally or must pass to another executor. Verify blockers with the `AGENTS.md` recovery budget.
 
 ## Blocker
 
-Update the canonical surface with the blocker, unblock condition, remaining useful work, and the exact next action or uncertainty-reducing question. For executable PR-backed work, also record validation impact in the PR body. For Issue-only or exploratory initiative work, keep current shaping/execution state on the Issue. Before a PR exists, do not create a second status surface solely to hold blocker state.
+Record on the canonical surface the blocker, unblock condition, remaining useful work, and the exact next action or uncertainty-reducing question. For executable PR-backed work, also record validation impact in the PR body. For Issue-only or exploratory initiative work, keep current shaping/execution state on the Issue. Before a PR exists, do not create a second status surface solely to hold blocker state.
 
 Continue independent useful work when appropriate; otherwise stop at the blocker boundary.
 
@@ -16,4 +16,4 @@ Use comments only when notification or durable history is needed beyond current 
 
 ## Done when
 
-The unblock condition is explicit, or a new executor can safely recover the relevant execution or shaping state from the durable canonical surface.
+The unblock condition is explicit, or another executor can safely recover the relevant execution or shaping state from the durable canonical surface.
