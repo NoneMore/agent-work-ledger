@@ -1,0 +1,85 @@
+name: Exploratory Initiative
+description: Track a durable problem or product decision while direction or executable decomposition is still evolving.
+title: "[Initiative] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the problem or product lifecycle is worth tracking independently but the accepted direction or executable decomposition is not stable yet. Candidate directions are hypotheses until explicitly accepted; this form does not require an executable acceptance contract.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Opportunity
+      description: What durable problem, opportunity, or product outcome is worth exploring?
+      placeholder: Describe the durable problem or outcome without assuming a solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: understanding
+    attributes:
+      label: Current Understanding / Evidence
+      description: What is currently known, and what evidence or references materially support it?
+      placeholder: |
+        Current understanding:
+        - ...
+
+        Evidence / references:
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: questions
+    attributes:
+      label: Open Questions
+      description: Which uncertainties still matter to the decision or decomposition?
+      placeholder: |
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: directions
+    attributes:
+      label: Candidate / Accepted Directions
+      description: Record candidate directions and any explicitly accepted decisions. It is valid to state that no direction is accepted yet.
+      placeholder: |
+        Candidate:
+        - ...
+
+        Accepted decision (if explicitly authorized):
+        - None yet
+    validations:
+      required: false
+
+  - type: textarea
+    id: related-work
+    attributes:
+      label: Related / Child Work
+      description: Link related evidence, dependencies, or executable child Issues when decomposition has begun.
+      placeholder: |
+        - #123
+    validations:
+      required: false
+
+  - type: textarea
+    id: next-step
+    attributes:
+      label: Next Shaping Step
+      description: What is the smallest useful investigation, decision, or decomposition step that would reduce uncertainty next?
+      placeholder: Investigate / compare / validate / decide / decompose ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints / Decision Authority
+      description: Important boundaries, non-goals, dependencies, or authority requirements that affect shaping or commitment.
+      placeholder: |
+        - Constraint: ...
+        - Decision owner / required approval: ...
+    validations:
+      required: false
