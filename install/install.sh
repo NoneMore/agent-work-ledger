@@ -127,7 +127,7 @@ apply_github_ruleset() {
   local ruleset_id
 
   ruleset_id="$(
-    gh api "repos/$github_repo/rulesets" --paginate \
+    gh api "repos/$github_repo/rulesets?includes_parents=false" --paginate \
       --jq ".[] | select(.name == \"$ruleset_name\") | .id" \
       | sed -n '1p'
   )"
