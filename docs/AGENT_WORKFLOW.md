@@ -118,7 +118,7 @@ Tests / checks run and their results. Note anything important not run and why.
 Optional: limitations, risks, follow-ups, material decisions, or review focus.
 ```
 
-Choose exactly one tracking mode in `## Tracking`. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or linked Issue acceptance criteria unless needed to explain current state.
+Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain one or more closing links. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or closing-linked Issue acceptance criteria unless needed to explain current state.
 
 ## 5. Comments are for exceptions
 
@@ -135,7 +135,7 @@ Comments preserve useful history; they do not become a second current-state stor
 Recovery is canonical-first and trigger-based. The goal is to load only enough context to determine the next safe action.
 
 1. If a PR exists, read its metadata/body first. For Issue-only work, read the Issue execution state.
-2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read the linked Issue objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion; do not preload Issue comments/history. For standalone work, use the PR title/body as the task definition.
+2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion; do not preload Issue comments/history. For standalone work, use the PR title/body as the task definition.
 3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
 4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read unresolved actionable review feedback only when relevant.
 5. Read historical Issue/PR discussion only if current canonical state cannot explain a material decision or discrepancy.
@@ -148,9 +148,9 @@ Repository facts win over stale prose. Correct stale canonical state during auth
 
 Before moving a PR out of Draft:
 
-- exactly one tracking mode is explicit in `## Tracking`: linked Issue or standalone maintenance,
+- exactly one tracking mode is explicit in `## Tracking`: Issue-backed or standalone maintenance,
 - the selected tracking mode still fits the work; promote standalone work first if it has developed independent tracking value,
-- linked Issue acceptance criteria are satisfied or incomplete items are explicit when an Issue exists,
+- every closing-linked Issue's acceptance criteria are satisfied or incomplete items are explicit for Issue-backed work,
 - `Current State` accurately represents the work,
 - appropriate validation is recorded,
 - an exact next action is present if work is intentionally incomplete,
@@ -162,7 +162,7 @@ The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/ru
 
 ## 8. Completion
 
-For Issue-backed repository work, prefer closing the Issue by merging a linked PR with `Closes #N`, `Fixes #N`, or `Resolves #N`.
+For Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links.
 
 For standalone maintenance, the merged PR is the complete durable record; do not create or close an Issue solely for bookkeeping.
 
@@ -196,7 +196,7 @@ The retrieval model is deliberately trigger-based:
 
 ```text
 canonical execution surface
-  -> linked Issue task definition for Issue-backed scope/completion work
+  -> closing-linked Issue task definitions for Issue-backed scope/completion work
   -> repository/check/review index only when needed
   -> selected evidence
   -> history only on discrepancy
