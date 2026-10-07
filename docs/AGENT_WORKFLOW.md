@@ -160,7 +160,7 @@ Closes #123
 
 ## Current State
 
-What is done, what remains, and the exact next action or uncertainty-reducing question if unfinished.
+What is done, what remains, and the exact next action if unfinished.
 
 ## Validation
 
