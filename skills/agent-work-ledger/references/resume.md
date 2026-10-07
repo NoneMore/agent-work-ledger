@@ -1,6 +1,6 @@
 # Continue or resume executable work
 
-Use for active executable work with a canonical execution surface. Apply shared rules from `AGENTS.md`; if the requested operation changes, reroute through `SKILL.md` before continuing.
+Use for active executable work with a canonical execution surface. Apply shared rules from `AGENTS.md`.
 
 1. Verify the recorded next action against the executable task definition and smallest relevant evidence.
 2. Execute the smallest concrete next action; replace superseded `Current State` and record only validation actually performed.
