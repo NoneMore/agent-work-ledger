@@ -1,6 +1,6 @@
 ---
 name: agent-work-ledger
-description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, preparing for review, or reviewing PRs using durable GitHub state.
+description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, preparing for review, reviewing PRs, or addressing authorized review feedback using durable GitHub state.
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -22,11 +22,12 @@ Load exactly one lifecycle reference. Switch only if the operation changes.
 | Blocker or handoff | `references/blocker-handoff.md` |
 | Prepare Draft PR for review | `references/ready.md` |
 | Review PR | `references/review.md` |
+| Address authorized review feedback | `references/fix-review.md` |
 
 ## Execution boundary
 
 After routing, follow the recovery budget in `AGENTS.md` and gather only evidence required by the selected reference. Infer tracking mode from canonical state, take the smallest safe next action, and update canonical state only when it materially changes.
 
-Implementation/resume permits normal work-item changes within user authority. Review is read-only unless fixes are separately requested. Draft-to-Ready, merge/close, and other finalizing actions require explicit user intent or clear repository delegation.
+Implementation/resume and authorized review-fix work permit normal work-item changes within user authority. Review is read-only unless fixes are separately requested; once authorized, route review-driven corrections through `fix-review` rather than generic resume. Draft-to-Ready, merge/close, and other finalizing actions require explicit user intent or clear repository delegation.
 
 Stop or switch paths when required tracking context is absent, requirements remain materially ambiguous, a dependency or approval is unavailable, readiness policy blocks transition, or the requested action exceeds authority. For recoverable stops, leave the canonical surface with the blocker and exact next action.
