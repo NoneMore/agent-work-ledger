@@ -1,6 +1,6 @@
 ---
 name: agent-work-ledger
-description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, preparing for review, reviewing PRs, or handling PR feedback using durable GitHub state.
+description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, reviewing PRs, or handling PR feedback using durable GitHub state.
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -20,7 +20,6 @@ Load exactly one lifecycle reference. Switch only if the operation changes.
 | Start repository or Issue-only work | `references/start.md` |
 | Continue/resume active work | `references/resume.md` |
 | Blocker or handoff | `references/blocker-handoff.md` |
-| Prepare Draft PR for review | `references/ready.md` |
 | Review PR | `references/review.md` |
 | Handle PR feedback | `references/feedback.md` |
 
@@ -30,6 +29,6 @@ Inbound GitHub surfaces do not add lifecycle routes. An existing Issue enters `s
 
 After routing, follow the recovery budget in `AGENTS.md` and gather only evidence required by the selected reference. Infer tracking mode from canonical state, take the smallest safe next action, and update canonical state only when it materially changes.
 
-Implementation/resume and authorized PR-feedback handling permit normal work-item changes within user authority. Review is optional unless repository policy or explicit user intent requires it, and is read-only by default. Actionable findings from review or existing PR feedback route through `feedback`; after feedback handling, a Draft PR may return to `ready`, while an already non-Draft PR returns to review only when policy or user intent requires another review. Draft-to-Ready, merge/close, and other finalizing actions require explicit user intent or clear repository delegation.
+Implementation/resume and authorized PR-feedback handling permit normal work-item changes within user authority. Review is optional unless repository policy or explicit user intent requires it, and is read-only by default. Actionable findings from review or existing PR feedback route through `feedback`; after feedback handling, continue with `resume`, another review only when required/requested, discussion, or the next authorized finalizing action. Draft-to-Ready is a transition handled from active work when completion/readiness conditions are satisfied, not a separate lifecycle route. Draft-to-Ready, merge/close, and other finalizing actions require explicit user intent or clear repository delegation.
 
 Stop or switch paths when required tracking context is absent, requirements remain materially ambiguous, a dependency or approval is unavailable, readiness policy blocks transition, or the requested action exceeds authority. For recoverable stops, leave the canonical surface with the blocker and exact next action.
