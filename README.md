@@ -48,17 +48,17 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 
 - **Issues define independently tracked work** — problems, requests, objectives, acceptance criteria, context, and constraints when the work deserves its own public work item.
 - **Pull Requests track repository execution** — current state and validation for every repository change, including standalone maintenance that needs no separate Issue.
-- **Comments are exceptions** — use them for blockers, material decisions, important discoveries, or pause context rather than routine checkpoints.
+- **Comments and reviews carry durable input and feedback** — use Issue comments for discussion/input around Issue-defined work and PR comments/reviews for PR feedback; do not make them a second current-state store.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
 
 For repository changes, the normal path is:
 
 ```text
-Issue-backed: Issue -> branch -> first meaningful commit -> Draft PR -> work -> validation -> Ready for Review
-PR-only:      branch -> first meaningful commit -> Draft PR -> work -> validation -> Ready for Review
+Issue-backed: Issue -> branch -> first meaningful commit -> Draft PR -> work / validation -> [Ready when authorized] -> [review / feedback when required] -> merge
+PR-only:      branch -> first meaningful commit -> Draft PR -> work / validation -> [Ready when authorized] -> [review / feedback when required] -> merge
 ```
 
-The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State` and `Validation` stay accurate as material state changes.
+The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State` and `Validation` stay accurate as material state changes. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle.
 

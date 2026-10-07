@@ -1,13 +1,12 @@
 # Continue or resume
 
-Use this path for active work with a canonical execution surface. Apply the recovery budget from `AGENTS.md`.
+Use for active work with a canonical execution surface. Apply shared rules from `AGENTS.md`; if PR feedback is active work, use `feedback`.
 
-1. Verify the recorded next action still advances the current task definition and matches the smallest relevant repository evidence.
-2. If standalone work now needs an independent lifecycle, promote it when authorized; otherwise record that promotion as the blocker or next action.
-3. Continue from the smallest concrete next action.
-4. Replace superseded `Current State` rather than appending progress history, and record only validation actually performed.
-5. Switch lifecycle paths if the work becomes blocked, is being handed off, is ready for review, or the user asks for review.
+1. Verify the recorded next action against the task definition and smallest relevant evidence.
+2. Execute the smallest next action; replace superseded `Current State` and record only validation actually performed.
+3. Switch to `blocker-handoff` when blocked or handed off, to `feedback` when PR feedback becomes active work, or to `review` only when required or requested.
+4. If a required transition lacks authority, leave it as the exact next action.
 
 ## Done when
 
-The requested increment is complete and durable state matches evidence, or another lifecycle path is required.
+The requested increment is complete and durable state matches evidence, or the next required lifecycle path or authorized transition is explicit.
