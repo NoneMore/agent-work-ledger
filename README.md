@@ -16,7 +16,7 @@ The workflow is designed so a new agent can resume work without access to previo
 1. Read [`AGENTS.md`](./AGENTS.md).
 2. Decide whether the work needs an Issue. Use one for problems, requests, user-visible outcomes, discussion/coordination, multi-PR efforts, or anything worth tracking independently. Do not create one only to parent routine repository maintenance.
 3. For repository changes, create either `agent/<issue-number>-<slug>` for Issue-backed work or `agent/maintenance-<slug>` for standalone maintenance, then make the first meaningful commit.
-4. Open a **Draft PR**. Link Issue-backed work with `Closes #<issue>`; for PR-only work declare `Standalone maintenance: <brief reason or scope>`. Treat the PR body as the single in-progress execution snapshot.
+4. Open a **Draft PR**. Link Issue-backed work with one or more closing links such as `Closes #<issue>`; for PR-only work declare `Standalone maintenance: <brief reason or scope>`. Treat the PR body as the single in-progress execution snapshot.
 5. Keep `Current State` and `Validation` accurate when state materially changes.
 6. Do not post routine progress checkpoints; comment only when useful communication or history is needed.
 7. Before Ready for Review, ensure the PR is resumable and validation is recorded.
@@ -57,7 +57,7 @@ Add fields such as `Priority` or `Iteration` only when the project genuinely ben
 
 ## Repository enforcement
 
-[`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge. Despite the historical check name, the governance workflow accepts either an Issue closing link or an explicit standalone-maintenance declaration, while continuing to require `Current State` and `Validation`.
+[`.github/rulesets/main.json`](./.github/rulesets/main.json) is the versioned ruleset configuration for `main`. It requires changes to go through a Pull Request and requires the existing `Validate Issue linkage and resumability` status check before merge. Despite the historical check name, the governance workflow accepts either one or more Issue closing links or an explicit standalone-maintenance declaration, while continuing to require `Current State` and `Validation`.
 
 The file is a reproducible configuration source, not self-applying infrastructure. An administrator must import or apply it in GitHub repository settings or through the GitHub API/CLI. Keep the live repository ruleset aligned with the versioned JSON when enforcement policy changes.
 
