@@ -1,6 +1,6 @@
 # Prepare for Ready for Review
 
-Use this path when a Draft PR should be normalized and validated for review. For an already non-Draft PR returning after feedback handling, use `feedback` and then `review` instead of cycling through this path.
+Use this path when a Draft PR should be normalized and validated before moving to Ready for Review. For an already non-Draft PR returning after feedback handling, continue to the next operation required by repository policy or user intent instead of cycling through this path.
 
 1. Confirm exactly one tracking mode. For Issue-backed work, ensure every closing-linked Issue's acceptance criteria are satisfied or incomplete items are explicit; for standalone work, confirm the scope still fits that mode.
 2. Read check summaries and current PR feedback relevant to readiness, then apply the recovery budget from `AGENTS.md` only far enough to account for intended scope, validation, and material blockers. Do not load older/resolved feedback unless a discrepancy requires it.
