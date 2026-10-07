@@ -24,10 +24,10 @@ Load exactly one reference; switch only when the operation changes.
 
 GitHub input surfaces do not create routes. Existing PRs route by the requested operation; Issue comments stay in the active Issue-backed path unless their effect requires another route; PR comments/reviews/threads use `feedback` when they become active work.
 
-Do not route exploratory initiative work through executable `start`/`resume` merely because it has a next step. A next question, evidence-gathering step, or candidate direction does not by itself create an implementation contract.
+A next exploratory step does not make an initiative executable; use `shape` until the requested work is delivery against an accepted direction or concrete executable slice.
 
 ## Execution boundary
 
-After routing, apply the `AGENTS.md` recovery budget and selected reference only. Shaping permits investigation, durable conclusions, explicit decisions, and decomposition within user authority; it does not permit treating speculative directions as implementation requirements. Review is read-only by default; authorized feedback handling may write only within its reference boundary. Finalizing GitHub transitions and accepted-direction decisions that exceed delegated authority require explicit user intent or clear repository delegation.
+After routing, apply the `AGENTS.md` recovery budget and selected reference only. Review is read-only by default; authorized feedback handling may write only within its reference boundary. Finalizing GitHub transitions require the authority defined in `AGENTS.md`.
 
-Stop or switch paths when tracking context is missing, a shaping decision requires unavailable authority, executable requirements remain materially ambiguous, a dependency/approval blocks work, new evidence reopens the underlying direction, or the requested action exceeds authority. Leave recoverable blockers and the exact next action or uncertainty-reducing question on the canonical surface.
+Stop or switch paths when tracking context is missing, executable requirements remain materially ambiguous, a dependency/approval blocks work, or the requested action exceeds authority. Leave recoverable blockers and the exact next action on the canonical surface.
