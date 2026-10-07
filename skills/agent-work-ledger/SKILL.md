@@ -15,7 +15,7 @@ Load exactly one reference; switch only when the operation changes.
 
 | Operation | Reference |
 | --- | --- |
-| Explore/shape an initiative whose direction or decomposition is not stable | `references/shape.md` |
+| Shape or evaluate an initiative at the parent level, including acceptance, when the requested work is not a concrete executable delivery slice | `references/shape.md` |
 | Start repository or Issue-only executable work | `references/start.md` |
 | Continue/resume active executable work | `references/resume.md` |
 | Blocker or handoff | `references/blocker-handoff.md` |
@@ -24,7 +24,7 @@ Load exactly one reference; switch only when the operation changes.
 
 GitHub input surfaces do not create routes. Existing PRs route by the requested operation; Issue comments stay in the active Issue-backed path unless their effect requires another route; PR comments/reviews/threads use `feedback` when they become active work.
 
-A next exploratory step does not make an initiative executable; use `shape` until the requested work is delivery against an accepted direction or concrete executable slice.
+Use `shape` for initiative-level exploration, decisions, decomposition, and parent acceptance; use `start`/`resume` only when the requested work is delivery of a concrete executable slice. A next exploratory step alone does not make an initiative executable.
 
 ## Execution boundary
 
