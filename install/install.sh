@@ -6,7 +6,7 @@ usage() {
 Usage: install/install.sh [--profile core|github|skill-only] [--target PATH]
 
 Profiles:
-  core        Install AGENTS.md and the Agent Skill.
+  core        Install the reusable AGENTS.md policy and Agent Skill.
   github      Install core plus GitHub Issue/PR/governance/ruleset files.
   skill-only  Install only the Agent Skill.
 
@@ -61,10 +61,10 @@ install_skill() {
 install_agents() {
   if [[ -e "$target/AGENTS.md" ]]; then
     echo "Refusing to overwrite existing $target/AGENTS.md." >&2
-    echo "Merge $repo_root/AGENTS.md into the target repository manually." >&2
+    echo "Merge $repo_root/core/AGENTS.md into the target repository manually." >&2
     exit 3
   fi
-  cp "$repo_root/AGENTS.md" "$target/AGENTS.md"
+  cp "$repo_root/core/AGENTS.md" "$target/AGENTS.md"
 }
 
 install_github() {
@@ -72,10 +72,10 @@ install_github() {
     "$target/.github/ISSUE_TEMPLATE" \
     "$target/.github/workflows" \
     "$target/.github/rulesets"
-  cp "$repo_root/.github/ISSUE_TEMPLATE/agent-task.yml" "$target/.github/ISSUE_TEMPLATE/agent-task.yml"
-  cp "$repo_root/.github/pull_request_template.md" "$target/.github/pull_request_template.md"
-  cp "$repo_root/.github/workflows/agent-governance.yml" "$target/.github/workflows/agent-governance.yml"
-  cp "$repo_root/.github/rulesets/main.json" "$target/.github/rulesets/main.json"
+  cp "$repo_root/integrations/github/ISSUE_TEMPLATE/agent-task.yml" "$target/.github/ISSUE_TEMPLATE/agent-task.yml"
+  cp "$repo_root/integrations/github/pull_request_template.md" "$target/.github/pull_request_template.md"
+  cp "$repo_root/integrations/github/workflows/agent-governance.yml" "$target/.github/workflows/agent-governance.yml"
+  cp "$repo_root/integrations/github/rulesets/main.json" "$target/.github/rulesets/main.json"
 }
 
 install_skill

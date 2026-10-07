@@ -1,0 +1,69 @@
+name: Agent Governance
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-resumability:
+    # Keep this name stable because the versioned/live ruleset requires this context.
+    name: Validate Issue linkage and resumability
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR body
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -u
+          body="${PR_BODY:-}"
+          failed=0
+          issue_backed=0
+          standalone=0
+
+          if ! grep -Eq '^##[[:space:]]+Tracking[[:space:]]*$' <<< "$body"; then
+            echo "::error::PR body is missing required section: ## Tracking"
+            failed=1
+            tracking=""
+          else
+            tracking="$(
+              awk '
+                /^##[[:space:]]+Tracking[[:space:]]*$/ { in_tracking=1; next }
+                /^##[[:space:]]+/ { if (in_tracking) exit }
+                { if (in_tracking) print }
+              ' <<< "$body"
+            )"
+          fi
+
+          if grep -Eiq '^[[:space:]]*(closes|fixes|resolves)[[:space:]]+#[0-9]+([[:space:]]|$)' <<< "$tracking"; then
+            issue_backed=1
+          fi
+
+          if grep -Eiq '^[[:space:]]*Standalone maintenance:[[:space:]]*[^[:space:]].*' <<< "$tracking"; then
+            standalone=1
+          fi
+
+          if [[ "$issue_backed" -eq 0 && "$standalone" -eq 0 ]]; then
+            echo "::error::## Tracking must either link an Issue with 'Closes #N'/'Fixes #N'/'Resolves #N' or declare 'Standalone maintenance: <brief reason or scope>'."
+            failed=1
+          elif [[ "$issue_backed" -eq 1 && "$standalone" -eq 1 ]]; then
+            echo "::error::Choose exactly one tracking mode in ## Tracking: linked Issue or standalone maintenance."
+            failed=1
+          fi
+
+          for section in '## Current State' '## Validation'; do
+            if ! grep -Fq "$section" <<< "$body"; then
+              echo "::error::PR body is missing required section: $section"
+              failed=1
+            fi
+          done
+
+          if [[ "$failed" -ne 0 ]]; then
+            exit 1
+          fi
+
+          echo "Agent governance checks passed."
