@@ -184,8 +184,8 @@ Keep Project automation conservative. The workflow should make the normal path c
 
 The separation is intentional:
 
-- `AGENTS.md` owns workspace-wide invariants and the canonical-first recovery budget.
-- `SKILL.md` owns lifecycle routing, authority boundaries, and trigger-based context expansion once the Skill is explicitly invoked.
+- `AGENTS.md` owns workspace-wide invariants and the progressive recovery/context-expansion policy.
+- `SKILL.md` owns lifecycle routing plus behavioral, authority, and stop boundaries once the Skill is explicitly invoked.
 - `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
 - `skills/agent-work-ledger/references/` contains only path-specific action deltas; load exactly one unless the operation changes.
 - GitHub tools / APIs provide live Issue, PR, repository, check, and review state.
@@ -202,4 +202,4 @@ canonical execution surface
   -> history only on discrepancy
 ```
 
-The Skill should not cache task state, restate `AGENTS.md`, or preload evidence for later filtering. Once invoked, it routes first and expands context only when the selected operation has a concrete evidence need.
+The Skill should not cache task state, restate `AGENTS.md`, or preload evidence for later filtering. Once invoked, it selects the operation and lifecycle reference; evidence then expands according to the `AGENTS.md` recovery budget when the current operation has a concrete evidence need.
