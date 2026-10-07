@@ -74,7 +74,8 @@ Once invoked, the Skill infers the lifecycle operation and loads only the matchi
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — lightweight intake for independently tracked executable work.
+- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria.
+- `ISSUE_TEMPLATE/initiative.yml` — exploratory-initiative intake with only the durable problem/opportunity required; evidence, questions, directions, related work, next shaping step, and authority constraints may evolve over time.
 - `pull_request_template.md` — tracking, current-state, and validation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks.
 - `rulesets/main.json` — REST-compatible main-branch enforcement configuration.
