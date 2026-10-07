@@ -1,19 +1,17 @@
 ---
 name: agent-work-ledger
-description: GitHub work ledger workflow for starting/resuming Issue-backed or standalone PR work, handling blockers/handoffs, reviewing PRs, or handling PR feedback using durable GitHub state.
+description: GitHub work ledger workflow for starting/resuming work, blockers/handoffs, PR review, and PR feedback.
 disable-model-invocation: true
 user-invocable: true
 ---
 
 # Agent Work Ledger
 
-Read the applicable `AGENTS.md` first; it is authoritative. This Skill selects the lifecycle operation and its behavioral boundary. Do not restate workspace policy in lifecycle references.
-
-Do not read `docs/AGENT_WORKFLOW.md` on the normal path. Use it only when changing the workflow, resolving policy ambiguity, or when `AGENTS.md` plus the selected reference are insufficient.
+Read the applicable `AGENTS.md` first; it is authoritative. This Skill only routes the current operation and adds operation-specific boundaries. Do not load `docs/AGENT_WORKFLOW.md` normally; use it for workflow changes or unresolved policy ambiguity.
 
 ## Route first
 
-Load exactly one lifecycle reference. Switch only if the operation changes.
+Load exactly one reference; switch only when the operation changes.
 
 | Operation | Reference |
 | --- | --- |
@@ -23,12 +21,10 @@ Load exactly one lifecycle reference. Switch only if the operation changes.
 | Review PR | `references/review.md` |
 | Handle PR feedback | `references/feedback.md` |
 
-Inbound GitHub surfaces do not add lifecycle routes. An existing Issue enters `start` or `resume` according to whether execution has begun; an existing PR is already an execution surface and routes by the requested operation rather than by authorship. Issue comments remain input to the active Issue-backed path unless their effect requires a blocker/handoff or another existing route. PR conversation comments, submitted reviews, and review threads route to `feedback` when they become active work.
+GitHub input surfaces do not create routes. Existing PRs route by the requested operation; Issue comments stay in the active Issue-backed path unless their effect requires another route; PR comments/reviews/threads use `feedback` when they become active work.
 
 ## Execution boundary
 
-After routing, follow the recovery budget in `AGENTS.md` and gather only evidence required by the selected reference. Infer tracking mode from canonical state, take the smallest safe next action, and update canonical state only when it materially changes.
+After routing, apply the `AGENTS.md` recovery budget and selected reference only. Review is read-only by default; authorized feedback handling may write only within its reference boundary. Finalizing GitHub transitions require the authority defined in `AGENTS.md`.
 
-Implementation/resume and authorized PR-feedback handling permit normal work-item changes within user authority. Review is optional unless repository policy or explicit user intent requires it, and is read-only by default. Actionable findings from review or existing PR feedback route through `feedback`; after feedback handling, continue with `resume`, another review only when required/requested, discussion, or the next authorized finalizing action. `Ready for Review` is a GitHub PR state transition handled from active work, not a lifecycle route. Draft-to-Ready, merge/close, and other finalizing actions require explicit user intent or clear repository delegation.
-
-Stop or switch paths when required tracking context is absent, requirements remain materially ambiguous, a dependency or approval is unavailable, readiness policy blocks transition, or the requested action exceeds authority. For recoverable stops, leave the canonical surface with the blocker and exact next action.
+Stop or switch paths when tracking context is missing, requirements remain materially ambiguous, a dependency/approval blocks work, or the requested action exceeds authority. Leave recoverable blockers and the exact next action on the canonical surface.

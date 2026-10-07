@@ -1,15 +1,14 @@
 # Continue or resume
 
-Use this path for active work with a canonical execution surface. Apply the recovery budget from `AGENTS.md`. If PR feedback is the active work, use `feedback` instead. If user intent is only to prepare or evaluate leaving Draft, limit changes to readiness/completion work implied by that request; do not infer authority to finish unrelated remaining implementation.
+Use for active work with a canonical execution surface. If PR feedback is the active work, use `feedback`. If intent is only to prepare/evaluate leaving Draft, do not infer authority for unrelated implementation.
 
-1. Verify the recorded next action still advances the current task definition and matches the smallest relevant repository evidence. For Issue-backed work, inspect Issue comments only under the triggers in `AGENTS.md`. When authorized Issue-comment input materially changes task definition, reflect the resulting durable task definition on the Issue. If it changes PR-backed execution state, update the PR body; if it changes Issue-only execution state, update the Issue. If it creates a blocker or handoff, switch to `blocker-handoff` rather than leaving canonical meaning split across surfaces.
-2. Treat authorship as irrelevant to routing. If work arrives as an existing PR, adopt that PR as the execution surface; when authorized, normalize `## Tracking`, `Current State`, and `Validation` instead of creating a replacement PR.
-3. If standalone work now needs an independent lifecycle, promote it when authorized; otherwise record that promotion as the blocker or next action.
-4. Continue from the smallest concrete next action.
-5. Replace superseded `Current State` rather than appending progress history, and record only validation actually performed.
-6. When repository work is complete or should leave Draft, account for tracking mode, intended scope, acceptance criteria for every closing-linked Issue, current state, validation, and any material unresolved feedback. If the PR is Draft and those conditions are satisfied, move it to Ready for Review only with explicit user intent or clear repository delegation; otherwise leave that transition as the exact next action.
-7. Switch lifecycle paths if the work becomes blocked, is being handed off, PR feedback becomes the active work, or the user/policy requires review.
+1. Verify the recorded next action against the task definition and smallest relevant evidence. Reconcile selected Issue-comment input using the canonical ownership rules in `AGENTS.md`; switch to `blocker-handoff` if it creates a blocker or handoff.
+2. Adopt an existing PR as its execution surface; when authorized, normalize the minimum PR contract instead of replacing the PR.
+3. Promote standalone work to Issue-backed tracking when it gains an independent lifecycle and promotion is authorized; otherwise make that the blocker/next action.
+4. Execute the smallest next action, replacing superseded `Current State` and recording only validation actually performed.
+5. On completion or Draft exit, apply the `Ready for Review` rule in `AGENTS.md`; if transition authority is absent, leave it as the exact next action.
+6. Switch paths when blocked/handed off, feedback becomes active work, or user/policy requires review.
 
 ## Done when
 
-The requested increment is complete and durable state matches evidence, another lifecycle path is required, or the PR is correctly prepared for its next authorized transition.
+The requested increment is complete and durable state matches evidence, or the next required lifecycle path/authorized transition is explicit.
