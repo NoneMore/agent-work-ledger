@@ -18,6 +18,8 @@ Standalone maintenance is a tracking choice, not a risk classification. If it la
 
 Authorship does not create a separate lifecycle. An externally opened Issue or PR is adopted through the same routes once it is in scope. Direct user instructions provide intent, authority, or context; they are not a fifth GitHub ledger surface. Persist resulting material task or execution state on the appropriate canonical surface when needed for resumability.
 
+`Ready for Review` is a GitHub PR state, not a lifecycle operation. Before moving a Draft PR out of Draft, account for tracking mode, intended scope, linked-Issue acceptance criteria when applicable, current state, validation, and material unresolved feedback. Perform the transition only with explicit user intent or clear repository delegation.
+
 ## Minimum PR contract
 
 Every repository-changing PR must contain:
