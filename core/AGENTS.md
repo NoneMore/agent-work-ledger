@@ -5,13 +5,16 @@ GitHub is the durable system of record for agent work. Preserve enough durable s
 ## Invariants
 
 1. **Use an Issue when work needs an independent lifecycle.** Problems, requests, user-visible outcomes, coordination, and multi-PR efforts normally qualify. Routine maintenance may be PR-only when its PR is a complete public work item.
-2. **One Issue should be one independently reviewable deliverable.** Split larger work when that improves review or ownership.
-3. **All repository changes use `branch -> first meaningful commit -> Draft PR`.** Issue-backed branches normally use `agent/<issue-number>-<slug>`; standalone maintenance uses `agent/maintenance-<slug>`. Branch names record how work started, not current tracking mode.
-4. **The PR body owns repository execution state.** `## Tracking` declares tracking mode. `Current State` and `Validation` are replacement snapshots, not append-only logs; remove superseded state.
-5. **Validation follows change risk.** Use affected validation for narrow changes and stronger validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Reducing expensive validation requires repository facts or authoritative rules; an agent-authored declaration is insufficient.
-6. **Comments are exceptions, not checkpoints.** Use them only for notification or durable history outside current state, such as blockers, material decisions, discoveries, or pause context.
-7. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
-8. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
+2. **Executable Issues should be independently reviewable deliverables.** Split delivery work when that improves review or ownership. An exploratory initiative may instead retain the durable problem/product lifecycle while research, decisions, and independently executable child work evolve beneath it.
+3. **Do not turn exploration into a premature implementation contract.** Preserve current understanding, evidence, open questions, candidate directions, and the smallest uncertainty-reducing next step. Treat candidate directions as hypotheses until an authorized decision explicitly accepts a direction. Commitment is a semantic decision, not a mechanically inferred readiness test, and may leave execution-local unknowns unresolved.
+4. **All repository changes use `branch -> first meaningful commit -> Draft PR`.** Issue-backed branches normally use `agent/<issue-number>-<slug>`; standalone maintenance uses `agent/maintenance-<slug>`. Branch names record how work started, not current tracking mode.
+5. **The PR body owns repository execution state.** `## Tracking` declares tracking mode. `Current State` and `Validation` are replacement snapshots, not append-only logs; remove superseded state.
+6. **Validation follows change risk.** Use affected validation for narrow changes and stronger validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Reducing expensive validation requires repository facts or authoritative rules; an agent-authored declaration is insufficient.
+7. **Comments are exceptions, not checkpoints.** Use them only for notification or durable history outside current state, such as blockers, material decisions, discoveries, or pause context.
+8. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
+9. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
+
+Issue-backed work may be exploratory or executable. Exploratory work can change framing, compare alternatives, collect evidence, and record that no direction is accepted yet. Once an authorized direction is accepted, record the decision and the material uncertainties that remain; downstream work may rely on that accepted direction until new evidence explicitly reopens it. An initiative may decompose into executable Issues and remain open as the parent product/problem acceptance surface rather than closing merely because decomposition is complete.
 
 Standalone maintenance is a tracking choice, not a risk classification. If it later needs an independent lifecycle, create an Issue, replace the standalone `## Tracking` declaration with one or more Issue closing links, and keep the branch. For Issue-only work, the Issue is both task definition and execution record.
 
@@ -20,7 +23,7 @@ Standalone maintenance is a tracking choice, not a risk classification. If it la
 Every repository-changing PR must contain:
 
 - `## Tracking`: exactly one tracking mode — Issue-backed with one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`,
-- `Current State`: what is done, what remains, and the exact next action if unfinished,
+- `Current State`: what is done, what remains, and the exact next action or uncertainty-reducing question if unfinished,
 - `Validation`: checks actually run and results, including important checks not run.
 
 Before stopping or handing off unfinished work, make the canonical execution surface sufficient to resume without prior chat.
@@ -30,7 +33,7 @@ Before stopping or handing off unfinished work, make the canonical execution sur
 Load only what the current operation needs:
 
 1. **Canonical state:** PR metadata/body when a PR exists; otherwise Issue execution state.
-2. **Task definition:** for Issue-backed implementation or completion judgments, read every closing-linked Issue's objective/acceptance criteria; for standalone work, use PR title/body.
+2. **Task definition:** for Issue-backed executable implementation or completion judgments, read every closing-linked Issue's objective/acceptance criteria. For exploratory initiative work, recover the durable problem/current understanding, accepted decisions if any, material open questions, and next uncertainty-reducing step. For standalone work, use PR title/body.
 3. **Repository evidence:** `changed filenames/stats -> selected patches -> surrounding source`, only as needed.
 4. **Validation/review evidence:** `check summary -> failed job/step/log slice` and unresolved actionable review feedback, only when relevant.
 5. **History:** read Issue/PR discussion only when current canonical state cannot explain a material decision or discrepancy.
