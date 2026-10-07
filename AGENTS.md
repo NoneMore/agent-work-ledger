@@ -8,7 +8,7 @@ GitHub is the durable system of record for agent work. Preserve enough durable s
 2. **One Issue should be one independently reviewable deliverable.** Split larger work when that improves review or ownership.
 3. **All repository changes use `branch -> first meaningful commit -> Draft PR`.** Issue-backed branches normally use `agent/<issue-number>-<slug>`; standalone maintenance uses `agent/maintenance-<slug>`. Branch names record how work started, not current tracking mode.
 4. **The PR body owns repository execution state.** `## Tracking` declares tracking mode. `Current State` and `Validation` are replacement snapshots, not append-only logs; remove superseded state.
-5. **Validation follows change risk.** Use affected validation for narrow changes and stronger validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Do not reduce expensive validation solely from an agent-authored declaration.
+5. **Validation follows change risk.** Use affected validation for narrow changes and stronger validation for broad, dependency/build/CI, security-sensitive, or unclassifiable changes. Reducing expensive validation requires repository facts or authoritative rules; an agent-authored declaration is insufficient.
 6. **Comments are exceptions, not checkpoints.** Use them only for notification or durable history outside current state, such as blockers, material decisions, discoveries, or pause context.
 7. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
 8. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
@@ -19,7 +19,7 @@ Standalone maintenance is a tracking choice, not a risk classification. If it la
 
 Every repository-changing PR must contain:
 
-- `## Tracking`: exactly one Issue closing link or `Standalone maintenance: <brief reason or scope>`,
+- `## Tracking`: exactly one tracking mode — Issue-backed with one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`,
 - `Current State`: what is done, what remains, and the exact next action if unfinished,
 - `Validation`: checks actually run and results, including important checks not run.
 
