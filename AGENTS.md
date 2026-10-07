@@ -13,7 +13,7 @@ GitHub is the durable system of record for agent work. Preserve enough durable s
 7. **Repository facts override stale prose.** Correct stale canonical state during authorized write work; report mismatches during read-only review.
 8. **Do not persist hidden chain-of-thought.** Persist only conclusions, evidence, decisions, constraints, blockers, validation, and next actions useful to future work.
 
-Standalone maintenance is a tracking choice, not a risk classification. If it later needs an independent lifecycle, create an Issue, replace its `## Tracking` declaration with an Issue closing link, and keep the branch. For Issue-only work, the Issue is both task definition and execution record.
+Standalone maintenance is a tracking choice, not a risk classification. If it later needs an independent lifecycle, create an Issue, replace the standalone `## Tracking` declaration with one or more Issue closing links, and keep the branch. For Issue-only work, the Issue is both task definition and execution record.
 
 ## Minimum PR contract
 
