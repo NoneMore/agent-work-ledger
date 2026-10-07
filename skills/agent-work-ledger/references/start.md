@@ -2,7 +2,7 @@
 
 Use before normal executable execution state exists. Apply the tracking test in `AGENTS.md`; if a PR already exists, route to the applicable existing-PR operation instead of recreating it.
 
-If the Issue still owns exploratory work rather than a concrete delivery contract, switch to `shape` instead of inventing acceptance criteria or treating a candidate direction as committed.
+If the requested work is exploratory rather than a concrete delivery contract, switch to `shape` instead of inventing acceptance criteria or treating a candidate direction as committed. `shape` is responsible for establishing or adopting the canonical Initiative Issue when one does not exist yet and the work needs an independent lifecycle.
 
 ## Repository-changing work
 
@@ -26,4 +26,4 @@ Keep execution state on the Issue; do not create an artificial PR.
 
 ## Done when
 
-The correct executable surface exists and matches the work, execution has moved to `resume`, or the work has been rerouted to `shape` because an executable contract is not yet stable.
+The correct executable surface exists and matches the work, execution has moved to `resume`, or exploratory work has been rerouted to `shape` with a canonical Initiative Issue established or adopted when needed.
