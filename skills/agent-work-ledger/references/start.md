@@ -1,39 +1,29 @@
 # Start work
 
-Use this path when work has not yet entered its normal execution surface.
-
-## Choose tracking first
-
-Create or use an Issue when the work should exist independently of a PR: for example a problem/request, user-visible outcome, discussion/coordination item, multi-PR effort, migration, risk, or follow-up worth tracking on its own. The deciding question is whether the work needs its own lifecycle for prioritization, discussion, acceptance, continuation across PRs, or later follow-up.
-
-Use standalone maintenance when the repository change itself is the complete public work item. Dependency maintenance, CI/build/release changes, internal refactors, tests, documentation upkeep, developer tooling, formatting, and repository metadata commonly fit this path, but those categories are examples rather than automatic exemptions. This is a tracking decision, not a claim that the change is low risk.
+Use this path before work has entered its normal execution surface. Apply the tracking test from `AGENTS.md`; do not reload detailed workflow documentation just to classify routine work.
 
 ## Repository-changing work
 
 For Issue-backed work:
 
-1. Confirm the Issue supplies a usable objective and acceptance criteria; recover only context needed to execute safely.
-2. Create `agent/<issue-number>-<short-slug>` from the appropriate base.
-3. Make the first meaningful change and commit it before opening a Draft PR.
-4. Open the Draft PR linked with `Closes #N`, `Fixes #N`, or `Resolves #N` in `## Tracking`.
+1. Confirm the Issue has a usable objective and acceptance criteria.
+2. Normally create `agent/<issue-number>-<short-slug>` from the appropriate base.
+3. Make the first meaningful commit, then open a Draft PR with an Issue closing link in `## Tracking`.
 
 For standalone maintenance:
 
-1. Confirm the user intent plus repository evidence is sufficient to define the maintenance scope without a separate public work item.
-2. Create `agent/maintenance-<short-slug>` from the appropriate base.
-3. Make the first meaningful change and commit it before opening a Draft PR.
-4. Open the Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking`.
+1. Confirm user intent plus repository evidence define a complete PR-sized work item.
+2. Normally create `agent/maintenance-<short-slug>` from the appropriate base.
+3. Make the first meaningful commit, then open a Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking`.
 
-Branch names are creation conventions only. If standalone work later develops independent tracking value, create an Issue when authorized, replace the standalone declaration with an Issue closing link, and continue on the existing branch/PR rather than renaming it solely for tracking consistency. If creating the Issue is outside current authority, record or report the needed promotion instead of pretending the standalone classification still fits.
+For both paths, initialize `Current State` and `Validation`; add `Notes` only when useful. Branch naming is a creation convention, not tracking truth. If standalone work later needs an independent lifecycle, promote it according to `AGENTS.md` without renaming the existing branch solely for tracking consistency.
 
-For both paths, initialize an accurate PR body with `Current State` and `Validation`; include `Notes` only when useful. If the user requested full implementation, continue by loading `resume.md` rather than stopping at setup.
+If the user requested implementation rather than setup only, switch to `resume.md` after the execution surface exists.
 
-Do not add routine claim/progress comments.
+## Issue-only work
 
-## Issue-only non-repository work
-
-When an Issue is worth tracking but no repository change or PR is appropriate, execute against the Issue and keep its execution state there. Do not create an artificial PR only to satisfy the repository workflow shape.
+When independently tracked work produces no repository change, keep execution state on the Issue; do not create an artificial PR.
 
 ## Done when
 
-The correct execution surface exists and accurately represents the work, or the requested full implementation has moved into the resume path.
+The correct execution surface exists and accurately represents the work, or execution has moved to the resume path.

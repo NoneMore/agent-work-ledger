@@ -132,16 +132,15 @@ Comments preserve useful history; they do not become a second current-state stor
 
 ## 6. Recovery after interruption
 
-Recovery is progressive. The goal is to obtain the smallest current context that can safely determine the next action.
+Recovery is canonical-first and trigger-based. The goal is to load only enough context to determine the next safe action.
 
-1. Determine the tracking source from `## Tracking`. If the PR links an Issue, read its objective and acceptance criteria. Otherwise use the standalone-maintenance declaration together with the PR title/body to establish intended scope.
-2. Read PR metadata/body without the full diff.
-3. Read changed filenames and compact stats.
-4. Select relevant files, then fetch only their patches and surrounding source as needed.
-5. Read check summaries and unresolved actionable review feedback when relevant; expand failed jobs/steps or referenced code only as needed.
-6. Read historical Issue/PR comments only if current state cannot explain a material decision or discrepancy.
+1. If a PR exists, read its metadata/body first. For Issue-only work, read the Issue execution state.
+2. Use `## Tracking` to identify the tracking source. For Issue-backed work, read the linked Issue objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion; do not preload Issue comments/history. For standalone work, use the PR title/body as the task definition.
+3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
+4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read unresolved actionable review feedback only when relevant.
+5. Read historical Issue/PR discussion only if current canonical state cannot explain a material decision or discrepancy.
 
-Do not use a full PR diff, complete CI logs, or full comment history as the default recovery shortcut. Small complete diffs are acceptable when the change is demonstrably small and wholly relevant.
+Do not use a full PR diff, complete CI logs, linked-Issue history, or full review/comment history as default recovery shortcuts. Small complete diffs are acceptable when demonstrably small and wholly relevant.
 
 Repository facts win over stale prose. Correct stale canonical state during authorized write work, or report the mismatch during read-only review.
 
@@ -185,22 +184,22 @@ Keep Project automation conservative. The workflow should make the normal path c
 
 The separation is intentional:
 
-- `AGENTS.md` owns workspace-wide invariants and the minimal recovery order.
-- `SKILL.md` owns routing, authority boundaries, progressive retrieval, and stop/exit rules once the Skill is explicitly invoked.
+- `AGENTS.md` owns workspace-wide invariants and the canonical-first recovery budget.
+- `SKILL.md` owns lifecycle routing, authority boundaries, and trigger-based context expansion once the Skill is explicitly invoked.
 - `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
-- `skills/agent-work-ledger/references/` contains path-specific lifecycle procedures; load only the selected path unless the operation changes.
+- `skills/agent-work-ledger/references/` contains only path-specific action deltas; load exactly one unless the operation changes.
 - GitHub tools / APIs provide live Issue, PR, repository, check, and review state.
 - The governance Action enforces the small subset of the contract that is deterministic and machine-checkable.
 - This workflow document is detailed reference material, not a routine agent prompt dependency.
 
-The retrieval model is deliberately staged:
+The retrieval model is deliberately trigger-based:
 
 ```text
-Policy
-  -> live state / metadata
-  -> indexes and summaries
+canonical execution surface
+  -> linked Issue task definition for Issue-backed scope/completion work
+  -> repository/check/review index only when needed
   -> selected evidence
   -> history only on discrepancy
 ```
 
-The Skill should not cache task state or create a second policy layer. Once invoked, it routes from user intent/current artifacts first and expands context only when the selected operation requires it.
+The Skill should not cache task state, restate `AGENTS.md`, or preload evidence for later filtering. Once invoked, it routes first and expands context only when the selected operation has a concrete evidence need.
