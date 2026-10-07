@@ -34,9 +34,8 @@ Issue
   -> branch
   -> first meaningful commit
   -> Draft PR
-  -> work
-  -> validation
-  -> Ready for Review
+  -> work / validation
+  -> [mark Ready for Review when authorized]
   -> [review when required or requested]
   -> [PR feedback when present -> handle feedback]
   -> merge
@@ -49,15 +48,16 @@ Standalone repository maintenance:
 branch
   -> first meaningful commit
   -> Draft PR
-  -> work
-  -> validation
-  -> Ready for Review
+  -> work / validation
+  -> [mark Ready for Review when authorized]
   -> [review when required or requested]
   -> [PR feedback when present -> handle feedback]
   -> merge
 ```
 
-Review is an available operation, not a mandatory lifecycle stage. It is required only when repository policy or explicit user intent requires it. The bracketed review and feedback steps are optional and may repeat. PR feedback can also arrive before or without formal review, at any point after the PR exists. Handling feedback does not imply a code fix: the correct outcome may be a reply, clarification, evidence-based no-change disposition, correction, blocker, or decision request. After feedback handling, continue to the next operation required by policy or intent: review, continued discussion, or readiness for a separately authorized merge.
+`Ready for Review` is a GitHub PR state transition, not a separate lifecycle operation. Active work is responsible for checking intended scope, canonical state, validation, acceptance criteria when Issue-backed, and material feedback before leaving Draft. The transition itself requires explicit user intent or clear repository delegation.
+
+Review is an available operation, not a mandatory lifecycle stage. It is required only when repository policy or explicit user intent requires it. The bracketed review and feedback steps are optional and may repeat. PR feedback can also arrive before or without formal review, at any point after the PR exists. Handling feedback does not imply a code fix: the correct outcome may be a reply, clarification, evidence-based no-change disposition, correction, blocker, or decision request. After feedback handling, continue to active work when more implementation/completion work remains, return to review only when policy or user intent requires another review, continue discussion when a decision is pending, or leave the PR at its next separately authorized finalizing action.
 
 The first meaningful commit gives GitHub something to compare against the base branch before the Draft PR is opened.
 
@@ -104,7 +104,7 @@ For all repository changes that do not already have a PR execution surface:
 4. Make the first meaningful commit.
 5. Open a Draft PR and use its body as the single execution snapshot.
 6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
-7. Record validation before marking the PR ready for review.
+7. Record validation before leaving Draft or finalizing the work.
 
 If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR contract during authorized write work. If write authority is unavailable, report the missing contract rather than creating a parallel ledger.
 
@@ -161,7 +161,7 @@ Do not use a full PR diff, complete CI logs, linked-Issue history, or full revie
 
 Repository facts win over stale prose. Correct stale canonical state during authorized write work, or report the mismatch during read-only review.
 
-## 7. Ready for Review
+## 7. Leaving Draft
 
 Before moving a PR out of Draft:
 
@@ -170,11 +170,11 @@ Before moving a PR out of Draft:
 - every closing-linked Issue's acceptance criteria are satisfied or incomplete items are explicit for Issue-backed work,
 - `Current State` accurately represents the work, including any material feedback blocker that changes execution state,
 - appropriate validation is recorded,
-- PR feedback blocks readiness only when it remains actionable and material to intended scope or repository policy,
+- PR feedback blocks leaving Draft only when it remains actionable and material to intended scope or repository policy,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
-The readiness path is for Draft PRs. An already non-Draft PR returning from feedback handling continues to the next operation required by repository policy or user intent — review, continued discussion, or readiness for a separately authorized merge — after its state and validation are refreshed; it does not cycle through Draft readiness again.
+This is a transition check within active work, not a separate lifecycle path. Move Draft to Ready for Review only with explicit user intent or clear repository delegation. An already non-Draft PR never cycles through this check merely because feedback was handled; continue with the operation required by repository policy or user intent.
 
 The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not require routine progress logging or boilerplate handoff sections.
 
@@ -194,7 +194,7 @@ When feedback handling is authorized, route it through the feedback lifecycle ra
 2. Classify each in-scope item before acting: question/discussion, actionable change, evidence-based no-change disposition, or blocker/decision.
 3. Respond on the existing GitHub surface when a response is useful or expected. For an actionable change, make the minimum correction and run validation appropriate to it. For a no-change disposition, provide concrete evidence. For a blocker or required decision, make the unblock condition and exact next action durable.
 4. Update `Current State` / `Validation` only when execution state materially changes. Do not create a synthetic feedback ledger for review findings or direct user instructions; persist only resulting material execution state when needed for resumability.
-5. Re-check current checks and unresolved in-scope feedback after changes or replies. Resolve a review thread only after its concern is corrected or explicitly dispositioned and only with authority. Return to review only when repository policy or explicit user intent requires it; continue discussion when a decision is still pending; otherwise leave the PR ready for a separately authorized merge.
+5. Re-check current checks and unresolved in-scope feedback after changes or replies. Resolve a review thread only after its concern is corrected or explicitly dispositioned and only with authority. Continue through active work when more implementation or completion work remains; return to review only when repository policy or explicit user intent requires it; continue discussion when a decision is still pending; otherwise leave the PR at its next separately authorized finalizing action.
 
 Approving, requesting changes, resolving threads, moving Draft to Ready, or merging all change GitHub state. Perform those actions only when user intent or repository delegation authorizes them.
 
