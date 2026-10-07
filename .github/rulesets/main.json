@@ -1,7 +1,6 @@
 {
   "name": "Main branch",
   "target": "branch",
-  "source_type": "Repository",
   "enforcement": "active",
   "conditions": {
     "ref_name": {
