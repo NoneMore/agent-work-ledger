@@ -2,13 +2,12 @@
 
 Use this path when a Draft PR should be normalized and validated for review.
 
-1. Read PR metadata/body and confirm exactly one tracking mode. For Issue-backed work, read the linked Issue objective/acceptance criteria; for standalone work, verify the PR scope still fits that mode.
-2. Inspect changed filenames/stats. Expand only patches/source needed to account for intended scope or unexplained files.
-3. Read check summaries; expand failures only as needed. Read unresolved actionable review feedback when present.
-4. Normalize the PR body: accurate `Current State`, validation actually performed, and only material limitations/incomplete items.
-5. Apply the repository's authoritative readiness policy. Move Draft to Ready only with explicit user intent or clear repository delegation.
+1. Confirm exactly one tracking mode. For Issue-backed work, ensure acceptance criteria are satisfied or incomplete items are explicit; for standalone work, confirm the scope still fits that mode.
+2. Apply the recovery budget from `AGENTS.md` only far enough to account for intended scope, validation, and any unresolved actionable review blockers.
+3. Normalize the PR replacement snapshot: accurate `Current State`, validation actually performed, and only material limitations or incomplete items.
+4. Apply the repository's authoritative readiness policy. Move Draft to Ready only with explicit user intent or clear repository delegation.
 
-Never claim validation that was not performed. Do not load historical discussion unless current evidence leaves a material discrepancy unresolved.
+Never claim validation that was not performed.
 
 ## Done when
 
