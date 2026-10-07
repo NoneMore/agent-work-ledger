@@ -2,7 +2,7 @@
 
 A lightweight GitHub-native work ledger for human + agent collaboration.
 
-Agent Work Ledger keeps task definition, repository execution state, and validation durable in GitHub so another human or agent can resume without prior chat history.
+Agent Work Ledger keeps problem/task definition, repository execution state, decisions, and validation durable in GitHub so another human or agent can resume without prior chat history.
 
 ## What this repository contains
 
@@ -46,17 +46,19 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 
 ## Core workflow
 
-- **Issues define independently tracked work** — problems, requests, objectives, acceptance criteria, context, and constraints when the work deserves its own public work item.
+- **Issues define independently tracked work** — either executable deliverables with a stable objective/acceptance contract, or exploratory initiatives whose problem/decision lifecycle must remain durable while direction and decomposition evolve.
 - **Pull Requests track repository execution** — current state and validation for every repository change, including standalone maintenance that needs no separate Issue.
 - **Comments are exceptions** — use them for blockers, material decisions, important discoveries, or pause context rather than routine checkpoints.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
 
-For repository changes, the normal path is:
+Executable repository changes follow the normal path:
 
 ```text
 Issue-backed: Issue -> branch -> first meaningful commit -> Draft PR -> work -> validation -> Ready for Review
 PR-only:      branch -> first meaningful commit -> Draft PR -> work -> validation -> Ready for Review
 ```
+
+Exploratory initiatives instead preserve current understanding, evidence, open questions, candidate versus accepted directions, and the next uncertainty-reducing step. Commitment is an explicit semantic decision rather than a mechanically inferred readiness test. An initiative may decompose into executable child Issues and remain open as the parent product/problem acceptance surface.
 
 The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State` and `Validation` stay accurate as material state changes.
 
@@ -64,7 +66,7 @@ See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecy
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable execution behavior as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages reusable shaping and execution behavior as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
 
 Once invoked, the Skill infers the lifecycle operation and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/). Live GitHub state is recovered progressively rather than preloading full diffs, complete CI logs, or entire comment histories.
 
@@ -72,7 +74,7 @@ Once invoked, the Skill infers the lifecycle operation and loads only the matchi
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — lightweight intake for independently tracked work.
+- `ISSUE_TEMPLATE/agent-task.yml` — lightweight intake for independently tracked executable work.
 - `pull_request_template.md` — tracking, current-state, and validation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks.
 - `rulesets/main.json` — REST-compatible main-branch enforcement configuration.
@@ -93,13 +95,14 @@ Add `Priority`, `Iteration`, or other fields only when the project genuinely ben
 
 ## Design principles
 
-1. Use Issues for problems, requests, and work worth tracking independently; do not manufacture them for routine maintenance.
-2. One Issue should represent one independently reviewable deliverable when an Issue is used.
-3. Every repository change goes through a PR; Issue linkage is conditional, not universal.
-4. The PR owns repository execution state.
-5. Routine progress should not require comments or duplicated status updates.
-6. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, and next actions; do not persist hidden chain-of-thought.
-7. Keep deployable product sources separate from repository-development configuration.
+1. Use Issues for problems, requests, initiatives, and work worth tracking independently; do not manufacture them for routine maintenance.
+2. Executable Issues should represent independently reviewable deliverables; exploratory initiatives may span decisions and multiple executable child Issues while retaining parent-level acceptance.
+3. Do not mechanically infer semantic readiness or turn candidate directions into implementation requirements before they are explicitly accepted.
+4. Every repository change goes through a PR; Issue linkage is conditional, not universal.
+5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue.
+6. Routine progress should not require comments or duplicated status updates.
+7. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, and next actions; do not persist hidden chain-of-thought.
+8. Keep deployable product sources separate from repository-development configuration.
 
 ## Bootstrap
 
