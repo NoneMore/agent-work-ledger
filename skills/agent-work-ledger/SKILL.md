@@ -30,4 +30,4 @@ Use `shape` for initiative-level exploration, decisions, decomposition, and pare
 
 After routing, apply the `AGENTS.md` recovery budget and selected reference only. Review is read-only by default; authorized feedback handling may write only within its reference boundary. Finalizing GitHub transitions require the authority defined in `AGENTS.md`.
 
-Stop or switch paths when tracking context is missing, executable requirements remain materially ambiguous, a dependency/approval blocks work, or the requested action exceeds authority. Leave recoverable blockers and the exact next action on the canonical surface.
+Stop or switch paths when required tracking context is missing, executable requirements remain materially ambiguous, a dependency/approval blocks work, or the requested action exceeds authority. Untracked shaping is not missing tracking context merely because no Initiative Issue exists; create or adopt one only when durable tracking becomes explicitly required or repository policy requires it. Leave recoverable blockers and the exact next action on the canonical surface when one exists.
