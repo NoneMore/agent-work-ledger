@@ -32,8 +32,8 @@ Before stopping or handing off unfinished work, make the canonical execution sur
 
 Load only what the current operation needs:
 
-1. **Canonical state:** PR metadata/body when a concrete PR execution surface exists; otherwise Issue execution or shaping state.
-2. **Task definition:** for Issue-backed executable implementation/completion judgments, read every closing-linked Issue's objective/acceptance criteria. Inspect Issue comments only when the operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; never scan comments merely to discover possible changes. For exploratory initiative work, use the Issue's current canonical shaping state. For standalone work, use PR title/body.
+1. **Canonical state:** PR metadata/body when a concrete PR execution surface exists; otherwise the relevant Issue execution or shaping state when one exists.
+2. **Task definition:** for Issue-backed executable implementation/completion judgments, read every closing-linked Issue's objective/acceptance criteria. Inspect Issue comments only when the operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; never scan comments merely to discover possible changes. For exploratory initiative work with an Initiative Issue, use its current canonical shaping state; for untracked shaping, use the current request/context and selected evidence without creating tracking solely for recovery. For standalone work, use PR title/body.
 3. **Repository evidence:** `changed filenames/stats -> selected patches -> surrounding source`, as needed.
 4. **Validation/feedback:** `check summary -> failed job/step/log slice`; current unresolved PR feedback or feedback blockers only when relevant.
 5. **History:** older/resolved Issue or PR discussion only when canonical state plus current input/evidence cannot explain a material decision or discrepancy.
