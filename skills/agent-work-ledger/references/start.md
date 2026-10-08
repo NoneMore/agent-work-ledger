@@ -1,12 +1,12 @@
-# Start work
+# Start executable work
 
-Use before normal execution state exists. Apply the tracking test in `AGENTS.md`; if a PR already exists, route to the applicable existing-PR operation instead of recreating it.
+Use before normal executable execution state exists. Apply the tracking test in `AGENTS.md`; if a PR already exists, route to the applicable existing-PR operation instead of recreating it.
 
 ## Repository-changing work
 
-For Issue-backed work:
+For Issue-backed executable work:
 
-1. Confirm a usable objective and acceptance criteria; reconcile any authorized Issue-comment input selected under the `AGENTS.md` recovery triggers.
+1. Confirm a usable objective and acceptance criteria for the concrete delivery slice; reconcile any authorized Issue-comment input selected under the `AGENTS.md` recovery triggers.
 2. Normally create `agent/<issue-number>-<short-slug>`.
 3. Make the first meaningful commit, then open a Draft PR with an Issue closing link in `## Tracking`.
 
@@ -18,10 +18,10 @@ For standalone maintenance:
 
 Initialize `Current State` and `Validation`; switch to `resume` when implementation continues.
 
-## Issue-only work
+## Issue-only executable work
 
 Keep execution state on the Issue; do not create an artificial PR.
 
 ## Done when
 
-The correct execution surface exists and matches the work, or execution has moved to `resume`.
+The correct executable surface exists and matches the work, or execution has moved to `resume`.

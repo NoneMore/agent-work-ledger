@@ -116,6 +116,7 @@ install_github() {
     "$target/.github/workflows" \
     "$target/.github/rulesets"
   cp "$repo_root/integrations/github/ISSUE_TEMPLATE/agent-task.yml" "$target/.github/ISSUE_TEMPLATE/agent-task.yml"
+  cp "$repo_root/integrations/github/ISSUE_TEMPLATE/initiative.yml" "$target/.github/ISSUE_TEMPLATE/initiative.yml"
   cp "$repo_root/integrations/github/pull_request_template.md" "$target/.github/pull_request_template.md"
   cp "$repo_root/integrations/github/workflows/agent-governance.yml" "$target/.github/workflows/agent-governance.yml"
   cp "$repo_root/integrations/github/rulesets/main.json" "$target/.github/rulesets/main.json"

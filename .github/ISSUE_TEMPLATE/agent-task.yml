@@ -1,18 +1,18 @@
-name: Agent Task
-description: Create work that is worth tracking independently; routine repository maintenance can start from a PR.
+name: Executable Agent Task
+description: Track an independently reviewable deliverable with a stable objective and acceptance contract.
 title: "[Task] "
 body:
   - type: markdown
     attributes:
       value: |
-        Keep intake lightweight. Define the outcome and completion criteria; add context or constraints only when they matter. Do not create an Issue solely to parent routine repository maintenance whose PR is already a sufficient public record.
+        Use this form when work is ready to execute against a concrete outcome and completion criteria. For durable problem or product work whose direction or executable decomposition is still evolving, use the Exploratory Initiative form instead. Routine repository maintenance can still start directly from a PR when the PR is a sufficient public record.
 
   - type: textarea
     id: objective
     attributes:
       label: Objective
       description: What concrete outcome should exist when this task is complete?
-      placeholder: Implement / investigate / migrate / document ...
+      placeholder: Implement / migrate / document / correct ...
     validations:
       required: true
 
