@@ -47,7 +47,7 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 ## Core workflow
 
 - **Issues define independently tracked work** — either executable deliverables with a stable objective/acceptance contract, or exploratory initiatives whose problem/decision lifecycle must remain durable while direction and decomposition evolve.
-- **Pull Requests track repository execution and reconciliation** — current state, validation, and where any delivered durable product/architecture contract change was reconciled for every repository change, including standalone maintenance that needs no separate Issue.
+- **Pull Requests track repository execution and reconciliation** — current state, validation, and contract-reconciliation status for every repository change, including standalone maintenance that needs no separate Issue.
 - **Comments and reviews carry durable input and feedback** — use Issue comments for discussion/input around Issue-defined work and PR comments/reviews for PR feedback; do not make them a second current-state store.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
 
@@ -74,7 +74,7 @@ Once invoked, the Skill infers the lifecycle operation and loads only the matchi
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta when an authoritative contract source exists.
+- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta when an authoritative contract source exists or is being established.
 - `ISSUE_TEMPLATE/initiative.yml` — exploratory-initiative intake with only the durable problem/opportunity required; evidence, questions, directions, related work, next shaping step, and authority constraints may evolve over time.
 - `pull_request_template.md` — tracking, current-state, validation, and contract-reconciliation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks, including structural presence of contract reconciliation.
