@@ -72,6 +72,13 @@ fi
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target="$(mkdir -p "$target" && cd "$target" && pwd)"
 
+if [[ -f "$target/AGENTS.md" ]] \
+  && grep -Fq '# Agent Working Protocol' "$target/AGENTS.md" \
+  && grep -Fq 'GitHub is the durable system of record for agent work.' "$target/AGENTS.md"; then
+  echo "Warning: detected legacy Agent Work Ledger policy in $target/AGENTS.md." >&2
+  echo "The installer leaves AGENTS.md unchanged; remove only the legacy policy manually if it is no longer needed." >&2
+fi
+
 if [[ "$apply_ruleset" == true ]]; then
   if ! command -v gh >/dev/null 2>&1; then
     echo "--apply-ruleset requires GitHub CLI (gh)." >&2
