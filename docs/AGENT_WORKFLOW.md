@@ -186,7 +186,7 @@ Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain
 
 `Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
-A repository-changing exploratory slice follows the same PR execution snapshot once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
+A repository-changing exploratory slice uses the same PR execution workflow once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
 ## 5. Comments are for exceptions
 
