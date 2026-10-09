@@ -1,0 +1,21 @@
+name: Release Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  release-checks:
+    name: Release checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install validation dependencies
+        run: sudo apt-get update && sudo apt-get install -y shellcheck python3-yaml
+      - name: Run release checks
+        run: ./tests/release-checks.sh
