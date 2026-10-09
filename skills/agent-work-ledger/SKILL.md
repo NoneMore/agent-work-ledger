@@ -32,7 +32,7 @@ Standalone maintenance is a tracking choice, not a risk class. If it later needs
 
 For executable Issues, a **Contract Impact** note is optional and should be used only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including a source the task intentionally establishes. Name that source and describe only the material delta. Use `None` or omit the note for implementation-only work or when no authoritative source exists; do not invent a contract document solely to populate this field. The Issue records the requested or accepted change, not a replacement copy of current contract truth.
 
-### Minimum PR schema
+### Minimum PR snapshot
 
 Every repository-changing PR must contain:
 
