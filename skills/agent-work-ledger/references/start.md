@@ -6,7 +6,7 @@ Use before normal executable execution state exists. Apply the tracking test in 
 
 For Issue-backed executable work:
 
-1. Confirm a usable objective and acceptance criteria for the concrete delivery slice; reconcile any authorized Issue-comment input selected under the `AGENTS.md` recovery triggers. If the Issue declares a material `Contract Impact`, identify the authoritative contract source before implementation.
+1. Confirm a usable objective and acceptance criteria for the concrete delivery slice; reconcile any authorized Issue-comment input selected under the `AGENTS.md` recovery triggers. If an explicit `Contract Impact` applies, identify its authoritative contract source before implementation.
 2. Normally create `agent/<issue-number>-<short-slug>`.
 3. Make the first meaningful commit, then open a Draft PR with an Issue closing link in `## Tracking`.
 
@@ -16,7 +16,7 @@ For standalone maintenance:
 2. Normally create `agent/maintenance-<short-slug>`.
 3. Make the first meaningful commit, then open a Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking`.
 
-Initialize `Current State`, `Validation`, and `Contract Reconciliation`; switch to `resume` when implementation continues. Use `No durable contract change.` unless the work intentionally changes an authoritative product or architecture contract, in which case name the source that must be reconciled before completion.
+Initialize `Current State`, `Validation`, and `Contract Reconciliation`; switch to `resume` when implementation continues. Use `Pending: <source(s)>` when known authoritative source(s) still need reconciliation, `No authoritative contract source to reconcile.` when durable behavior changes but no such source exists and the task does not establish one, and `No durable contract change.` otherwise.
 
 ## Issue-only executable work
 

@@ -19,7 +19,7 @@ Standalone maintenance is a tracking choice, not a risk class. If it later needs
 
 `Ready for Review` is a PR state, not a lifecycle operation. Before leaving Draft, account for tracking mode, intended scope, linked-Issue acceptance criteria when applicable, current state, validation, contract reconciliation when applicable, and material unresolved feedback. Transition only with explicit user intent or clear repository delegation.
 
-For executable Issues, a **Contract Impact** note is optional and should be used only when the task intentionally changes a durable product or architecture contract. Name the authoritative source and describe only the material delta; use `None` or omit the note for implementation-only work. The Issue records the requested or accepted change, not a replacement copy of current contract truth.
+For executable Issues, a **Contract Impact** note is optional and should be used only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including a source the task intentionally establishes. Name that source and describe only the material delta. Use `None` or omit the note for implementation-only work or when no authoritative source exists; do not invent a contract document solely to populate this field. The Issue records the requested or accepted change, not a replacement copy of current contract truth.
 
 ## Minimum PR contract
 
@@ -28,7 +28,9 @@ Every repository-changing PR must contain:
 - `## Tracking`: exactly one mode — Issue closing link(s), or `Standalone maintenance: <brief reason or scope>`,
 - `Current State`: done, remaining work, and exact next action if unfinished,
 - `Validation`: checks actually run/results, including important checks not run,
-- `Contract Reconciliation`: either `No durable contract change` or the authoritative contract source(s) updated by the delivered change.
+- `Contract Reconciliation`: current reconciliation state — `No durable contract change.`, `No authoritative contract source to reconcile.`, `Pending: <source(s)>` while known source(s) still need updates, or `Updated: <source(s)>` after they are reconciled.
+
+`Pending:` is valid only for unfinished work. Before leaving Draft, use a terminal reconciliation state that matches repository evidence.
 
 Before stopping or handing off unfinished work, make the canonical execution surface sufficient to resume without prior chat. Before completing Issue-backed work, reconcile the Issue's acceptance contract against the delivered result; do not treat unchecked or stale criteria as completed merely because the repository change exists.
 

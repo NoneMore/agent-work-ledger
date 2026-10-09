@@ -108,7 +108,7 @@ An executable Issue should answer four questions:
 
 Only Objective and Acceptance Criteria are required by the current Agent Task Issue Form. Context, constraints, dependencies, and `Contract Impact` are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
 
-Use `Contract Impact` only when the task intentionally changes a durable product or architecture contract. Name the authoritative source and describe only the material `ADDED` / `MODIFIED` / `REMOVED` delta, plus an unchanged boundary when that distinction prevents ambiguity. Use `None` or leave it blank for implementation-only work. The Issue records the requested or accepted delta; current contract truth still belongs in the authoritative project source and is not changed merely because an Issue direction is accepted.
+Use `Contract Impact` only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including one the task intentionally establishes. Name that source and describe only the material `ADDED` / `MODIFIED` / `REMOVED` delta, plus an unchanged boundary when that distinction prevents ambiguity. Use `None` or leave it blank for implementation-only work or when no authoritative source exists; do not invent a contract document solely for this field. The Issue records the requested or accepted delta; current contract truth still belongs in the authoritative project source and is not changed merely because an Issue direction is accepted.
 
 Issue comments may clarify, constrain, or make decisions about executable work, but they do not become a second task-definition store. When a current comment materially changes the objective, acceptance criteria, constraints, blocker, or Issue-only execution state, reflect the resulting durable state in the Issue during authorized write work. Keep the comment as provenance/history; do not copy it verbatim just for bookkeeping.
 
@@ -173,7 +173,9 @@ Tests / checks run and their results. Note anything important not run and why.
 ## Contract Reconciliation
 
 No durable contract change.
-<!-- OR: Updated: <authoritative source(s)> -->
+<!-- OR while unfinished: Pending: <authoritative source(s)> -->
+<!-- OR when reconciled: Updated: <authoritative source(s)> -->
+<!-- OR when durable behavior changes but no authoritative source exists: No authoritative contract source to reconcile. -->
 
 ## Notes
 
@@ -182,7 +184,7 @@ Optional: limitations, risks, follow-ups, material decisions, or review focus.
 
 Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain one or more closing links. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or closing-linked Issue acceptance criteria unless needed to explain current state.
 
-`Contract Reconciliation` records where durable product or architecture truth lands. Use `No durable contract change.` for implementation-only work. When the delivery changes a durable contract, update the authoritative project source as part of the delivery and name that source in the PR; do not copy the full current contract into the PR body. Projects are not required to invent a durable contract document merely to satisfy this field when no such project source is otherwise needed.
+`Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
 A repository-changing exploratory slice follows the same PR execution contract once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
@@ -224,14 +226,14 @@ Before moving a PR out of Draft:
 - a closing link does not falsely imply completion of a parent initiative that still owns unresolved product/problem acceptance,
 - `Current State` accurately represents the work, including any material feedback blocker that changes execution state,
 - appropriate validation is recorded,
-- `Contract Reconciliation` states either that there is no durable contract change or names the authoritative source(s) updated by the delivery,
+- `Contract Reconciliation` uses a terminal state that matches evidence: `No durable contract change.`, `No authoritative contract source to reconcile.`, or `Updated: <source(s)>`; `Pending:` is not Ready,
 - PR feedback blocks leaving Draft only when it remains actionable and material to intended scope or repository policy,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
 This is a transition check within active work, not a separate lifecycle path. Move Draft to Ready for Review only with explicit user intent or clear repository delegation. An already non-Draft PR never cycles through this check merely because feedback was handled; continue with the operation required by repository policy or user intent.
 
-The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, and the PR body must contain `Current State`, `Validation`, and `Contract Reconciliation`. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether acceptance checkboxes are complete, whether a contract reconciliation claim is semantically correct, whether an accepted direction is correct, or whether routine progress has been logged.
+The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, and the PR body must contain actual `## Current State`, `## Validation`, and `## Contract Reconciliation` headings. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether acceptance checkboxes are complete, whether a contract reconciliation claim is semantically correct, whether an accepted direction is correct, or whether routine progress has been logged.
 
 The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
@@ -257,7 +259,7 @@ This model deliberately avoids a generic input-state database or routine feedbac
 
 ## 9. Completion
 
-For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance contract against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure the authoritative source was updated and the PR's `Contract Reconciliation` names it.
+For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance contract against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure its authoritative source was updated and the PR's `Contract Reconciliation` names it.
 
 For exploratory initiatives, decomposition or delivery of one child does not by itself imply completion. Close the parent when its durable product/problem acceptance has been satisfied or the initiative is explicitly abandoned/superseded according to repository practice.
 

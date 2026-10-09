@@ -60,7 +60,7 @@ PR-only:      branch -> first meaningful commit -> Draft PR -> work / validation
 
 Exploratory initiatives instead preserve current understanding, evidence, open questions, candidate versus accepted directions, and the next uncertainty-reducing step. Commitment is an explicit semantic decision rather than a mechanically inferred readiness test. An initiative may decompose into executable child Issues and remain open as the parent product/problem acceptance surface.
 
-The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Use `No durable contract change.` for implementation-only work; when a delivery changes a durable product or architecture contract, update the authoritative project source and name it in `Contract Reconciliation`. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
+The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Use `Pending: <source(s)>` while known authoritative source(s) still need reconciliation and `Updated: <source(s)>` after they are reconciled; use `No authoritative contract source to reconcile.` when durable behavior changes but no such source exists, and `No durable contract change.` when none changed. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle.
 
@@ -74,7 +74,7 @@ Once invoked, the Skill infers the lifecycle operation and loads only the matchi
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta.
+- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta when an authoritative contract source exists.
 - `ISSUE_TEMPLATE/initiative.yml` — exploratory-initiative intake with only the durable problem/opportunity required; evidence, questions, directions, related work, next shaping step, and authority constraints may evolve over time.
 - `pull_request_template.md` — tracking, current-state, validation, and contract-reconciliation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks, including structural presence of contract reconciliation.
