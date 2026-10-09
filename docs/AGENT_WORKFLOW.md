@@ -116,7 +116,7 @@ Once repository execution for that deliverable moves into a PR, do not maintain 
 
 ### Exploratory initiatives
 
-Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Create or adopt this Initiative surface only when durable tracking is explicitly requested or required by repository policy; otherwise do not manufacture tracking solely because shaping is occurring. Do not force this work into premature Objective/Acceptance Criteria just to make it look executable.
+Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Create or adopt this Initiative surface only when durable tracking is explicitly requested or required by repository policy; otherwise do not manufacture tracking solely because shaping is occurring. Do not force premature Objective/Acceptance Criteria onto this work just to make it look executable.
 
 The initiative should preserve only durable state useful to the next executor or decision-maker, for example:
 
@@ -150,7 +150,7 @@ For executable repository changes that do not already have a PR execution surfac
 6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
 7. Record validation and keep `Contract Reconciliation` accurate before leaving Draft or finalizing the work.
 
-If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR schema during authorized write work. If write authority is unavailable, report the missing structure rather than creating a parallel ledger.
+If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR snapshot during authorized write work. If write authority is unavailable, report the missing structure rather than creating a parallel ledger.
 
 Branch naming is a creation convention and is not used to infer current tracking mode. The `## Tracking` section is the canonical machine-readable tracking declaration.
 
@@ -186,7 +186,7 @@ Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain
 
 `Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
-A repository-changing exploratory slice follows the same PR execution schema once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
+A repository-changing exploratory slice follows the same PR execution snapshot once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
 ## 5. Comments are for exceptions
 
