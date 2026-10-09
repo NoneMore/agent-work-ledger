@@ -2,10 +2,11 @@
 
 Use for active executable work with a canonical execution surface. Apply shared rules from `AGENTS.md`.
 
-1. Verify the recorded next action against the executable task definition and smallest relevant evidence.
+1. Verify the recorded next action against the executable task definition and smallest relevant evidence, including any explicit `Contract Impact` that constrains the delivery.
 2. Execute the smallest concrete next action; replace superseded `Current State` and record only validation actually performed.
-3. If the operation changes, reroute through `SKILL.md` rather than redefining lifecycle boundaries here.
-4. If a required transition lacks authority, leave it as the exact next action.
+3. When the work intentionally changes a durable product or architecture contract, update the authoritative source as part of the delivery and keep `Contract Reconciliation` accurate. Do not copy the whole contract into the PR body.
+4. If the operation changes, reroute through `SKILL.md` rather than redefining lifecycle boundaries here.
+5. If a required transition lacks authority, leave it as the exact next action.
 
 ## Done when
 
