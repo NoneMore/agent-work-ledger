@@ -7,9 +7,9 @@ Usage: install/install.sh [--profile core|github|skill-only] [--target PATH]
                           [--apply-ruleset] [--repo OWNER/REPO]
 
 Profiles:
-  core        Install the reusable AGENTS.md policy and Agent Skill.
-  github      Install core plus GitHub Issue/PR/governance/ruleset files.
-  skill-only  Install only the Agent Skill.
+  core        Install the Agent Skill.
+  github      Install the Agent Skill plus GitHub Issue/PR/governance/ruleset files.
+  skill-only  Install only the Agent Skill (compatibility alias for core).
 
 Options:
   --apply-ruleset  With the github profile, create or update the repository
@@ -17,9 +17,6 @@ Options:
   --repo OWNER/REPO
                    Repository to configure when applying the ruleset. When
                    omitted, infer it from the target repository checkout.
-
-The installer never overwrites an existing target AGENTS.md. Merge the policy
-manually when the target repository already has workspace instructions.
 EOF
 }
 
@@ -75,12 +72,6 @@ fi
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target="$(mkdir -p "$target" && cd "$target" && pwd)"
 
-if [[ "$profile" != "skill-only" && -e "$target/AGENTS.md" ]]; then
-  echo "Refusing to overwrite existing $target/AGENTS.md." >&2
-  echo "Merge $repo_root/core/AGENTS.md into the target repository manually." >&2
-  exit 3
-fi
-
 if [[ "$apply_ruleset" == true ]]; then
   if ! command -v gh >/dev/null 2>&1; then
     echo "--apply-ruleset requires GitHub CLI (gh)." >&2
@@ -104,10 +95,6 @@ install_skill() {
   mkdir -p "$target/.agents/skills"
   rm -rf "$target/.agents/skills/agent-work-ledger"
   cp -R "$repo_root/skills/agent-work-ledger" "$target/.agents/skills/agent-work-ledger"
-}
-
-install_agents() {
-  cp "$repo_root/core/AGENTS.md" "$target/AGENTS.md"
 }
 
 install_github() {
@@ -146,17 +133,9 @@ apply_github_ruleset() {
 
 install_skill
 
-case "$profile" in
-  skill-only)
-    ;;
-  core)
-    install_agents
-    ;;
-  github)
-    install_agents
-    install_github
-    ;;
-esac
+if [[ "$profile" == "github" ]]; then
+  install_github
+fi
 
 echo "Installed Agent Work Ledger profile '$profile' into $target"
 
