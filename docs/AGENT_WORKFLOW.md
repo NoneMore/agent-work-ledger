@@ -19,6 +19,8 @@ Each GitHub surface has one primary responsibility:
 
 Avoid maintaining the same status in multiple places. Once an executable repository change has a PR, execution state belongs in the PR body rather than being duplicated into an Issue or comments. Exploratory initiative state remains on the parent Issue because that Issue owns the durable problem/decision lifecycle rather than a particular repository change.
 
+When a project has an authoritative durable product or architecture contract, that project-owned source remains the owner of current contract truth. An executable Issue may describe a proposed or accepted durable delta, and a PR records where the delivered change was reconciled, but neither should become a duplicate full-contract store. Code and tests are implementation/evidence surfaces unless the project explicitly makes them authoritative for that contract.
+
 The ledger has four inbound GitHub shapes that matter to lifecycle handling: a new Issue, an Issue comment, an existing/new PR, and PR feedback through conversation comments or review surfaces. They do not form a separate generic `external input` lifecycle. The surface gives the input its default role; its effect determines whether task definition, shaping state, execution state, feedback disposition, blocker state, or authority actually changes.
 
 Authorship does not change those roles. An externally opened Issue or PR is adopted through the same lifecycle rather than recreated. Checks are evidence, Project fields are portfolio/coordination metadata, and direct user instructions provide intent, authority, or context; none is a fifth GitHub ledger input surface.
@@ -69,7 +71,7 @@ branch
   -> merge
 ```
 
-`Ready for Review` is a GitHub PR state transition, not a separate lifecycle operation. Active work is responsible for checking intended scope, canonical state, validation, acceptance criteria when Issue-backed, and material feedback before leaving Draft. The transition itself requires explicit user intent or clear repository delegation.
+`Ready for Review` is a GitHub PR state transition, not a separate lifecycle operation. Active work is responsible for checking intended scope, canonical state, validation, acceptance criteria when Issue-backed, contract reconciliation when applicable, and material feedback before leaving Draft. The transition itself requires explicit user intent or clear repository delegation.
 
 Review is an available operation, not a mandatory lifecycle stage. It is required only when repository policy or explicit user intent requires it. The bracketed review and feedback steps are optional and may repeat. PR feedback can also arrive before or without formal review, at any point after the PR exists. Handling feedback does not imply a code fix: the correct outcome may be a reply, clarification, evidence-based no-change disposition, correction, blocker, or decision request. After feedback handling, continue to active work when more implementation/completion work remains, return to review only when policy or user intent requires another review, continue discussion when a decision is pending, or leave the PR at its next separately authorized finalizing action.
 
@@ -104,7 +106,9 @@ An executable Issue should answer four questions:
 3. **Context** — what information or references are needed to execute safely?
 4. **Constraints** — what boundaries or non-goals matter?
 
-Only Objective and Acceptance Criteria are required by the current Agent Task Issue Form. Context, constraints, and dependencies are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
+Only Objective and Acceptance Criteria are required by the current Agent Task Issue Form. Context, constraints, dependencies, and `Contract Impact` are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
+
+Use `Contract Impact` only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including one the task intentionally establishes. Name that source and describe only the material `ADDED` / `MODIFIED` / `REMOVED` delta, plus an unchanged boundary when that distinction prevents ambiguity. Use `None` or leave it blank for implementation-only work or when no authoritative source exists; do not invent a contract document solely for this field. The Issue records the requested or accepted delta; current contract truth still belongs in the authoritative project source and is not changed merely because an Issue direction is accepted.
 
 Issue comments may clarify, constrain, or make decisions about executable work, but they do not become a second task-definition store. When a current comment materially changes the objective, acceptance criteria, constraints, blocker, or Issue-only execution state, reflect the resulting durable state in the Issue during authorized write work. Keep the comment as provenance/history; do not copy it verbatim just for bookkeeping.
 
@@ -128,7 +132,7 @@ These are semantic responsibilities, not a required heading schema. An initiativ
 
 Commitment is a decision, not a readiness test. It is reasonable to accept a direction while execution-local unknowns remain, provided those unknowns do not invalidate the decision being relied upon. When contradictory evidence does invalidate an accepted direction, record the evidence and known child work that may need follow-up; reopen or replace the accepted direction only with the authority required to change that decision. Without that authority, leave reconsideration as the next action and do not continue downstream reliance when doing so would be unsafe.
 
-Decomposition also does not complete the parent initiative. Child Issues should be independently executable and reviewable, while the parent may remain open as the durable product/problem acceptance surface across multiple deliveries.
+Decomposition also does not complete the parent initiative. Child Issues should be independently executable and reviewable, while the parent may remain open as the durable product/problem acceptance surface across multiple deliveries. Parent initiatives may record child relationships, dependencies, accepted direction, and remaining parent-level acceptance, but should not mirror child open/closed state or maintain a second child-completion checklist when GitHub already owns that state on each child Issue.
 
 When exploratory research or design itself requires repository changes before the parent should close, give that concrete repository-changing slice its own executable Issue/PR surface. Do not use a closing link to the parent initiative when merging the slice would not actually complete the parent lifecycle.
 
@@ -144,7 +148,7 @@ For executable repository changes that do not already have a PR execution surfac
 4. Make the first meaningful commit.
 5. Open a Draft PR and use its body as the single execution snapshot.
 6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
-7. Record validation before leaving Draft or finalizing the work.
+7. Record validation and keep `Contract Reconciliation` accurate before leaving Draft or finalizing the work.
 
 If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR contract during authorized write work. If write authority is unavailable, report the missing contract rather than creating a parallel ledger.
 
@@ -166,12 +170,21 @@ What is done, what remains, and the exact next action if unfinished.
 
 Tests / checks run and their results. Note anything important not run and why.
 
+## Contract Reconciliation
+
+No durable contract change.
+<!-- OR while unfinished: Pending: <authoritative source(s)> -->
+<!-- OR when reconciled: Updated: <authoritative source(s)> -->
+<!-- OR when durable behavior changes but no authoritative source exists: No authoritative contract source to reconcile. -->
+
 ## Notes
 
 Optional: limitations, risks, follow-ups, material decisions, or review focus.
 ```
 
 Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain one or more closing links. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or closing-linked Issue acceptance criteria unless needed to explain current state.
+
+`Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
 A repository-changing exploratory slice follows the same PR execution contract once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
@@ -194,7 +207,7 @@ Comments preserve useful communication, input, and history; they do not become a
 Recovery is canonical-first and trigger-based. The goal is to load only enough context to determine the next safe action.
 
 1. If an executable PR exists, read its metadata/body first. For Issue-only executable or exploratory work, read the Issue canonical state.
-2. Use `## Tracking` to identify the tracking source. For Issue-backed executable work, read every closing-linked Issue's objective/acceptance criteria whenever the selected operation will continue implementation or judge intended scope/completion. Inspect Issue comments only when the current operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; do not scan comment history merely to discover possible task changes. For exploratory initiative work, recover the durable problem/current understanding, explicit accepted decisions if any, material open questions, remaining parent-level acceptance when relevant, and the next useful initiative-level step. For standalone work, use the PR title/body as the task definition.
+2. Use `## Tracking` to identify the tracking source. For Issue-backed executable work, read every closing-linked Issue's objective/acceptance criteria and any explicit `Contract Impact` that materially constrains implementation or completion whenever the selected operation will continue implementation or judge intended scope/completion. Inspect Issue comments only when the current operation is triggered by or explicitly references them, canonical state points to a pending comment/decision, or user intent/repository policy requires them; do not scan comment history merely to discover possible task changes. For exploratory initiative work, recover the durable problem/current understanding, explicit accepted decisions if any, material open questions, remaining parent-level acceptance when relevant, and the next useful initiative-level step. For standalone work, use the PR title/body as the task definition.
 3. When repository behavior matters, read changed filenames/stats, then selected patches, then surrounding source only where needed.
 4. Read check summaries only when validation affects the current operation; expand failed jobs/steps only for diagnosis. Read current PR feedback — unresolved review threads, relevant submitted reviews or PR conversation comments, and feedback-related blockers in canonical current state — only when relevant to the selected operation.
 5. Read older or resolved Issue/PR discussion only if current canonical state and current input/evidence cannot explain a material decision or discrepancy.
@@ -213,13 +226,14 @@ Before moving a PR out of Draft:
 - a closing link does not falsely imply completion of a parent initiative that still owns unresolved product/problem acceptance,
 - `Current State` accurately represents the work, including any material feedback blocker that changes execution state,
 - appropriate validation is recorded,
+- `Contract Reconciliation` uses a terminal state that matches evidence: `No durable contract change.`, `No authoritative contract source to reconcile.`, or `Updated: <source(s)>`; `Pending:` is not Ready,
 - PR feedback blocks leaving Draft only when it remains actionable and material to intended scope or repository policy,
 - an exact next action is present if work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
 This is a transition check within active work, not a separate lifecycle path. Move Draft to Ready for Review only with explicit user intent or clear repository delegation. An already non-Draft PR never cycles through this check merely because feedback was handled; continue with the operation required by repository policy or user intent.
 
-The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, plus `Current State` and `Validation`. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether an accepted direction is correct, or whether routine progress has been logged.
+The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, and the PR body must contain actual `## Current State`, `## Validation`, and `## Contract Reconciliation` headings. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether acceptance checkboxes are complete, whether a contract reconciliation claim is semantically correct, whether an accepted direction is correct, or whether routine progress has been logged.
 
 The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
@@ -245,7 +259,7 @@ This model deliberately avoids a generic input-state database or routine feedbac
 
 ## 9. Completion
 
-For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links.
+For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance contract against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure its authoritative source was updated and the PR's `Contract Reconciliation` names it.
 
 For exploratory initiatives, decomposition or delivery of one child does not by itself imply completion. Close the parent when its durable product/problem acceptance has been satisfied or the initiative is explicitly abandoned/superseded according to repository practice.
 

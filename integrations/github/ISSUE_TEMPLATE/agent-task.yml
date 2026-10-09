@@ -28,6 +28,23 @@ body:
       required: true
 
   - type: textarea
+    id: contract-impact
+    attributes:
+      label: Contract Impact
+      description: Optional. If this task intentionally changes a durable product or architecture contract with an authoritative project source, including one this task establishes, name the source and describe only the material delta. Leave blank or write None for implementation-only work or when no authoritative source exists; do not invent one solely for this field.
+      placeholder: |
+        None
+
+        Or, when applicable:
+        Owner: `docs/...`
+        ADDED / MODIFIED / REMOVED:
+        - ...
+        UNCHANGED boundary worth preserving:
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
     id: context
     attributes:
       label: Context
