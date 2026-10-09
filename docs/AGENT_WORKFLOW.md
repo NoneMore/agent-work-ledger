@@ -71,7 +71,7 @@ branch
   -> merge
 ```
 
-`Ready for Review` is a GitHub PR state transition, not a separate lifecycle operation. Active work is responsible for checking intended scope, canonical state, validation, acceptance criteria when Issue-backed, contract reconciliation when applicable, and material feedback before leaving Draft. The transition itself requires explicit user intent or clear repository delegation.
+`Ready for Review` is a GitHub PR state transition, not a separate lifecycle operation. Active work is responsible for checking intended scope, canonical state, validation, acceptance criteria when Issue-backed, contract reconciliation when applicable, and material feedback before leaving Draft. The transition itself requires explicit user intent or clear repository delegation. Do not copy Draft/Ready, review, approval, or merge state into `Current State`; GitHub owns those lifecycle facts while the PR body owns repository execution state.
 
 Review is an available operation, not a mandatory lifecycle stage. It is required only when repository policy or explicit user intent requires it. The bracketed review and feedback steps are optional and may repeat. PR feedback can also arrive before or without formal review, at any point after the PR exists. Handling feedback does not imply a code fix: the correct outcome may be a reply, clarification, evidence-based no-change disposition, correction, blocker, or decision request. After feedback handling, continue to active work when more implementation/completion work remains, return to review only when policy or user intent requires another review, continue discussion when a decision is pending, or leave the PR at its next separately authorized finalizing action.
 
@@ -164,7 +164,7 @@ Closes #123
 
 ## Current State
 
-What is done, what remains, and the exact next action if unfinished.
+What repository-execution work is done, what remains, and the exact next repository-execution action if unfinished. Do not duplicate GitHub PR lifecycle state such as Ready, review, approval, or merge.
 
 ## Validation
 
@@ -224,11 +224,11 @@ Before moving a PR out of Draft:
 - the selected tracking mode still fits the work; promote standalone work first if it has developed independent tracking value,
 - every closing-linked executable Issue's acceptance criteria are satisfied or incomplete items are explicit for Issue-backed work,
 - a closing link does not falsely imply completion of a parent initiative that still owns unresolved product/problem acceptance,
-- `Current State` accurately represents the work, including any material feedback blocker that changes execution state,
+- `Current State` accurately represents the repository-execution work, including any material feedback blocker that changes execution state, without copying PR lifecycle state,
 - appropriate validation is recorded,
 - `Contract Reconciliation` uses a terminal state that matches evidence: `No durable contract change.`, `No authoritative contract source to reconcile.`, or `Updated: <source(s)>`; `Pending:` is not Ready,
 - PR feedback blocks leaving Draft only when it remains actionable and material to intended scope or repository policy,
-- an exact next action is present if work is intentionally incomplete,
+- an exact next repository-execution action is present if repository work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
 
 This is a transition check within active work, not a separate lifecycle path. Move Draft to Ready for Review only with explicit user intent or clear repository delegation. An already non-Draft PR never cycles through this check merely because feedback was handled; continue with the operation required by repository policy or user intent.

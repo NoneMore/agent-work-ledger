@@ -37,7 +37,7 @@ For executable Issues, a **Contract Impact** note is optional and should be used
 Every repository-changing PR must contain:
 
 - `## Tracking`: exactly one mode — Issue closing link(s), or `Standalone maintenance: <brief reason or scope>`,
-- `Current State`: done, remaining work, and exact next action if unfinished,
+- `Current State`: done, remaining repository-execution work, and exact next repository-execution action if unfinished; do not duplicate GitHub PR lifecycle state such as Ready, review, approval, or merge,
 - `Validation`: checks actually run/results, including important checks not run,
 - `Contract Reconciliation`: current reconciliation state — `No durable contract change.`, `No authoritative contract source to reconcile.`, `Pending: <source(s)>` while known source(s) still need updates, or `Updated: <source(s)>` after they are reconciled.
 
