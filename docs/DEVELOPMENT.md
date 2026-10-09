@@ -27,9 +27,21 @@ Changes that affect only this repository's CI, PR template, Issue intake, or oth
 
 ## Validation
 
-For deployment-structure changes, validate at least:
+Run the release-hardening suite before release-oriented changes:
 
-1. `install/install.sh --profile skill-only` installs only the Skill.
-2. `--profile core` installs only the Skill and does not create or modify consumer `AGENTS.md`.
-3. `--profile github` additionally installs files from `integrations/github/` without creating or modifying consumer `AGENTS.md`.
-4. documentation contains no stale deployment-source paths or claims that Agent Work Ledger requires consumer workspace instructions.
+```bash
+./tests/release-checks.sh
+```
+
+The suite requires `shellcheck`, Python 3, and PyYAML. CI installs those dependencies and runs the suite on pull requests and pushes to `main`.
+
+It covers:
+
+1. installer profiles, preservation of consumer `AGENTS.md`, legacy-policy warnings, and GitHub artifact installation;
+2. mocked GitHub CLI ruleset repository inference plus create/update behavior;
+3. valid and invalid PR-body fixtures against the deployable governance workflow's actual validation script;
+4. byte-for-byte parity between deployable GitHub integration files and this repository's dogfood copies;
+5. documentation source-boundary assertions for the removed consumer `AGENTS.md` policy path;
+6. shell syntax and ShellCheck plus JSON/YAML syntax parsing.
+
+For deployment-structure changes, also confirm the resulting installed artifact set matches the intended profile semantics; the installer fixtures exercise the standard `core`, `skill-only`, and `github` paths automatically.
