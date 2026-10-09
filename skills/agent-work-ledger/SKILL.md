@@ -7,7 +7,7 @@ user-invocable: true
 
 # Agent Work Ledger
 
-This Skill is the authoritative Agent Work Ledger workflow. Do not load `docs/AGENT_WORKFLOW.md` normally; use it for workflow changes or unresolved policy ambiguity.
+This Skill is the authoritative Agent Work Ledger workflow.
 
 ## Shared protocol
 
