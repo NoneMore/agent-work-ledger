@@ -1,6 +1,6 @@
 # Installation
 
-Agent Work Ledger is repository policy and Agent Skill content, not a package-manager dependency. Installation copies selected product artifacts into a target repository; it does not copy this repository's own development configuration.
+Agent Work Ledger is an explicitly invoked Agent Skill with an optional GitHub integration, not a package-manager dependency. Installation copies selected product artifacts into a target repository; it does not copy this repository's own development configuration or create consumer workspace instructions.
 
 ## Profiles
 
@@ -12,18 +12,19 @@ Run from a checkout of this repository:
 
 Available profiles:
 
-- `core` installs the reusable workspace policy as `AGENTS.md` and the Skill as `.agents/skills/agent-work-ledger/`.
+- `core` installs `.agents/skills/agent-work-ledger/`.
 - `github` installs `core` plus the executable-task and exploratory-initiative Issue Forms, PR template, governance Action, and versioned ruleset configuration.
-- `skill-only` installs only `.agents/skills/agent-work-ledger/`.
+- `skill-only` is a compatibility alias for `core` and also installs only `.agents/skills/agent-work-ledger/`.
 
-The installer refuses to overwrite an existing target `AGENTS.md`. When a repository already has workspace instructions, merge `core/AGENTS.md` manually instead of replacing local rules.
+The installer does not create, overwrite, or merge a target `AGENTS.md`. Agent Work Ledger workflow policy lives in the Skill package and enters agent context through explicit Skill invocation.
+
+When upgrading from a version that installed Agent Work Ledger policy into `AGENTS.md`, the installer detects the legacy policy signature and prints a warning without modifying the file. Remove only the legacy Agent Work Ledger policy manually if it is no longer needed, preserving any repository-local instructions.
 
 ## Source and deployed paths
 
 | Purpose | Product source | Target path |
 | --- | --- | --- |
-| Workspace policy | `core/AGENTS.md` | `AGENTS.md` |
-| Agent Skill | `skills/agent-work-ledger/` | `.agents/skills/agent-work-ledger/` |
+| Agent Skill and workflow policy | `skills/agent-work-ledger/` | `.agents/skills/agent-work-ledger/` |
 | Executable task Issue Form | `integrations/github/ISSUE_TEMPLATE/agent-task.yml` | `.github/ISSUE_TEMPLATE/agent-task.yml` |
 | Exploratory initiative Issue Form | `integrations/github/ISSUE_TEMPLATE/initiative.yml` | `.github/ISSUE_TEMPLATE/initiative.yml` |
 | PR template | `integrations/github/pull_request_template.md` | `.github/pull_request_template.md` |

@@ -2,7 +2,7 @@
 
 This repository uses GitHub Issues and Pull Requests as a durable work ledger without turning routine execution into paperwork.
 
-This document is the detailed human/reference description of the workflow. Agents should not load it on the normal execution path: `AGENTS.md` carries workspace-wide invariants, while an explicitly invoked `skills/agent-work-ledger/SKILL.md` routes to one small lifecycle reference. Consult this document when changing the workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by those smaller surfaces.
+This document is the detailed human/reference description of the workflow. Agents should not load it on the normal execution path: the explicitly invoked `skills/agent-work-ledger/SKILL.md` owns the shared invariants, recovery policy, lifecycle routing, and operation-specific references. Consult this document when changing the workflow, resolving policy ambiguity, or when a repository-specific detail is not covered by those smaller surfaces.
 
 ## 1. System of record
 
@@ -281,12 +281,11 @@ Keep Project automation conservative. The workflow should make the normal path c
 
 ## 11. Operational Skill and context loading
 
-[`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the reusable shaping and execution layer for compatible Agent Skills runtimes.
+[`../skills/agent-work-ledger/SKILL.md`](../skills/agent-work-ledger/SKILL.md) is the authoritative reusable shaping and execution workflow for compatible Agent Skills runtimes.
 
 The separation is intentional:
 
-- `AGENTS.md` owns workspace-wide invariants and the progressive recovery/context-expansion policy.
-- `SKILL.md` owns lifecycle routing plus behavioral, authority, and stop boundaries once the Skill is explicitly invoked.
+- `SKILL.md` owns the shared workflow invariants, progressive recovery/context-expansion policy, lifecycle routing, and shared authority boundaries once explicitly invoked.
 - `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
 - `skills/agent-work-ledger/references/` contains only path-specific action deltas; load exactly one unless the operation changes.
 - GitHub tools / APIs provide live Issue, PR, repository, check, and feedback state.
@@ -303,4 +302,4 @@ canonical work surface
   -> history only on discrepancy
 ```
 
-The Skill should not cache task state, restate `AGENTS.md`, mechanically infer semantic readiness, or preload evidence for later filtering. Once invoked, it selects the operation and lifecycle reference; evidence then expands according to the `AGENTS.md` recovery budget when the current operation has a concrete evidence need.
+The Skill should not cache task state, mechanically infer semantic readiness, or preload evidence for later filtering. Once invoked, it applies its shared protocol, selects the operation and lifecycle reference, and expands evidence according to its recovery budget when the current operation has a concrete evidence need.
