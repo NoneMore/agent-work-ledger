@@ -47,7 +47,7 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 ## Core workflow
 
 - **Issues define independently tracked work** — either executable deliverables with a stable objective/acceptance contract, or exploratory initiatives whose problem/decision lifecycle must remain durable while direction and decomposition evolve.
-- **Pull Requests track repository execution** — current state and validation for every repository change, including standalone maintenance that needs no separate Issue.
+- **Pull Requests track repository execution and reconciliation** — current state, validation, and where any delivered durable product/architecture contract change was reconciled for every repository change, including standalone maintenance that needs no separate Issue.
 - **Comments and reviews carry durable input and feedback** — use Issue comments for discussion/input around Issue-defined work and PR comments/reviews for PR feedback; do not make them a second current-state store.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
 
@@ -60,7 +60,7 @@ PR-only:      branch -> first meaningful commit -> Draft PR -> work / validation
 
 Exploratory initiatives instead preserve current understanding, evidence, open questions, candidate versus accepted directions, and the next uncertainty-reducing step. Commitment is an explicit semantic decision rather than a mechanically inferred readiness test. An initiative may decompose into executable child Issues and remain open as the parent product/problem acceptance surface.
 
-The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State` and `Validation` stay accurate as material state changes. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
+The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Use `No durable contract change.` for implementation-only work; when a delivery changes a durable product or architecture contract, update the authoritative project source and name it in `Contract Reconciliation`. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle.
 
@@ -74,10 +74,10 @@ Once invoked, the Skill infers the lifecycle operation and loads only the matchi
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria.
+- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta.
 - `ISSUE_TEMPLATE/initiative.yml` — exploratory-initiative intake with only the durable problem/opportunity required; evidence, questions, directions, related work, next shaping step, and authority constraints may evolve over time.
-- `pull_request_template.md` — tracking, current-state, and validation record.
-- `workflows/agent-governance.yml` — deterministic tracking/resumability checks.
+- `pull_request_template.md` — tracking, current-state, validation, and contract-reconciliation record.
+- `workflows/agent-governance.yml` — deterministic tracking/resumability checks, including structural presence of contract reconciliation.
 - `rulesets/main.json` — REST-compatible main-branch enforcement configuration.
 
 The versioned ruleset requires PR-based changes and the `Validate Issue linkage and resumability` status check when applied. `install/install.sh --profile github --apply-ruleset` applies it through `gh api`, creating the `Main branch` ruleset when absent and updating it when present. Without that flag, the JSON remains a reproducible, auditable configuration source that can be applied later.
@@ -100,7 +100,7 @@ Add `Priority`, `Iteration`, or other fields only when the project genuinely ben
 2. Executable Issues should represent independently reviewable deliverables; exploratory initiatives may span decisions and multiple executable child Issues while retaining parent-level acceptance.
 3. Do not mechanically infer semantic readiness or turn candidate directions into implementation requirements before they are explicitly accepted.
 4. Every repository change goes through a PR; Issue linkage is conditional, not universal.
-5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue.
+5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue; authoritative project sources own current durable product/architecture contract truth when such sources exist.
 6. Routine progress should not require comments or duplicated status updates.
 7. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, and next actions; do not persist hidden chain-of-thought.
 8. Keep deployable product sources separate from repository-development configuration.
