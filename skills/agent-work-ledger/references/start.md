@@ -16,7 +16,7 @@ For standalone maintenance:
 2. Normally create `agent/maintenance-<short-slug>`.
 3. Make the first meaningful commit, then open a Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking`.
 
-Initialize `Current State`, `Validation`, and `Contract Reconciliation`; switch to `resume` when implementation continues. Use `Pending: <source(s)>` when known authoritative source(s) still need reconciliation, `No authoritative contract source to reconcile.` when durable behavior changes but no such source exists and the task does not establish one, and `No durable contract change.` otherwise.
+Initialize `Current State`, `Validation`, and `Contract Reconciliation` using the applicable state defined in `AGENTS.md`; use `Pending: <source(s)>` when a known source still needs reconciliation. Switch to `resume` when implementation continues.
 
 ## Issue-only executable work
 
