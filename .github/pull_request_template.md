@@ -5,7 +5,7 @@ Closes #<!-- issue number -->
 
 ## Current State
 
-<!-- What is done, what remains, and the exact next action if unfinished? Replace superseded state; do not append routine progress history. -->
+<!-- What repository-execution work is done, what remains, and the exact next repository-execution action if unfinished? Do not duplicate GitHub PR lifecycle state such as Ready, review, approval, or merge. Replace superseded state; do not append routine progress history. -->
 
 ## Validation
 
