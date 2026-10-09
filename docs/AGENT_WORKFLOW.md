@@ -116,7 +116,7 @@ Once repository execution for that deliverable moves into a PR, do not maintain 
 
 ### Exploratory initiatives
 
-Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Create or adopt this Initiative surface only when durable tracking is explicitly requested or required by repository policy; otherwise do not manufacture tracking solely because shaping is occurring. Do not force this work into a premature Objective/Acceptance Criteria contract just to make it look executable.
+Use an exploratory initiative when the durable problem, product outcome, or acceptance lifecycle is worth tracking but the solution, accepted direction, or executable decomposition is not yet stable. Create or adopt this Initiative surface only when durable tracking is explicitly requested or required by repository policy; otherwise do not manufacture tracking solely because shaping is occurring. Do not force premature Objective/Acceptance Criteria onto this work just to make it look executable.
 
 The initiative should preserve only durable state useful to the next executor or decision-maker, for example:
 
@@ -150,7 +150,7 @@ For executable repository changes that do not already have a PR execution surfac
 6. Update the PR body when execution state materially changes, including promotion from standalone to Issue-backed tracking.
 7. Record validation and keep `Contract Reconciliation` accurate before leaving Draft or finalizing the work.
 
-If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR contract during authorized write work. If write authority is unavailable, report the missing contract rather than creating a parallel ledger.
+If work arrives as an existing PR, do not recreate its branch or PR merely to fit the normal creation sequence. Treat that PR as the execution artifact, infer or establish the correct tracking mode, and normalize the minimum PR snapshot during authorized write work. If write authority is unavailable, report the missing structure rather than creating a parallel ledger.
 
 Branch naming is a creation convention and is not used to infer current tracking mode. The `## Tracking` section is the canonical machine-readable tracking declaration.
 
@@ -186,7 +186,7 @@ Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain
 
 `Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
-A repository-changing exploratory slice follows the same PR execution contract once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
+A repository-changing exploratory slice uses the same PR execution workflow once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
 ## 5. Comments are for exceptions
 
@@ -233,7 +233,7 @@ Before moving a PR out of Draft:
 
 This is a transition check within active work, not a separate lifecycle path. Move Draft to Ready for Review only with explicit user intent or clear repository delegation. An already non-Draft PR never cycles through this check merely because feedback was handled; continue with the operation required by repository policy or user intent.
 
-The governance workflow checks only the minimum structural contract: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, and the PR body must contain actual `## Current State`, `## Validation`, and `## Contract Reconciliation` headings. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether acceptance checkboxes are complete, whether a contract reconciliation claim is semantically correct, whether an accepted direction is correct, or whether routine progress has been logged.
+The governance workflow checks only the minimum structural requirements: `## Tracking` must contain either an Issue closing link or an explicit standalone-maintenance declaration, and the PR body must contain actual `## Current State`, `## Validation`, and `## Contract Reconciliation` headings. Tracking-like text outside `## Tracking` is ignored. The workflow intentionally does not attempt to decide whether an Issue is semantically ready, whether acceptance checkboxes are complete, whether a contract reconciliation claim is semantically correct, whether an accepted direction is correct, or whether routine progress has been logged.
 
 The versioned repository ruleset at [`.github/rulesets/main.json`](../.github/rulesets/main.json) is the enforcement counterpart for `main`: when applied in GitHub, it requires changes to go through a Pull Request and requires the `Validate Issue linkage and resumability` status check before merge. The check name is retained for live-ruleset compatibility even though the check now accepts both tracking modes. Committing the JSON does not activate repository settings by itself; an administrator must import or apply the ruleset, and the live ruleset should remain aligned with the versioned file.
 
@@ -259,7 +259,7 @@ This model deliberately avoids a generic input-state database or routine feedbac
 
 ## 9. Completion
 
-For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance contract against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure its authoritative source was updated and the PR's `Contract Reconciliation` names it.
+For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance criteria against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure its authoritative source was updated and the PR's `Contract Reconciliation` names it.
 
 For exploratory initiatives, decomposition or delivery of one child does not by itself imply completion. Close the parent when its durable product/problem acceptance has been satisfied or the initiative is explicitly abandoned/superseded according to repository practice.
 
@@ -289,7 +289,7 @@ The separation is intentional:
 - `SKILL.md` frontmatter carries portable user-invocation controls for runtimes that support them; `skills/agent-work-ledger/agents/openai.yaml` carries the OpenAI/Codex implicit-invocation policy.
 - `skills/agent-work-ledger/references/` contains only path-specific action deltas; load exactly one unless the operation changes.
 - GitHub tools / APIs provide live Issue, PR, repository, check, and feedback state.
-- The governance Action enforces only the small subset of the contract that is deterministic and machine-checkable.
+- The governance Action enforces only the small subset of the workflow policy that is deterministic and machine-checkable.
 - This workflow document is detailed reference material, not a routine agent prompt dependency.
 
 The retrieval model is deliberately trigger-based:

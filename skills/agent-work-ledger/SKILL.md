@@ -32,7 +32,7 @@ Standalone maintenance is a tracking choice, not a risk class. If it later needs
 
 For executable Issues, a **Contract Impact** note is optional and should be used only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including a source the task intentionally establishes. Name that source and describe only the material delta. Use `None` or omit the note for implementation-only work or when no authoritative source exists; do not invent a contract document solely to populate this field. The Issue records the requested or accepted change, not a replacement copy of current contract truth.
 
-### Minimum PR contract
+### Minimum PR snapshot
 
 Every repository-changing PR must contain:
 
@@ -43,7 +43,7 @@ Every repository-changing PR must contain:
 
 `Pending:` is valid only for unfinished work. Before leaving Draft, use a terminal reconciliation state that matches repository evidence.
 
-Before stopping or handing off unfinished work, make the canonical execution surface sufficient to resume without prior chat. Before completing Issue-backed work, reconcile the Issue's acceptance contract against the delivered result; do not treat unchecked or stale criteria as completed merely because the repository change exists.
+Before stopping or handing off unfinished work, make the canonical execution surface sufficient to resume without prior chat. Before completing Issue-backed work, reconcile the Issue's acceptance criteria against the delivered result; do not treat unchecked or stale criteria as completed merely because the repository change exists.
 
 ### Recovery budget
 
