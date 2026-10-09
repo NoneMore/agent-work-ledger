@@ -18,6 +18,8 @@ Available profiles:
 
 The installer does not create, overwrite, or merge a target `AGENTS.md`. Agent Work Ledger workflow policy lives in the Skill package and enters agent context through explicit Skill invocation.
 
+When upgrading from a version that installed Agent Work Ledger policy into `AGENTS.md`, the installer detects the legacy policy signature and prints a warning without modifying the file. Remove only the legacy Agent Work Ledger policy manually if it is no longer needed, preserving any repository-local instructions.
+
 ## Source and deployed paths
 
 | Purpose | Product source | Target path |
