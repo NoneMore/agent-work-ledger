@@ -6,8 +6,7 @@ This repository deliberately separates reusable product artifacts from the confi
 
 | Area | Owns | Deployable? |
 | --- | --- | --- |
-| `core/` | reusable workspace policy | yes |
-| `skills/agent-work-ledger/` | reusable Agent Skill package | yes |
+| `skills/agent-work-ledger/` | reusable Agent Skill package and workflow policy | yes |
 | `integrations/github/` | reusable GitHub platform integration | yes |
 | `install/` | deployment mapping/tooling | no; it performs deployment |
 | `docs/` | product/development reference | no |
@@ -18,8 +17,7 @@ Root `.github/` may dogfood behavior also shipped from `integrations/github/`, b
 
 ## Product changes
 
-- Workflow-policy changes belong in `core/AGENTS.md` and should be reflected in `docs/AGENT_WORKFLOW.md` when human/reference behavior changes.
-- Skill routing or lifecycle action changes belong in `skills/agent-work-ledger/`.
+- Workflow-policy, routing, or lifecycle action changes belong in `skills/agent-work-ledger/` and should be reflected in `docs/AGENT_WORKFLOW.md` when human/reference behavior changes.
 - GitHub template, governance, or ruleset changes intended for consumers belong in `integrations/github/`.
 - Source-path changes must update `install/install.sh` and `docs/INSTALLATION.md` in the same PR.
 
@@ -32,7 +30,6 @@ Changes that affect only this repository's CI, PR template, Issue intake, or oth
 For deployment-structure changes, validate at least:
 
 1. `install/install.sh --profile skill-only` installs only the Skill.
-2. `--profile core` installs the Skill plus `AGENTS.md` from `core/AGENTS.md`.
-3. `--profile github` additionally installs files from `integrations/github/`.
-4. an existing target `AGENTS.md` is not silently overwritten.
-5. documentation contains no stale deployment-source paths.
+2. `--profile core` installs only the Skill and does not create or modify consumer `AGENTS.md`.
+3. `--profile github` additionally installs files from `integrations/github/` without creating or modifying consumer `AGENTS.md`.
+4. documentation contains no stale deployment-source paths or claims that Agent Work Ledger requires consumer workspace instructions.
