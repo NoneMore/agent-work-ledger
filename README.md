@@ -30,7 +30,7 @@ Profiles:
 - `github` installs `core` plus the GitHub integration.
 - `skill-only` is a compatibility alias that also installs only the Agent Skill.
 
-Agent Work Ledger does not install or modify consumer `AGENTS.md` files. Its workflow contract enters agent context through explicit Skill invocation rather than an always-loaded workspace policy.
+Agent Work Ledger does not install or modify consumer `AGENTS.md` files. Its workflow policy enters agent context through explicit Skill invocation rather than an always-loaded workspace policy.
 
 For a full GitHub installation, the installer can also create or update the repository ruleset through authenticated GitHub CLI instead of requiring a separate settings step:
 
@@ -45,7 +45,7 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 
 ## Core workflow
 
-- **Issues define independently tracked work** — either executable deliverables with a stable objective/acceptance contract, or exploratory initiatives whose problem/decision lifecycle must remain durable while direction and decomposition evolve.
+- **Issues define independently tracked work** — either executable deliverables with a stable objective and acceptance criteria, or exploratory initiatives whose problem/decision lifecycle must remain durable while direction and decomposition evolve.
 - **Pull Requests track repository execution and reconciliation** — current state, validation, and contract-reconciliation status for every repository change, including standalone maintenance that needs no separate Issue.
 - **Comments and reviews carry durable input and feedback** — use Issue comments for discussion/input around Issue-defined work and PR comments/reviews for PR feedback; do not make them a second current-state store.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
@@ -65,7 +65,7 @@ See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecy
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the complete reusable shaping and execution contract as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the complete reusable shaping and execution workflow policy as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
 
 Once invoked, the Skill applies its shared workflow policy, infers the lifecycle operation, and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/). Live GitHub state is recovered progressively rather than preloading full diffs, complete CI logs, or entire comment histories.
 

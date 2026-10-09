@@ -1,5 +1,5 @@
 name: Executable Agent Task
-description: Track an independently reviewable deliverable with a stable objective and acceptance contract.
+description: Track an independently reviewable deliverable with a stable objective and acceptance criteria.
 title: "[Task] "
 body:
   - type: markdown
