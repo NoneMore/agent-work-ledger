@@ -59,7 +59,7 @@ PR-only:      branch -> first meaningful commit -> Draft PR -> work / validation
 
 Exploratory initiatives instead preserve current understanding, evidence, open questions, candidate versus accepted directions, and the next uncertainty-reducing step. Commitment is an explicit semantic decision rather than a mechanically inferred readiness test. An initiative may decompose into executable child Issues and remain open as the parent product/problem acceptance surface.
 
-The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Reconciliation records whether durable contract work is pending, reconciled, has no authoritative source, or does not exist; a pending reconciliation is unfinished and not Ready. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
+The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Reconciliation records whether durable contract work is pending, reconciled, has no designated contract source, or does not exist; a pending reconciliation is unfinished and not Ready. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
 
 See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle.
 
@@ -73,7 +73,7 @@ Once invoked, the Skill applies its shared workflow policy, infers the lifecycle
 
 Deployable GitHub configuration lives under [`integrations/github/`](./integrations/github/):
 
-- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta when an authoritative contract source exists or is being established.
+- `ISSUE_TEMPLATE/agent-task.yml` — executable-task intake with required objective and acceptance criteria plus optional durable `Contract Impact` delta; when the user or established project policy has already designated a contract source, the Issue may name it.
 - `ISSUE_TEMPLATE/initiative.yml` — exploratory-initiative intake with only the durable problem/opportunity required; evidence, questions, directions, related work, next shaping step, and authority constraints may evolve over time.
 - `pull_request_template.md` — tracking, current-state, validation, and contract-reconciliation record.
 - `workflows/agent-governance.yml` — deterministic tracking/resumability checks, including structural presence of contract reconciliation.
@@ -99,7 +99,7 @@ Add `Priority`, `Iteration`, or other fields only when the project genuinely ben
 2. Executable Issues should represent independently reviewable deliverables; exploratory initiatives may span decisions and multiple executable child Issues while retaining parent-level acceptance.
 3. Do not mechanically infer semantic readiness or turn candidate directions into implementation requirements before they are explicitly accepted.
 4. Every repository change goes through a PR; Issue linkage is conditional, not universal.
-5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue; authoritative project sources own current durable product/architecture contract truth when such sources exist.
+5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue; contract sources designated by the user or established project policy own current durable product/architecture contract truth.
 6. Routine progress should not require comments or duplicated status updates.
 7. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, and next actions; do not persist hidden chain-of-thought.
 8. Keep deployable product sources separate from repository-development configuration.
