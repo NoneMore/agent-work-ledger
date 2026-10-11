@@ -19,7 +19,7 @@ Each GitHub surface has one primary responsibility:
 
 Avoid maintaining the same status in multiple places. Once an executable repository change has a PR, execution state belongs in the PR body rather than being duplicated into an Issue or comments. Exploratory initiative state remains on the parent Issue because that Issue owns the durable problem/decision lifecycle rather than a particular repository change.
 
-When a project has an authoritative durable product or architecture contract, that project-owned source remains the owner of current contract truth. An executable Issue may describe a proposed or accepted durable delta, and a PR records where the delivered change was reconciled, but neither should become a duplicate full-contract store. Code and tests are implementation/evidence surfaces unless the project explicitly makes them authoritative for that contract.
+When the user or established project policy designates a durable product or architecture contract source, that source remains the owner of current contract truth. An executable Issue may describe a proposed or accepted durable delta, and a PR records where the delivered change was reconciled, but neither should become a duplicate full-contract store. The ledger may reference or modify a designated source when authorized, but it does not create or designate a contract persistence surface merely as a tracking or reconciliation side effect. Code and tests are implementation/evidence surfaces unless the project explicitly makes them authoritative for that contract.
 
 The ledger has four inbound GitHub shapes that matter to lifecycle handling: a new Issue, an Issue comment, an existing/new PR, and PR feedback through conversation comments or review surfaces. They do not form a separate generic `external input` lifecycle. The surface gives the input its default role; its effect determines whether task definition, shaping state, execution state, feedback disposition, blocker state, or authority actually changes.
 
@@ -108,7 +108,7 @@ An executable Issue should answer four questions:
 
 Only Objective and Acceptance Criteria are required by the current Agent Task Issue Form. Context, constraints, dependencies, and `Contract Impact` are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
 
-Use `Contract Impact` only when the task intentionally changes a durable product or architecture contract with an authoritative project source, including one the task intentionally establishes. Name that source and describe only the material `ADDED` / `MODIFIED` / `REMOVED` delta, plus an unchanged boundary when that distinction prevents ambiguity. Use `None` or leave it blank for implementation-only work or when no authoritative source exists; do not invent a contract document solely for this field. The Issue records the requested or accepted delta; current contract truth still belongs in the authoritative project source and is not changed merely because an Issue direction is accepted.
+Use `Contract Impact` when the task intentionally changes durable product or architecture behavior. Describe only the material durable-contract delta. If the user or established project policy has already designated the affected contract source, name it. If no source is designated, do not create or designate one merely to populate `Contract Impact`; the Issue is a work definition, not the current contract store. Current contract truth remains in any designated project source and is not changed merely because an Issue direction is accepted.
 
 Issue comments may clarify, constrain, or make decisions about executable work, but they do not become a second task-definition store. When a current comment materially changes the objective, acceptance criteria, constraints, blocker, or Issue-only execution state, reflect the resulting durable state in the Issue during authorized write work. Keep the comment as provenance/history; do not copy it verbatim just for bookkeeping.
 
@@ -173,9 +173,9 @@ Tests / checks run and their results. Note anything important not run and why.
 ## Contract Reconciliation
 
 No durable contract change.
-<!-- OR while unfinished: Pending: <authoritative source(s)> -->
-<!-- OR when reconciled: Updated: <authoritative source(s)> -->
-<!-- OR when durable behavior changes but no authoritative source exists: No authoritative contract source to reconcile. -->
+<!-- OR while unfinished: Pending: <designated source(s)> -->
+<!-- OR when reconciled: Updated: <designated source(s)> -->
+<!-- OR when durable behavior changes but no source has been designated: No contract source designated. -->
 
 ## Notes
 
@@ -184,7 +184,7 @@ Optional: limitations, risks, follow-ups, material decisions, or review focus.
 
 Choose exactly one tracking mode in `## Tracking`; Issue-backed mode may contain one or more closing links. Governance reads tracking declarations only from that section; examples or historical text elsewhere in the PR body do not change the tracking mode. `Notes` are optional. Delete the section when it adds no value. Keep the snapshot about the work itself; do not restate repository policy or closing-linked Issue acceptance criteria unless needed to explain current state.
 
-`Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while known authoritative source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No authoritative contract source to reconcile.` when durable behavior changes but the project has no such source and the task does not establish one; do not create a contract document solely to satisfy this field. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
+`Contract Reconciliation` is a current snapshot, not a promise. Use `Pending: <source(s)>` while designated source(s) still need updates and replace it with `Updated: <source(s)>` after reconciliation. Use `No contract source designated.` when durable behavior changes but the user/project has not designated a persistence source. That state does not authorize the ledger workflow to create or choose one. Use `No durable contract change.` when no durable contract changes. Do not copy the full current contract into the PR body.
 
 A repository-changing exploratory slice uses the same PR execution workflow once it has been cut into a concrete executable unit. The parent initiative continues to own shaping and parent-level acceptance rather than duplicating the child PR's execution state.
 
@@ -214,7 +214,7 @@ Recovery is canonical-first and trigger-based. The goal is to load only enough c
 
 Do not use a full PR diff, complete CI logs, linked-Issue history, or full review/comment history as default recovery shortcuts. Small complete diffs are acceptable when demonstrably small and wholly relevant.
 
-Repository facts win over stale prose. Correct stale canonical state during authorized write work, or report the mismatch during read-only review.
+Repository facts win over stale ledger or execution prose. Correct stale canonical work state during authorized write work, or report the mismatch during read-only review. This rule does not make implementation or tests authoritative over a designated product or architecture contract source.
 
 ## 7. Leaving Draft
 
@@ -226,7 +226,7 @@ Before moving a PR out of Draft:
 - a closing link does not falsely imply completion of a parent initiative that still owns unresolved product/problem acceptance,
 - `Current State` accurately represents the repository-execution work, including any material feedback blocker that changes execution state, without copying PR lifecycle state,
 - appropriate validation is recorded,
-- `Contract Reconciliation` uses a terminal state that matches evidence: `No durable contract change.`, `No authoritative contract source to reconcile.`, or `Updated: <source(s)>`; `Pending:` is not Ready,
+- `Contract Reconciliation` uses a terminal state that matches the work and designated sources: `No durable contract change.`, `No contract source designated.`, or `Updated: <source(s)>`; `Pending:` is not Ready,
 - PR feedback blocks leaving Draft only when it remains actionable and material to intended scope or repository policy,
 - an exact next repository-execution action is present if repository work is intentionally incomplete,
 - optional limitations, risks, follow-ups, or review focus are recorded only when useful.
@@ -259,7 +259,7 @@ This model deliberately avoids a generic input-state database or routine feedbac
 
 ## 9. Completion
 
-For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance criteria against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact`, ensure its authoritative source was updated and the PR's `Contract Reconciliation` names it.
+For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance criteria against the delivered result. If the Issue declared a durable `Contract Impact` and names a source already designated by the user or established project policy, ensure that source was updated and the PR's `Contract Reconciliation` names it. If durable behavior changed but no source is designated, use `No contract source designated.` rather than creating one through the ledger workflow.
 
 For exploratory initiatives, decomposition or delivery of one child does not by itself imply completion. Close the parent when its durable product/problem acceptance has been satisfied or the initiative is explicitly abandoned/superseded according to repository practice.
 
