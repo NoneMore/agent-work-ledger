@@ -108,7 +108,7 @@ An executable Issue should answer four questions:
 
 Only Objective and Acceptance Criteria are required by the current Agent Task Issue Form. Context, constraints, dependencies, and `Contract Impact` are optional because not every task needs them. Prefer paths, links, and durable decisions over copying large reference material into the Issue.
 
-Use `Contract Impact` when the task intentionally changes durable product or architecture behavior. Describe only the material durable-contract delta. If the user or established project policy has already designated the affected contract source, name it. If no source is designated, do not create or designate one merely to populate `Contract Impact`; the Issue is a work definition, not the current contract store. Current contract truth remains in any designated project source and is not changed merely because an Issue direction is accepted.
+Use `Contract Impact` when the work has a material durable-contract delta. Describe only that delta. If the user or established project policy has already designated the affected contract source, name it. If no source is designated, do not create or designate one merely to populate `Contract Impact`; the Issue is a work definition, not the current contract store. Current contract truth remains in any designated project source and is not changed merely because an Issue direction is accepted.
 
 Issue comments may clarify, constrain, or make decisions about executable work, but they do not become a second task-definition store. When a current comment materially changes the objective, acceptance criteria, constraints, blocker, or Issue-only execution state, reflect the resulting durable state in the Issue during authorized write work. Keep the comment as provenance/history; do not copy it verbatim just for bookkeeping.
 
@@ -259,7 +259,7 @@ This model deliberately avoids a generic input-state database or routine feedbac
 
 ## 9. Completion
 
-For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance criteria against the delivered result. If the Issue declared a durable `Contract Impact` and names a source already designated by the user or established project policy, ensure that source was updated and the PR's `Contract Reconciliation` names it. If durable behavior changed but no source is designated, use `No contract source designated.` rather than creating one through the ledger workflow.
+For executable Issue-backed repository work, prefer closing linked Issues by merging a PR with one or more `Closes #N`, `Fixes #N`, or `Resolves #N` links. Before treating the work as complete, reconcile the Issue's acceptance criteria against the delivered result; unchecked or stale criteria are not implicitly completed by the existence of the repository change. If the Issue declared a durable `Contract Impact` and names a source already designated by the user or established project policy, ensure that source was updated and the PR's `Contract Reconciliation` names it. If durable behavior changed but no source is designated, use `No contract source designated.` rather than creating one through the ledger workflow.
 
 For exploratory initiatives, decomposition or delivery of one child does not by itself imply completion. Close the parent when its durable product/problem acceptance has been satisfied or the initiative is explicitly abandoned/superseded according to repository practice.
 
