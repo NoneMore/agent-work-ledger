@@ -74,8 +74,22 @@ Passed.
 ## Contract Reconciliation
 No durable contract change.'
 
+commented_pending_body='## Tracking
+Standalone maintenance: focused repository cleanup
+
+## Current State
+Complete.
+
+## Validation
+Passed.
+
+## Contract Reconciliation
+No durable contract change.
+<!-- OR while unfinished: Pending: <source(s)> -->'
+
 expect_pass 'issue-backed body' "$issue_body"
 expect_pass 'standalone body' "$standalone_body"
+expect_pass 'commented pending guidance' "$commented_pending_body"
 
 expect_fail 'missing tracking section' 'Closes #26
 
@@ -130,5 +144,17 @@ Complete.
 
 ## Validation
 Passed.' 'missing required section: ## Contract Reconciliation'
+
+expect_fail 'pending reconciliation on ready PR' '## Tracking
+Standalone maintenance: focused repository cleanup
+
+## Current State
+Complete.
+
+## Validation
+Passed.
+
+## Contract Reconciliation
+Pending: docs/contract.md' 'Pending: is only valid while Draft'
 
 echo 'governance fixtures: ok'

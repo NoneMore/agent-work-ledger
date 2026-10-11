@@ -62,6 +62,19 @@ jobs:
             fi
           done
 
+          reconciliation="$(
+            awk '
+              /^##[[:space:]]+Contract Reconciliation[[:space:]]*$/ { in_reconciliation=1; next }
+              /^##[[:space:]]+/ { if (in_reconciliation) exit }
+              { if (in_reconciliation) print }
+            ' <<< "$body"
+          )"
+
+          if grep -Eiq '^[[:space:]]*Pending:[[:space:]]*.*$' <<< "$reconciliation"; then
+            echo "::error::## Contract Reconciliation must be terminal before a PR is Ready; Pending: is only valid while Draft."
+            failed=1
+          fi
+
           if [[ "$failed" -ne 0 ]]; then
             exit 1
           fi

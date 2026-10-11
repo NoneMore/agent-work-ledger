@@ -46,7 +46,7 @@ body:
     id: context
     attributes:
       label: Context
-      description: Only the files, links, prior decisions, or system behavior needed to execute safely.
+      description: Only the files, links, prior decisions, or system behavior needed to execute safely. Include a designated contract source here when it materially constrains execution or completion even if this task does not change that contract.
       placeholder: |
         Relevant files / links:
         - `src/...`
