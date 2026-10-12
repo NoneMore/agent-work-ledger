@@ -45,3 +45,7 @@ It covers:
 6. shell syntax and ShellCheck plus JSON/YAML syntax parsing.
 
 For deployment-structure changes, also confirm the resulting installed artifact set matches the intended profile semantics; the installer fixtures exercise the standard `core`, `skill-only`, and `github` paths automatically.
+
+## Releases
+
+Use [`RELEASING.md`](./RELEASING.md) for the public-release checklist, repository settings that must be confirmed before announcement, and the tagged-release procedure.
