@@ -34,14 +34,14 @@ Every repository-changing PR contains:
 
 Before leaving Draft, require authoritative state showing no known unfinished required work, explicit required validation, pending contract reconciliation, or material unresolved feedback that blocks the transition. Unknown prerequisites remain outstanding. The transition itself still requires authority.
 
-For Issue-backed work, treat acceptance criteria as complete only when authoritative evidence establishes completion. For initiatives, child completion does not imply parent acceptance.
+For Issue-backed work, treat each closing-linked Issue's acceptance criteria as complete only when authoritative evidence establishes completion. For initiatives, child completion does not imply parent acceptance.
 
 ## Recovery budget
 
 Load only what the current state question needs:
 
 1. canonical PR/Issue state;
-2. linked task/initiative definition when constraining;
+2. every closing-linked Issue's task definition for Issue-backed readiness/completion, otherwise the linked task/initiative definition when constraining;
 3. designated contract content when reconciliation is at issue;
 4. selected repository/check/log evidence needed to establish an objective fact;
 5. current review/feedback when relevant;
