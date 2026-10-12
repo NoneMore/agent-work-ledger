@@ -1,12 +1,14 @@
-# Review a Pull Request
+# Coordinate Pull Request review
 
-Review is optional unless repository policy or explicit user intent requires it, and read-only by default.
+Use when PR review is required by repository policy or explicitly requested. Review coordination is read-only by default.
 
-1. Establish intended scope from `## Tracking` and the task definition.
-2. Apply the `SKILL.md` recovery budget: inspect changed-file stats, checks, current unresolved actionable feedback, then only the patches/source or diagnostic evidence needed by scope/risk.
-3. Report actionable findings with concrete location/artifact, observable concern, minimum correction, and remaining validation limits. If a new finding is not already durable GitHub state, say so.
-4. Do not mutate GitHub from review. Route authorized action on findings to `feedback`; without actionable feedback, do not create an automatic review cycle.
+1. Recover intended scope from `## Tracking` and the task definition, plus the minimum current PR/check/feedback state needed to establish review context.
+2. Determine whether substantive review is currently required and whether the review executor has enough durable input to perform it. Do not substitute ledger policy for technical or product review judgment.
+3. Route the PR and relevant scope/context to the appropriate review executor or capability. Substantive findings, no-findings conclusions, and technical correctness judgments belong to that executor.
+4. Preserve the resulting review state without duplicating native GitHub feedback: actionable findings, unresolved questions, validation limits, or a no-material-findings result when one was actually produced. A finding that already exists in a review thread or PR comment remains durable there.
+5. Route authorized correction work to `feedback` or active execution as appropriate. Do not create an automatic review cycle; another review occurs only when repository policy or explicit user intent requires it.
+6. Do not approve, request changes, resolve threads, move Draft to Ready, merge, or otherwise mutate finalizing GitHub state without the required authority.
 
 ## Done when
 
-There is an evidence-based findings/no-findings result, current checks and unresolved actionable feedback are accounted for, and any required follow-up is routed explicitly.
+The required substantive review outcome has been obtained and its workflow consequences are clear, or the missing review input/executor/authority is explicit as the next action.
