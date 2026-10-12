@@ -1,16 +1,16 @@
 # agent-work-ledger
 
-A lightweight GitHub-native work control plane and durable work ledger for human + agent collaboration.
+A lightweight GitHub-native durable work ledger and workflow-state controller for human + agent collaboration.
 
-Agent Work Ledger keeps problem/task definition, repository execution state, decisions, validation evidence, blockers, feedback state, and next actions durable in GitHub so another human or agent can resume without prior chat history.
+Agent Work Ledger keeps problem/task definition, repository execution state, decisions, validation evidence, blockers, feedback state, reconciliation state, and next actions durable in GitHub so another human or agent can resume without prior chat history.
 
-It coordinates **what work is active, where it is in its lifecycle, what obligation comes next, and where that state lives**. Substantive project work — such as choosing product or architecture direction, decomposing deliverables, implementing production behavior, selecting validation strategy, or performing technical review — belongs to the executor or project capability that owns that outcome. The ledger may determine that such an outcome is required next, provide durable context for it, and persist its result.
+It owns **where work state lives, what that state currently is, and which workflow obligations remain**. It recovers authoritative GitHub state, reconciles stale snapshots, and applies authorized lifecycle/state mutations. It does not perform the substantive project work needed to satisfy those obligations, select who should perform it, or treat an intended handoff as progress.
 
 ## What this repository contains
 
 The repository separates product sources from the configuration used to develop Agent Work Ledger itself:
 
-- [`skills/agent-work-ledger/`](./skills/agent-work-ledger/) — reusable, explicitly invoked Agent Skill and authoritative workflow/control-plane policy.
+- [`skills/agent-work-ledger/`](./skills/agent-work-ledger/) — reusable, explicitly invoked Agent Skill and authoritative workflow-state policy.
 - [`integrations/github/`](./integrations/github/) — deployable GitHub Issue/PR templates, governance Action, and ruleset source.
 - [`install/`](./install/) — profile-based deployment tooling.
 - [`docs/`](./docs/) — workflow, installation, and development references.
@@ -47,28 +47,29 @@ Use `--repo OWNER/REPO` when the target path cannot be used to infer the GitHub 
 
 ## Responsibility boundary
 
-Agent Work Ledger owns **work control**, not every kind of work content.
+Agent Work Ledger owns **durable workflow state**, not substantive project outcomes or orchestration.
 
 It owns:
 
 - work identity and tracking mode;
 - Issue/PR/initiative lifecycle and canonical state placement;
-- recovery after interruption;
-- current obligations, blockers, and workflow-level next actions;
-- routing substantive work to an appropriate executor or capability;
-- durable progress, decision, validation, feedback, reconciliation, and handoff state;
-- authority constraints around GitHub mutations and finalizing transitions.
+- recovery after interruption and reconciliation of stale state with GitHub facts;
+- blockers, outstanding obligations, and exact next actions;
+- validation evidence and explicit required-validation state;
+- feedback, contract-reconciliation, and handoff state;
+- authorized GitHub lifecycle/state mutations.
 
-It does not independently own:
+It does not:
 
-- product, domain, architecture, or interface decisions;
-- invention or material reinterpretation of requirements;
-- substantive decomposition boundaries;
-- production implementation;
-- validation-strategy selection beyond explicit task/repository requirements;
-- substantive technical review or correctness judgments.
+- choose product, domain, architecture, or interface direction;
+- invent or materially reinterpret requirements;
+- decide substantive decomposition boundaries;
+- implement production changes;
+- choose validation strategy beyond explicit task/repository requirements;
+- perform substantive technical review or correctness judgments;
+- select, invoke, dispatch, or coordinate the person, agent, Skill, or capability that should produce a missing substantive outcome.
 
-This is intentionally not a passive activity log. The ledger may determine, for example, that the next obligation is to obtain a design decision, implement a remaining acceptance criterion, evaluate a review concern, or reconcile a designated contract source. It then coordinates that work and records the outcome rather than absorbing the specialist responsibility itself.
+When authoritative evidence already establishes a new workflow fact, the ledger may persist that fact. When advancing state would require missing substantive work or judgment, it leaves the unmet outcome and exact next action explicit and stops. If ownership, authority, or the next substantive choice is unclear, the ledger asks the user rather than guessing.
 
 ## Core workflow
 
@@ -77,28 +78,26 @@ This is intentionally not a passive activity log. The ledger may determine, for 
 - **Comments and reviews carry durable input and feedback** — use Issue comments for discussion/input around Issue-defined work and PR comments/reviews for PR feedback; do not make them a second current-state store.
 - **GitHub Projects show portfolio progress** without becoming a second source of execution truth.
 
-Executable repository changes follow the normal path:
+Executable repository changes normally follow:
 
 ```text
 Issue-backed: Issue -> branch -> first meaningful commit -> Draft PR -> work / validation -> [Ready when authorized] -> [review / feedback when required] -> merge
 PR-only:      branch -> first meaningful commit -> Draft PR -> work / validation -> [Ready when authorized] -> [review / feedback when required] -> merge
 ```
 
-In this model, `work / validation` is coordinated by the ledger but substantively performed by the executor or capability that owns the requested outcome. The ledger recovers the current obligation, routes it, and then updates the canonical snapshot from the returned result.
+The ledger observes and updates the durable state around this lifecycle; it does not perform the `work / validation` step. A substantive change, review result, decision, or validation result becomes ledger state only after authoritative evidence for that result exists.
 
-Exploratory initiatives preserve current understanding, evidence, open questions, candidate versus accepted directions, and the next uncertainty-reducing or decision step. Commitment is an explicit semantic decision rather than a mechanically inferred readiness test. The ledger owns that durable shaping state and may route investigation, design, specification, decomposition, or acceptance evaluation to the appropriate substantive executor. An initiative may decompose into executable child Issues and remain open as the parent product/problem acceptance surface.
+Exploratory initiatives preserve current understanding, evidence, open questions, candidate versus accepted directions, child relationships, remaining parent-level acceptance, and the next established shaping obligation. The ledger records those facts; it does not investigate, design, specify, decompose, or decide acceptance merely because one of those outcomes is missing.
 
 The PR body is the canonical execution snapshot. `## Tracking` chooses exactly one mode: one or more Issue closing links, or `Standalone maintenance: <brief reason or scope>`. `Current State`, `Validation`, and `Contract Reconciliation` stay accurate as material state changes. Reconciliation records whether durable contract work is pending, reconciled, has no designated contract source, or does not exist; a pending reconciliation is unfinished and not Ready. `Ready for Review` is a PR state transition handled from active work, not a lifecycle route. Review is optional unless repository policy or explicit user intent requires it, and PR feedback may arrive before or without formal review.
 
-See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle and responsibility boundary.
+See [`docs/AGENT_WORKFLOW.md`](./docs/AGENT_WORKFLOW.md) for the detailed lifecycle and state boundary.
 
 ## Operational Skill
 
-[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the reusable control-plane workflow as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
+[`skills/agent-work-ledger/SKILL.md`](./skills/agent-work-ledger/SKILL.md) packages the reusable workflow-state protocol as an explicitly user-invoked Agent Skill. Its frontmatter disables model invocation for runtimes that support those fields; OpenAI/Codex invocation policy is declared in [`skills/agent-work-ledger/agents/openai.yaml`](./skills/agent-work-ledger/agents/openai.yaml).
 
-Once invoked, the Skill applies shared workflow policy, infers the lifecycle operation, and loads only the matching file under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/). Those routes coordinate shaping, start/resume, review, feedback, blockers, and handoff. When a route requires a substantive design, specification, decomposition, implementation, investigation, validation, or review outcome, it delegates or routes that work to the appropriate executor and persists the result. Live GitHub state is recovered progressively rather than preloading full diffs, complete CI logs, or entire comment histories.
-
-The Skill intentionally does not depend on a particular external project-skill suite. Any executor that owns the required substantive outcome may be used.
+Once invoked, the Skill applies shared workflow policy, selects the matching state operation under [`skills/agent-work-ledger/references/`](./skills/agent-work-ledger/references/), and recovers live GitHub state progressively. These operations establish or reconcile tracking, execution snapshots, initiative state, blockers/handoffs, review state, and feedback state. They do not select or invoke external project capabilities.
 
 ## GitHub integration
 
@@ -131,10 +130,11 @@ Add `Priority`, `Iteration`, or other fields only when the project genuinely ben
 3. Do not mechanically infer semantic readiness or turn candidate directions into implementation requirements before they are explicitly accepted.
 4. Every repository change goes through a PR; Issue linkage is conditional, not universal.
 5. The PR owns repository execution state; exploratory initiative state remains on the parent Issue; contract sources designated by the user or established project policy own current durable product/architecture contract truth.
-6. The ledger owns coordination and durable workflow state; substantive project outcomes remain owned by the executor or capability responsible for them.
-7. Routine progress should not require comments or duplicated status updates.
-8. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, feedback disposition, and next actions; do not persist hidden chain-of-thought.
-9. Keep deployable product sources separate from repository-development configuration.
+6. The ledger owns durable workflow state and authorized state transitions; substantive work and executor selection remain outside it.
+7. Never advance state merely because work was intended, delegated, or discussed; require authoritative evidence for the new state.
+8. Routine progress should not require comments or duplicated status updates.
+9. Preserve useful conclusions, evidence, decisions, constraints, blockers, validation, feedback disposition, and next actions; do not persist hidden chain-of-thought.
+10. Keep deployable product sources separate from repository-development configuration.
 
 ## Bootstrap
 

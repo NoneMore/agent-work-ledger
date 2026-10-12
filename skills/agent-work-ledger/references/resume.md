@@ -1,15 +1,15 @@
-# Continue or resume executable work
+# Reconcile active executable-work state
 
 Use for active executable work with a canonical execution surface. Apply shared rules from `SKILL.md`.
 
-1. Recover the current task definition, execution state, blockers, validation evidence, contract-reconciliation state, and recorded next action.
-2. Verify that the recorded next action still follows from durable task state and current repository facts. Identify the smallest concrete remaining work obligation that can responsibly proceed.
-3. Route that obligation to the appropriate substantive executor or project capability. The ledger does not perform implementation, design, specification, decomposition, review, or validation-strategy work merely because it is next.
-4. After the substantive work returns, replace superseded `Current State` and record only resulting durable conclusions, validation actually performed, blockers, and the next workflow-level action.
-5. Keep `Contract Reconciliation` aligned with the resulting execution state; replace `Pending:` with `Updated:` only after the designated source(s) are actually reconciled. If no source has been designated, use `No contract source designated.` rather than creating or selecting one through the ledger workflow. Do not copy the current contract into the PR body.
-6. If another substantive outcome is required before execution can continue or completion can be judged, make that requirement and its durable input explicit as the next action rather than manufacturing the outcome in the ledger.
-7. If the operation changes, reroute through `SKILL.md` rather than redefining lifecycle boundaries here. If a required transition lacks authority, leave it as the exact next action.
+1. Recover the current task definition, execution snapshot, blockers, validation evidence, contract-reconciliation state, feedback state when relevant, and recorded next action.
+2. Compare that snapshot with current authoritative GitHub facts. Correct stale `Current State`, `Validation`, blockers, feedback consequences, or `Contract Reconciliation` when the evidence establishes a different state and mutation is authorized.
+3. Verify that the recorded next action still follows from established task state. Replace it only when the new next action follows without substantive product, design, implementation, review, validation-strategy, or decomposition judgment.
+4. Do not execute remaining substantive work and do not select or invoke anyone or anything to execute it. If an unmet substantive outcome is still required, leave that outcome as the exact next action.
+5. Replace `Pending:` with `Updated:` only after authoritative evidence establishes that the designated source was reconciled. If durable behavior change is established but no source has been designated, use `No contract source designated.` Do not create or choose a contract source.
+6. If completion or the next state depends on unresolved judgment, authority, or ownership, leave the dependency explicit and ask the user when a choice is required.
+7. If the state operation changes, switch through `SKILL.md` rather than redefining boundaries here.
 
 ## Done when
 
-The requested executable increment has been coordinated to completion and durable state matches the returned evidence, or the next required substantive outcome, lifecycle path, blocker, or authorized transition is explicit.
+The canonical execution snapshot matches authoritative evidence and the next outstanding workflow or substantive obligation is explicit; no substantive work is performed merely to make the ledger advance.

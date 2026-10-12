@@ -1,14 +1,14 @@
-# Coordinate Pull Request review
+# Reconcile Pull Request review state
 
-Use when PR review is required by repository policy or explicitly requested. Review coordination is read-only by default.
+Use when review state matters because repository policy or explicit user intent requires review.
 
-1. Recover intended scope from `## Tracking` and the task definition, plus the minimum current PR/check/feedback state needed to establish review context.
-2. Determine whether substantive review is currently required and whether the review executor has enough durable input to perform it. Do not substitute ledger policy for technical or product review judgment.
-3. Route the PR and relevant scope/context to the appropriate review executor or capability. Substantive findings, no-findings conclusions, and technical correctness judgments belong to that executor.
-4. Preserve the resulting review state without duplicating native GitHub feedback: actionable findings, unresolved questions, validation limits, or a no-material-findings result when one was actually produced. A finding that already exists in a review thread or PR comment remains durable there.
-5. Route authorized correction work to `feedback` or active execution as appropriate. Do not create an automatic review cycle; another review occurs only when repository policy or explicit user intent requires it.
-6. Do not approve, request changes, resolve threads, move Draft to Ready, merge, or otherwise mutate finalizing GitHub state without the required authority.
+1. Recover intended scope from `## Tracking` and the task definition, plus the minimum native PR review/check/feedback state needed to determine whether a required review exists and what durable consequences it already established.
+2. Do not inspect code to produce findings, decide technical correctness, select a reviewer, or invoke a review capability.
+3. If required review has not occurred, leave `review required` or the equivalent exact next action outstanding. Do not mark review as routed, in progress, or complete merely because someone should perform it.
+4. If native GitHub review/comment state already establishes findings, no-findings, requested changes, questions, or another explicit disposition, reflect only the workflow consequences that follow without additional substantive judgment. Do not duplicate the feedback itself into the PR body merely for bookkeeping.
+5. When the consequence of review evidence is ambiguous or requires a substantive disposition, leave it unresolved and ask the user if a decision is required.
+6. Approving, requesting changes, resolving threads, moving Draft to Ready, or merging are GitHub state mutations and require the applicable authority; do not infer the substantive basis for them.
 
 ## Done when
 
-The required substantive review outcome has been obtained and its workflow consequences are clear, or the missing review input/executor/authority is explicit as the next action.
+Ledger review state matches native GitHub evidence and any missing review, unresolved disposition, or separately authorized transition is explicit.
