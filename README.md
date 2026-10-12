@@ -83,6 +83,10 @@ The root `.github/` directory may dogfood the integration, but installers source
 
 Start with one field: `Status = Inbox / Ready / In Progress / Blocked / Review / Done`. Add fields only when they provide real portfolio value; do not duplicate canonical Issue/PR state.
 
+## License
+
+Agent Work Ledger is licensed under the [MIT License](./LICENSE).
+
 ## Bootstrap
 
 The first workflow implementation is tracked in Issue #1 and PR #2.

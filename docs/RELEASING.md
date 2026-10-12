@@ -6,7 +6,7 @@ Agent Work Ledger uses Git tags and GitHub Releases as the immutable public rele
 
 Before announcing a release, confirm all of the following:
 
-1. A repository `LICENSE` file exists and reflects the license selected by the repository owner.
+1. The repository `LICENSE` file is present in the intended release commit and contains the MIT License selected by the repository owner.
 2. The repository is public and has a concise description and useful topics.
 3. `main` is protected by an active repository ruleset that requires pull-request based changes and the `Validate Issue linkage and resumability` status check. For this repository, also require the `Release checks` status check before merging release-oriented changes.
 4. There are no known release-blocking Issues or Pull Requests.
@@ -43,6 +43,7 @@ Keep release notes short and user-facing. For the initial `v0.1.0` release, cove
 - the `core` and `github` installation profiles;
 - the `establish` and `reconcile` operations;
 - the optional GitHub Issue/PR templates, governance Action, and repository ruleset;
+- the MIT License;
 - the pre-1.0 compatibility expectation;
 - a link to `docs/INSTALLATION.md`.
 
