@@ -60,7 +60,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.'
+No reconciliation indicated.'
 
 standalone_body='## Tracking
 Standalone maintenance: focused repository cleanup
@@ -72,7 +72,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.'
+No reconciliation indicated.'
 
 commented_pending_body='## Tracking
 Standalone maintenance: focused repository cleanup
@@ -84,7 +84,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.
+No reconciliation indicated.
 <!-- OR while unfinished: Pending: <source(s)> -->'
 
 expect_pass 'issue-backed body' "$issue_body"
@@ -100,7 +100,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.' 'missing required section: ## Tracking'
+No reconciliation indicated.' 'missing required section: ## Tracking'
 
 expect_fail 'mixed tracking modes' '## Tracking
 Closes #26
@@ -113,7 +113,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.' 'Choose exactly one tracking mode'
+No reconciliation indicated.' 'Choose exactly one tracking mode'
 
 expect_fail 'tracking declaration outside section' '## Notes
 Closes #26
@@ -125,7 +125,7 @@ Complete.
 Passed.
 
 ## Contract Reconciliation
-No durable contract change.' 'missing required section: ## Tracking'
+No reconciliation indicated.' 'missing required section: ## Tracking'
 
 expect_fail 'missing validation section' '## Tracking
 Closes #26
@@ -134,7 +134,7 @@ Closes #26
 Complete.
 
 ## Contract Reconciliation
-No durable contract change.' 'missing required section: ## Validation'
+No reconciliation indicated.' 'missing required section: ## Validation'
 
 expect_fail 'missing reconciliation section' '## Tracking
 Closes #26

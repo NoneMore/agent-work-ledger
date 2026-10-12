@@ -5,16 +5,16 @@ Closes #<!-- issue number -->
 
 ## Current State
 
-<!-- What repository-execution work is done, what remains, and the exact next repository-execution action if unfinished? Do not duplicate GitHub PR lifecycle state such as Ready, review, approval, or merge. Replace superseded state; do not append routine progress history. -->
+<!-- What repository-execution work is established as done, what remains, and the exact next action if unfinished? Do not duplicate GitHub PR lifecycle state such as Ready, review, approval, or merge. Replace superseded state; do not append routine progress history. -->
 
 ## Validation
 
-<!-- Tests / checks run and results. Note anything not run and why. Keep the current useful validation snapshot rather than accumulating obsolete detail. -->
+<!-- Tests / checks actually run and results, plus explicit required validation still outstanding or material reported limitations. Keep the current useful snapshot rather than accumulating obsolete detail. -->
 
 ## Contract Reconciliation
 
-<!-- Keep this current. Use `Pending: <source(s)>` while designated contract source(s) still need reconciliation, then `Updated: <source(s)>`; use `No contract source designated.` when durable behavior changes but the user/project has not designated a persistence source; otherwise use `No durable contract change.`. The ledger workflow must not create or designate a contract persistence surface to satisfy this section. Ready PRs must not remain `Pending:`. Do not restate the whole contract here. -->
-No durable contract change.
+<!-- Keep this evidence-based. Use `No reconciliation indicated.` when authoritative task/project state establishes no current reconciliation obligation; `No contract source designated.` when an obligation is established but no source is designated; `Pending: <source(s)>` while designated source(s) still need reconciliation; `Updated: <source(s)>` after evidence establishes reconciliation. Ready PRs must not remain `Pending:`. -->
+No reconciliation indicated.
 
 ## Notes
 

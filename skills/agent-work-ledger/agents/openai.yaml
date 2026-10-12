@@ -1,6 +1,6 @@
 interface:
   display_name: Agent Work Ledger
-  short_description: GitHub durable work-state ledger
+  short_description: GitHub durable work-state reconciler
 policy:
   products:
     - CHAT
