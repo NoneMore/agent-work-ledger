@@ -6,6 +6,8 @@ For a blocker, record on the canonical surface when one exists: the blocker esta
 
 If untracked shaping has no canonical surface, create or adopt an Initiative only when durable tracking is explicitly requested or required by repository policy and that mutation is authorized; otherwise surface the blocker without manufacturing tracking.
 
+If standalone executable work has no PR yet, a durable blocker or handoff cannot be recorded on that future PR. When durable resumability is required, create or adopt an Issue if authorized and use it as the canonical surface; otherwise make establishing durable tracking the exact next action and do not claim the handoff is resumable.
+
 For a handoff, make the canonical surface sufficient to resume without prior chat: current durable state, blockers/constraints, validation evidence, material decisions, pending substantive outcomes, and exact next action. A handoff does not require the ledger to select or contact the next executor.
 
 Use comments only when notification or durable history is needed beyond current state.
