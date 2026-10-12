@@ -4,6 +4,12 @@ A lightweight GitHub-native durable work ledger for human + agent collaboration.
 
 Agent Work Ledger is a **state reconciler, not a project-work orchestrator**. It establishes or adopts durable tracking, reconciles canonical GitHub state with authoritative evidence, and applies authorized lifecycle/state mutations without performing the substantive work represented by that state.
 
+## Release status
+
+Agent Work Ledger is currently **pre-1.0**. The initial public release line is `v0.1.x`: workflow semantics may still evolve between minor pre-1.0 releases.
+
+For reproducible use, install from a tagged release rather than a moving `main` checkout. `main` remains the development branch. See [`docs/RELEASING.md`](./docs/RELEASING.md) for the repository release procedure.
+
 ## Repository layout
 
 - [`skills/agent-work-ledger/`](./skills/agent-work-ledger/) — reusable, explicitly invoked Agent Skill and normative workflow-state policy.
@@ -15,6 +21,8 @@ Agent Work Ledger is a **state reconciler, not a project-work orchestrator**. It
 See [`docs/DEVELOPMENT.md`](./docs/DEVELOPMENT.md) for the source/deployment boundary and [`docs/INSTALLATION.md`](./docs/INSTALLATION.md) for installation details.
 
 ## Install
+
+Run the installer from a checkout of the release you want to deploy:
 
 ```bash
 ./install/install.sh --profile core --target /path/to/repository
