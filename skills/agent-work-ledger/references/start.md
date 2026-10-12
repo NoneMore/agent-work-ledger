@@ -15,7 +15,8 @@ For standalone maintenance:
 
 1. Confirm from user intent and repository facts that the PR itself is sufficient tracking state; do not infer substantive implementation choices.
 2. Create `agent/maintenance-<short-slug>` when authorized and useful.
-3. After a first meaningful commit exists, open a Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking` and initialize the minimum PR snapshot.
+3. If substantive work must stop or hand off before a first meaningful commit exists and durable resumability is required, the future PR is no longer a sufficient tracking surface. Create or adopt an Issue when authorized and continue as Issue-backed work; otherwise leave establishing durable tracking as the explicit prerequisite and do not claim a resumable handoff.
+4. After a first meaningful commit exists, open a Draft PR with `Standalone maintenance: <brief reason or scope>` in `## Tracking` and initialize the minimum PR snapshot.
 
 Initialize `Current State`, `Validation`, and `Contract Reconciliation` only from authoritative evidence. Do not mark work, validation, or contract changes as performed merely because they are expected.
 
